@@ -9,4 +9,5 @@
 
 
     <string name="kakao_app_key">a982ee11034c9d329709feeb030781f1</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
