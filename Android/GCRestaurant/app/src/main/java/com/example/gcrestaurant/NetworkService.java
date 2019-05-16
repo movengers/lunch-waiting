@@ -41,12 +41,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class NetworkService extends Service{
-    //public static List<ESocketActivity> receivers = new ArrayList();
     @Override
     public IBinder onBind(Intent intent) {
-        // Service 객체와 (화면단 Activity 사이에서)
-        // 통신(데이터를 주고받을) 때 사용하는 메서드
-        // 데이터를 전달할 필요가 없으면 return null;
         return null;
     }
 
@@ -55,19 +51,12 @@ public class NetworkService extends Service{
         super.onCreate();
         // 서비스에서 가장 먼저 호출됨(최초에 한번만)
         Log.d("test", "서비스의 onCreate");
+        new ESocket().start();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        /*
-        if (esocket == null)
-        {
-            esocket = new ESocket(this);
-            esocket.start();
-        }
-        */
-        Log.d("테스트1", "서비스의 onStartCommand 끝");
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
 }

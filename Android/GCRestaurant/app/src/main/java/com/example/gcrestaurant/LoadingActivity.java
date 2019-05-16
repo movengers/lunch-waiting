@@ -3,6 +3,7 @@ package com.example.gcrestaurant;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -18,12 +19,15 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         GlobalApplication ga = (GlobalApplication)getApplication();
         ga.requestAccessTokenInfo();
+
+        // 서비스 시작
+        Intent intent = new Intent(this, NetworkService.class);
+        startService(intent);
     }
     @Override
     public void onResume()
     {
         super.onResume();
-        new ESocket().start();
     }
 
     protected void loginActivity(){
