@@ -69,20 +69,5 @@ public class NetworkService extends Service{
         Log.d("테스트1", "서비스의 onStartCommand 끝");
         return super.onStartCommand(intent, flags, startId);
     }
-/*
-    Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            msg.getData().get
-            List<JSONObject> list = NetworkMain.ReceiveQueue.Get();
-            if (list != null) {
-                for (JSONObject item : list) {
 
-                    ReceiveMessage(item);
-                }
-            }
-            // 메세지를 처리하고 또다시 핸들러에 메세지 전달 (1000ms 지연)
-            //mHandler.sendEmptyMessageDelayed(0,1000);
-        }
-    };
-    */
 }

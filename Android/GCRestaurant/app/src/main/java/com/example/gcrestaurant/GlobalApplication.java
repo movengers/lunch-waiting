@@ -3,6 +3,8 @@ package com.example.gcrestaurant;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 import com.kakao.auth.ApiResponseCallback;
@@ -17,9 +19,12 @@ import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
 import com.kakao.util.helper.log.Logger;
 
+import org.json.JSONObject;
+
 public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
+    public static ESocket socket = null;
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
          * Session Config에 대해서는 default값들이 존재한다.
@@ -111,5 +116,32 @@ public class GlobalApplication extends Application {
                 Logger.d("this access token expires after " + expiresInMilis + " milliseconds.");
             }
         });
+    }
+    Handler ReceiveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String message = msg.getData().getString("data");
+
+            Toast.makeText(GlobalApplication.this, message, Toast.LENGTH_SHORT).show();
+
+            JSONObject ss = null;
+            try
+            {
+               ss = new JSONObject("{type:\"1\"}");
+            }
+            catch ( Exception e)
+            {
+
+            }
+            GlobalApplication.SendNetworkMessage(ss);
+            // ReceiveMessage(item);
+
+            // 메세지를 처리하고 또다시 핸들러에 메세지 전달 (1000ms 지연)
+            //mHandler.sendEmptyMessageDelayed(0,1000);
+        }
+    };
+    public static void SendNetworkMessage(JSONObject json)
+    {
+        if (socket != null)
+            socket.SendMessage(json);
     }
 }

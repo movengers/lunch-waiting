@@ -19,7 +19,12 @@ public class LoadingActivity extends AppCompatActivity {
         GlobalApplication ga = (GlobalApplication)getApplication();
         ga.requestAccessTokenInfo();
     }
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        new ESocket().start();
+    }
 
     protected void loginActivity(){
         final Intent intent = new Intent(this, LoginActivity.class);
