@@ -18,6 +18,9 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -27,9 +30,16 @@ public class ESocket extends Thread {
     private PrintWriter outToClient = null;
     private Handler sendHandler= null;
 
+    private List<JSONObject> sendmessage_waiting = new LinkedList<>();
+
     public ESocket()
     {
         GlobalApplication.socket = this;
+
+        GlobalApplication ga = GlobalApplication.getGlobalApplicationContext();
+        ga.SendDebugToServer("토큰을 가져옴");
+        ga.requestAccessTokenInfo();
+
     }
     public void run() {
         // 완전히 종료 명령이 오기 전까지는 계속 반복한다.
@@ -48,6 +58,14 @@ public class ESocket extends Thread {
                 {
                     public void run()
                     {
+                        // 정상적으로 연결 되었다면 기존 Send 버퍼를 모두 읽는다.
+                        while(sendmessage_waiting.size() > 0)
+                        {
+                            JSONObject object = sendmessage_waiting.get(0);
+                            sendmessage_waiting.remove(0);
+                            outToClient.write(object + "\r\n");
+                            outToClient.flush();
+                        }
                         Looper.prepare();
                         sendHandler = new Handler() {
                             public void handleMessage(Message msg) {
@@ -115,6 +133,10 @@ public class ESocket extends Thread {
             message.setData(bundle);
             sendHandler.sendMessage(message);
             Log.d("소켓", "입력");
+        }
+        else
+        {
+            sendmessage_waiting.add(json);
         }
     }
 }

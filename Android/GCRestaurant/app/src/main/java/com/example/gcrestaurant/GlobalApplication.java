@@ -25,6 +25,7 @@ public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
     public static ESocket socket = null;
+
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
          * Session Config에 대해서는 default값들이 존재한다.
@@ -132,16 +133,27 @@ public class GlobalApplication extends Application {
             {
 
             }
-            GlobalApplication.SendNetworkMessage(ss);
-            // ReceiveMessage(item);
-
-            // 메세지를 처리하고 또다시 핸들러에 메세지 전달 (1000ms 지연)
-            //mHandler.sendEmptyMessageDelayed(0,1000);
+            GlobalApplication.SendMessageToServer(ss);
         }
     };
-    public static void SendNetworkMessage(JSONObject json)
+    public static void SendMessageToServer(JSONObject json)
     {
         if (socket != null)
             socket.SendMessage(json);
+    }
+    public static void SendDebugToServer(String data)
+    {
+        JSONObject json = new JSONObject();
+
+        try
+        {
+            json.put("type",1000);
+            json.put("message",data);
+        }
+        catch ( Exception e)
+        {
+
+        }
+        GlobalApplication.SendMessageToServer(json);
     }
 }

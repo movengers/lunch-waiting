@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
@@ -6,6 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCRestaurantServer", "GCRestaurantServer\GCRestaurantServer.csproj", "{B4CE3DCA-82AE-452D-BC5D-D76BE300A005}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkLibrary", "NetworkLibrary\NetworkLibrary.csproj", "{27AA39A8-A284-4054-A84C-72CEC54ED6BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSystem", "LogSystem\LogSystem.csproj", "{F756A2CC-5BA0-42F5-9B51-53DB3BA14541}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{27AA39A8-A284-4054-A84C-72CEC54ED6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27AA39A8-A284-4054-A84C-72CEC54ED6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27AA39A8-A284-4054-A84C-72CEC54ED6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F756A2CC-5BA0-42F5-9B51-53DB3BA14541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F756A2CC-5BA0-42F5-9B51-53DB3BA14541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F756A2CC-5BA0-42F5-9B51-53DB3BA14541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F756A2CC-5BA0-42F5-9B51-53DB3BA14541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

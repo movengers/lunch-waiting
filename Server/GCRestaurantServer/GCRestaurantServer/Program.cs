@@ -9,6 +9,9 @@ namespace GCRestaurantServer
 {
     class Program
     {
+
+        public static LogSystem.LogSystem LogSystem = new LogSystem.LogSystem();
+
         public static Dictionary<ESocket, OnlineUser> users = new Dictionary<ESocket, OnlineUser>();
         static void Main(string[] args)
         {
@@ -16,8 +19,8 @@ namespace GCRestaurantServer
             server.Connect += Server_Connect;
             server.Receive += Server_Receive_Try;
             server.Exit += Server_Exit;
-         
-           
+
+            LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
             while (true)
             {
                 System.Threading.Thread.Sleep(4000);
@@ -35,7 +38,7 @@ namespace GCRestaurantServer
 
         private static void Server_Connect(ESocket socket)
         {
-            Console.WriteLine("로그인");
+            LogSystem.AddLog(-1, "Program", "새로운 소켓이 연결되었습니다.");
             lock (users)
             {
                 users.Add(socket, new OnlineUser(socket));
@@ -54,11 +57,11 @@ namespace GCRestaurantServer
         }
         private static void Server_Receive(ESocket socket, JObject Message)
         {
-            Console.WriteLine(Message.ToString());
+            LogSystem.AddLog(-1, "Program", Message.ToString());
             switch ((int)Message["type"])
             {
                 case 1000:
-                    Console.WriteLine("안드로이드 테스트 메세지 : " + (string)Message["message"]);
+                    LogSystem.AddLog(0, "Program", (string)Message["message"]);
                     break;
             }
         }
@@ -67,7 +70,7 @@ namespace GCRestaurantServer
 
         private static void Server_Exit(ESocket socket)
         {
-            Console.WriteLine("누군가 종료함");
+            LogSystem.AddLog(-1, "Program", "기존 소켓의 연결이 해제되었습니다.");
             lock (users)
             {
                 users.Remove(socket);
