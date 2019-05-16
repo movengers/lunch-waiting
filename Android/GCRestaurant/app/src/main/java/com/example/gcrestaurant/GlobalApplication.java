@@ -2,13 +2,20 @@ package com.example.gcrestaurant;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
+import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.ApprovalType;
+import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import com.kakao.auth.network.response.AccessTokenInfoResponse;
+import com.kakao.network.ErrorResult;
+import com.kakao.util.helper.log.Logger;
 
 public class GlobalApplication extends Application {
 
@@ -76,5 +83,33 @@ public class GlobalApplication extends Application {
         if(instance == null)
             throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");
         return instance;
+    }
+    public void requestAccessTokenInfo() {
+        AuthService.getInstance().requestAccessTokenInfo(new ApiResponseCallback<AccessTokenInfoResponse>() {
+            @Override
+            public void onSessionClosed(ErrorResult errorResult) {
+                //redirectLoginActivity(self);
+                Toast.makeText(GlobalApplication.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNotSignedUp() {
+                // not happened
+            }
+
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                Logger.e("failed to get access token info. msg=" + errorResult);
+            }
+
+            @Override
+            public void onSuccess(AccessTokenInfoResponse accessTokenInfoResponse) {
+                long userId = accessTokenInfoResponse.getUserId();
+                Logger.d("this access token is for userId=" + userId);
+
+                long expiresInMilis = accessTokenInfoResponse.getExpiresInMillis();
+                Logger.d("this access token expires after " + expiresInMilis + " milliseconds.");
+            }
+        });
     }
 }
