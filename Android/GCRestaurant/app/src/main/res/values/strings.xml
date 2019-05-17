@@ -7,6 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="title_home">홈</string>
+    <string name="title_waiting">밥대기</string>
+    <string name="title_ranking">식당랭킹</string>
+    <string name="title_board">게시판</string>
+    <string name="title_setting">설정</string>
 
     <string name="kakao_app_key">a982ee11034c9d329709feeb030781f1</string>
     <string name="title_activity_login">LoginActivity</string>
