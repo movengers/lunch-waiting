@@ -8,6 +8,7 @@ namespace GCRestaurantServer
 {
     public class OnlineUser
     {
+        public bool login = false;
         public ESocket socket { get; private set; }
         public OnlineUser(ESocket socket)
         {

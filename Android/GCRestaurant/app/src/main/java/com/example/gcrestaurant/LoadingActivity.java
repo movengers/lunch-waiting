@@ -49,6 +49,30 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
 
     public void ReceivePacket(JSONObject json)
     {
+        // 로딩 액티비티가 열린 상태에서 로그인 메세지가 전달되면 액티비티를 이동함.
+        try
+        {
+            switch (json.getInt("type"))
+            {
+                case PacketType.Login:
+                    Intent intent = null;
+                    if (json.getBoolean("result"))
+                    {
+                        intent = new Intent(this, MainActivity.class);
+                    }
+                    else
+                    {
+                        intent = new Intent(this,LoginActivity.class);
+                    }
+                    startActivity(intent);
+                    finish();
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
         NetworkService.SendDebugMessage("액티비티가 패킷을 수신함");
     }
 }

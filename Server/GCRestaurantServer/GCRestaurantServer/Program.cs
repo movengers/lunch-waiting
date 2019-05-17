@@ -57,10 +57,14 @@ namespace GCRestaurantServer
         }
         private static void Server_Receive(ESocket socket, JObject Message)
         {
+            OnlineUser user = users[socket];
             LogSystem.AddLog(-1, "Program", Message.ToString());
             switch ((int)Message["type"])
             {
-                case 1000:
+                case PacketType.Login:
+                    LoginModule.KakaoLogin(user, (string)Message["token"]);
+                    break;
+                case PacketType.Debug:
                     LogSystem.AddLog(0, "Program", (string)Message["message"]);
                     break;
             }

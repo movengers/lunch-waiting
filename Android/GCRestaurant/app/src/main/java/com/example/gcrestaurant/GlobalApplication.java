@@ -99,11 +99,13 @@ public class GlobalApplication extends Application {
 
             @Override
             public void onNotSignedUp() {
+                NetworkService.SendDebugMessage("가입되지 않음");
                 // not happened
             }
 
             @Override
             public void onFailure(ErrorResult errorResult) {
+                NetworkService.SendDebugMessage("실패");
                 Logger.e("failed to get access token info. msg=" + errorResult);
             }
 
@@ -114,6 +116,7 @@ public class GlobalApplication extends Application {
 
                 long expiresInMilis = accessTokenInfoResponse.getExpiresInMillis();
                 Logger.d("this access token expires after " + expiresInMilis + " milliseconds.");
+                NetworkService.SendDebugMessage("로그인 성공 (id: " + userId + ", expires: "+ expiresInMilis +")");
             }
         });
     }

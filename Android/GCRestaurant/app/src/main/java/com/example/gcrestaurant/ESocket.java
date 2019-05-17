@@ -9,6 +9,8 @@ import android.os.MessageQueue;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kakao.auth.Session;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -40,7 +42,6 @@ public class ESocket extends Thread {
         instance = this;
 
         GlobalApplication ga = GlobalApplication.getGlobalApplicationContext();
-        NetworkService.SendDebugMessage("토큰을 가져옴");
         ga.requestAccessTokenInfo();
 
     }
@@ -56,6 +57,20 @@ public class ESocket extends Thread {
                 socket.connect(socketAddress,1000);
                 inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 outToClient = new PrintWriter(socket.getOutputStream(), true);
+
+                // 카카오톡 로그인 토큰 가져오기
+                String token = Session.getCurrentSession().getTokenInfo().getAccessToken();
+
+                JSONObject LoginMessage = new JSONObject();
+                try
+                {
+                    LoginMessage.put("type",PacketType.Login);
+                    LoginMessage.put("token",token);
+                    NetworkService.SendMessage(LoginMessage);
+                } catch (Exception e) {
+                    NetworkService.SendDebugMessage(e.toString());
+
+                }
 
                 new Thread()
                 {

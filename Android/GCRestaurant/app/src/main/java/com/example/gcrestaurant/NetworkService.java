@@ -45,6 +45,12 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
     private static List<NetworkReceiveInterface> Listener = new LinkedList<>(); // 메인 쓰레드에서만 작업
     public static NetworkService instance = null;
 
+    // 서버와 연결, 이때 인증 모듈도 다시 실행된다.
+    public static void Connect()
+    {
+        // 소켓 쓰레드 실행
+        new ESocket().start();
+    }
     public static void setListener(NetworkReceiveInterface receiveInterface)
     {
         Listener.add(receiveInterface);
@@ -68,8 +74,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         // 어플리케이션에 해당 서비스 실행을 알림
         instance = this;
 
-        // 소켓 쓰레드 실행
-        new ESocket().start();
+        Connect();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
