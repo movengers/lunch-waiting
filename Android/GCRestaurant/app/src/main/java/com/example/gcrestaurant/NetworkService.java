@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Notification;
@@ -40,7 +41,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class NetworkService extends Service{
+public class NetworkService extends Service implements NetworkReceiveInterface{
+    private static List<NetworkReceiveInterface> Listener = new LinkedList<>(); // 메인 쓰레드에서만 작업
+    public static NetworkService instance = null;
+
+    public static void setListener(NetworkReceiveInterface receiveInterface)
+    {
+        Listener.add(receiveInterface);
+    }
+    public static void removeListener(NetworkReceiveInterface receiveInterface)
+    {
+        Listener.remove(receiveInterface);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -51,12 +64,64 @@ public class NetworkService extends Service{
         super.onCreate();
         // 서비스에서 가장 먼저 호출됨(최초에 한번만)
         Log.d("test", "서비스의 onCreate");
+
+        // 어플리케이션에 해당 서비스 실행을 알림
+        instance = this;
+
+        // 소켓 쓰레드 실행
         new ESocket().start();
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
     }
 
+    Handler ReceiveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String message = msg.getData().getString("data");
+            JSONObject json = null;
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            try
+            {
+                json = new JSONObject(message);
+            }
+            catch ( Exception e)
+            {
+
+            }
+            instance.ReceivePacket(json);
+            // 최종 리스너(액티비티)에게 패킷 전달
+            for (NetworkReceiveInterface context : Listener) {
+                context.ReceivePacket(json);
+            }
+
+        }
+    };
+
+    public void ReceivePacket(JSONObject object)
+    {
+        SendDebugMessage("서비스가 패킷을 수신함");
+    }
+
+    public static void SendMessage(JSONObject json)
+    {
+        if (ESocket.instance != null)
+            ESocket.instance.SendMessage(json);
+    }
+
+    public static void SendDebugMessage(String data)
+    {
+        JSONObject json = new JSONObject();
+
+        try
+        {
+            json.put("type",1000);
+            json.put("message",data);
+        }
+        catch ( Exception e)
+        {
+
+        }
+        SendMessage(json);
+    }
 }

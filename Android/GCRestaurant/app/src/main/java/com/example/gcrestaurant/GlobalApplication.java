@@ -24,7 +24,6 @@ import org.json.JSONObject;
 public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
-    public static ESocket socket = null;
 
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
@@ -117,43 +116,5 @@ public class GlobalApplication extends Application {
                 Logger.d("this access token expires after " + expiresInMilis + " milliseconds.");
             }
         });
-    }
-    Handler ReceiveHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            String message = msg.getData().getString("data");
-
-            Toast.makeText(GlobalApplication.this, message, Toast.LENGTH_SHORT).show();
-
-            JSONObject ss = null;
-            try
-            {
-               ss = new JSONObject("{type:\"1\"}");
-            }
-            catch ( Exception e)
-            {
-
-            }
-            GlobalApplication.SendMessageToServer(ss);
-        }
-    };
-    public static void SendMessageToServer(JSONObject json)
-    {
-        if (socket != null)
-            socket.SendMessage(json);
-    }
-    public static void SendDebugToServer(String data)
-    {
-        JSONObject json = new JSONObject();
-
-        try
-        {
-            json.put("type",1000);
-            json.put("message",data);
-        }
-        catch ( Exception e)
-        {
-
-        }
-        GlobalApplication.SendMessageToServer(json);
     }
 }

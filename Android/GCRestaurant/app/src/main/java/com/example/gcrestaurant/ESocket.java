@@ -25,6 +25,9 @@ import java.util.List;
 
 
 public class ESocket extends Thread {
+    public static ESocket instance = null;
+
+
     private Socket socket = null;
     private BufferedReader inFromClient = null;
     private PrintWriter outToClient = null;
@@ -34,16 +37,16 @@ public class ESocket extends Thread {
 
     public ESocket()
     {
-        GlobalApplication.socket = this;
+        instance = this;
 
         GlobalApplication ga = GlobalApplication.getGlobalApplicationContext();
-        ga.SendDebugToServer("토큰을 가져옴");
+        NetworkService.SendDebugMessage("토큰을 가져옴");
         ga.requestAccessTokenInfo();
 
     }
     public void run() {
         // 완전히 종료 명령이 오기 전까지는 계속 반복한다.
-        while(GlobalApplication.socket == this)
+        while(instance == this)
         {
             try {
                 SocketAddress socketAddress = new InetSocketAddress("easyrobot.co.kr", 1231);
@@ -82,9 +85,9 @@ public class ESocket extends Thread {
                 }.start();
 
                 String data;
-                while ((data = inFromClient.readLine()) != null && GlobalApplication.socket == this)
+                while ((data = inFromClient.readLine()) != null && instance == this)
                 {
-                    Handler handler = GlobalApplication.getGlobalApplicationContext().ReceiveHandler;
+                    Handler handler = NetworkService.instance.ReceiveHandler;
                     Message message = handler.obtainMessage();
                     Bundle bundle = new Bundle();
                     bundle.putString("data", data);

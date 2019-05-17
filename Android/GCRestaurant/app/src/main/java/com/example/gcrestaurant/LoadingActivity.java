@@ -10,7 +10,9 @@ import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
 
-public class LoadingActivity extends AppCompatActivity {
+import org.json.JSONObject;
+
+public class LoadingActivity extends AppCompatActivity implements NetworkReceiveInterface {
 
 
     @Override
@@ -18,14 +20,20 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        NetworkService.setListener(this);
+
         // 서비스 시작
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
+
     }
+
     @Override
-    public void onResume()
+    public void onDestroy()
     {
-        super.onResume();
+        super.onDestroy();
+        // 최종 패킷 리스너에서 해당 액티비티 제거
+        NetworkService.removeListener(this);
     }
 
     protected void loginActivity(){
@@ -37,5 +45,10 @@ public class LoadingActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void ReceivePacket(JSONObject json)
+    {
+        NetworkService.SendDebugMessage("액티비티가 패킷을 수신함");
     }
 }
