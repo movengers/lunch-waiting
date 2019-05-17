@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
                         UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                             @Override
                             public void onCompleteLogout() {
+                                NetworkService.Connect();
                                 redirectLoginActivity();
                             }
                         });

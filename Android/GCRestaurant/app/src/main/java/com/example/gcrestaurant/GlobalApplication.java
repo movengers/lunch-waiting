@@ -3,6 +3,8 @@ package com.example.gcrestaurant;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 import com.kakao.auth.ApiResponseCallback;
@@ -17,9 +19,12 @@ import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
 import com.kakao.util.helper.log.Logger;
 
+import org.json.JSONObject;
+
 public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
+
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
          * Session Config에 대해서는 default값들이 존재한다.
@@ -94,11 +99,13 @@ public class GlobalApplication extends Application {
 
             @Override
             public void onNotSignedUp() {
+                NetworkService.SendDebugMessage("가입되지 않음");
                 // not happened
             }
 
             @Override
             public void onFailure(ErrorResult errorResult) {
+                NetworkService.SendDebugMessage("실패");
                 Logger.e("failed to get access token info. msg=" + errorResult);
             }
 
@@ -109,6 +116,7 @@ public class GlobalApplication extends Application {
 
                 long expiresInMilis = accessTokenInfoResponse.getExpiresInMillis();
                 Logger.d("this access token expires after " + expiresInMilis + " milliseconds.");
+                NetworkService.SendDebugMessage("로그인 성공 (id: " + userId + ", expires: "+ expiresInMilis +")");
             }
         });
     }
