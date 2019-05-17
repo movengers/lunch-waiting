@@ -15,6 +15,7 @@ namespace GCRestaurantServer
         public static Dictionary<ESocket, OnlineUser> users = new Dictionary<ESocket, OnlineUser>();
         static void Main(string[] args)
         {
+            LogSystem.ViewLevel = 0;
             Server server = new Server(1231);
             server.Connect += Server_Connect;
             server.Receive += Server_Receive_Try;
