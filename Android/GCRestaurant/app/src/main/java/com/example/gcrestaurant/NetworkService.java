@@ -103,8 +103,26 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         }
     };
 
-    public void ReceivePacket(JSONObject object)
+    public void ReceivePacket(JSONObject json)
     {
+        try
+        {
+            switch (json.getInt("type"))
+            {
+                case PacketType.Login:
+                    if (json.getBoolean("result"))
+                    {
+                        GlobalApplication.user_name = json.getString("name");
+                        SendDebugMessage(GlobalApplication.user_name + "으로 로그인 성공");
+                    }
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
         SendDebugMessage("서비스가 패킷을 수신함");
     }
 
