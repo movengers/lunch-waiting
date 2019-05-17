@@ -69,23 +69,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Log.d("디버그","키 : " + getKeyHash(getApplicationContext()));
-
-
-        Button logout = findViewById(R.id.logout);
-        logout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                            @Override
-                            public void onCompleteLogout() {
-                                NetworkService.Connect();
-                                redirectLoginActivity();
-                            }
-                        });
-                    }
-                }
-        );
     }
     protected void redirectLoginActivity() {
         final Intent intent = new Intent(this, LoginActivity.class);
@@ -124,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    //왼쪽 네비게이션 bar
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -132,6 +115,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.menu_logout) {
             // 로그아웃
+            UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                @Override
+                public void onCompleteLogout() {
+                    NetworkService.Connect();
+                    redirectLoginActivity();
+                }
+            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

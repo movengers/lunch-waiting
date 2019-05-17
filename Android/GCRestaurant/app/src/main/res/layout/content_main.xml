@@ -8,16 +8,6 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="198dp"
-        android:layout_height="78dp"
-        android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/com_kakao_login"
-        tools:layout_editor_absoluteX="138dp" />
-
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"
         android:layout_width="0dp"
