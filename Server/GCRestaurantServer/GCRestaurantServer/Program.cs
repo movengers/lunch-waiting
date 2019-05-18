@@ -63,7 +63,7 @@ namespace GCRestaurantServer
             switch ((int)Message["type"])
             {
                 case PacketType.Login:
-                    LoginModule.KakaoLogin(user, (string)Message["token"]);
+                    KakaoModule.KakaoLogin(user, (string)Message["token"]);
                     break;
                 case PacketType.Debug:
                     LogSystem.AddLog(0, "Program", (string)Message["message"]);

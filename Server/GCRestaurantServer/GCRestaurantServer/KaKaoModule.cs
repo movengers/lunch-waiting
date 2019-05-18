@@ -9,43 +9,30 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
+using EasyMysql;
 
 namespace GCRestaurantServer
 {
-    class LoginModule
+    class KakaoModule
     {
         public static void KakaoLogin(OnlineUser user, string token)
         {
-            Program.LogSystem.AddLog(4, "LoginModule", "토큰을 통한 로그인 시도 " + token);
-
             JObject message = new JObject();
             message["type"] = PacketType.Login;
-            if (String.IsNullOrEmpty(token))
+            try
+            {
+                user.Login(token);
+
+                message["result"] = true;
+                message["name"] = user.name;
+                message["message"] = "success";
+            }
+            catch (Exception e)
             {
                 message["result"] = false;
-                message["message"] = "no token";
-                user.socket.Send(message);
-                return;
+                message["message"] = e.Message;
             }
-            else
-            {
-                JObject data = GetUserInformation(token);
-                if (data != null)
-                {
-                    user.id = (int)data["id"];
-                    user.name = (string)data["properties"]["nickname"];
-                    message["result"] = true;
-                    message["name"] = user.name;
-                    message["message"] = "success";
-                }
-                else
-                {
-                    message["result"] = false;
-                    message["message"] = "토큰이 유효하지 않습니다.";
-                }
-                user.socket.Send(message);
-                return;
-            }
+            user.socket.Send(message);
         }
         public static int CheckToken(string token)
         {
