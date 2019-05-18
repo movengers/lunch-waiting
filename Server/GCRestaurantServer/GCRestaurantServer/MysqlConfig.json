@@ -1,0 +1,7 @@
+{
+	NOTE: "Copy this file to the executable folder on the server.",
+	host: "localhost",
+	database: "db_name",
+	id: "user_id",
+	password:"password"
+}

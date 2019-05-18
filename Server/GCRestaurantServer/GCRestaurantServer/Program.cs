@@ -11,7 +11,7 @@ namespace GCRestaurantServer
     {
 
         public static LogSystem.LogSystem LogSystem = new LogSystem.LogSystem();
-
+        public static MysqlOption mysqlOption = new MysqlOption("Read File", "", "", "");
         public static Dictionary<ESocket, OnlineUser> users = new Dictionary<ESocket, OnlineUser>();
         static void Main(string[] args)
         {

@@ -17,11 +17,11 @@ namespace EasyMysql
             Database = database;
         }
 
-        public string Host { get; private set; }
-        public string ID { get; private set; }
-        public string Password { get; private set; }
-        public string Option { get; private set; }
-        public string Database { get; private set; }
+        public string Host { get; protected set; }
+        public string ID { get; protected set; }
+        public string Password { get; protected set; }
+        public string Option { get; protected set; }
+        public string Database { get; protected set; }
         public override string ToString()
         {
             return String.Format("Server={0};Database={1};Uid={2};Pwd={3};{4}", Host, Database, ID, Password, Option);
