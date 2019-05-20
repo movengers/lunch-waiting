@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity
         }
         catch (Exception e)
         {
-
+            Log.d("메뉴 이동", "에러1 : " + e.toString());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         transaction.commit();
     }
