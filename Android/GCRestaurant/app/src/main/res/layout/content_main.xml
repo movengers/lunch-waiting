@@ -8,13 +8,12 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <fragment
-        android:id="@+id/fragment_home"
-        android:name="com.example.gcrestaurant.Menu_HomeFragment"
+    <FrameLayout
+        android:id="@+id/menu_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_menu"
-        />
+        android:layout_marginBottom="8dp">
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"

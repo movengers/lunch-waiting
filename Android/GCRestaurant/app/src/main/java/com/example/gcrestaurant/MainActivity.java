@@ -1,5 +1,7 @@
 package com.example.gcrestaurant;
 
+import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +30,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo;
         try {
@@ -52,12 +57,19 @@ public class MainActivity extends AppCompatActivity
         return null;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        //프래그먼트
+        SwitchView(Menu_HomeFragment.class);
+
+
 
 
         //왼쪽 메뉴
@@ -76,6 +88,7 @@ public class MainActivity extends AppCompatActivity
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -84,17 +97,22 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     Toast.makeText(getApplicationContext(),"홈",Toast.LENGTH_LONG).show();
+                    SwitchView(Menu_HomeFragment.class);
                     return true;
                 case R.id.menu_waiting:
+                    SwitchView(Menu_WaitingFragment.class);
                     Toast.makeText(getApplicationContext(),"대기",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_ranking:
+                    SwitchView(Menu_Ranking.class);
                     Toast.makeText(getApplicationContext(),"랭킹",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_boarding:
+                    SwitchView(Menu_Board.class);
                     Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_setting:
+                    SwitchView(Menu_Setting.class);
                     Toast.makeText(getApplicationContext(),"세팅",Toast.LENGTH_LONG).show();
                     return true;
 
@@ -102,6 +120,23 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     };
+
+
+    private void SwitchView(Class fragment)
+    {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.Fragment newf = null;
+        try {
+            newf = (android.support.v4.app.Fragment) fragment.newInstance();
+            transaction.replace(R.id.menu_home, newf);
+        }
+        catch (Exception e)
+        {
+            Log.d("메뉴 이동", "에러1 : " + e.toString());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        transaction.commit();
+    }
 
     protected void redirectLoginActivity() {
         final Intent intent = new Intent(this, LoginActivity.class);
