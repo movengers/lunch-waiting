@@ -16,7 +16,8 @@ namespace GCRestaurantServer
                 return id > 0;
             }
         }
-        public string name = null;
+        public string name { get; private set; }
+        public string img { get; private set; }
 
         public ESocket socket { get; private set; }
         public OnlineUser(ESocket socket)
@@ -40,6 +41,7 @@ namespace GCRestaurantServer
                 {
                     id = (int)data["id"];
                     name = (string)data["properties"]["nickname"];
+                    img = (string)data["properties"]["thumbnail_image"];
                     MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM user WHERE id = ?id");
                     node["id"] = id;
                     using (node.ExecuteReader())
