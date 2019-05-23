@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/menu_waiting"
+        android:icon="@drawable/image_waiting"
+        android:title="@string/title_waiting" />
+
+    <item
+        android:id="@+id/menu_ranking"
+        android:icon="@drawable/image_ranking"
+        android:title="@string/title_ranking" />
+
+    <item
+        android:id="@+id/menu_boarding"
+        android:icon="@drawable/image_board"
+        android:title="@string/title_board" />
+
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="@string/title_setting" />
+
+</menu>

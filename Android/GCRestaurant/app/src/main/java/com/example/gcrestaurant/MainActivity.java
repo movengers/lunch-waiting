@@ -1,12 +1,17 @@
 package com.example.gcrestaurant;
 
+import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,10 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
@@ -27,6 +30,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo;
         try {
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity
         return null;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,13 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
+        //프래그먼트
+        SwitchView(Menu_HomeFragment.class);
+
+
+
+
+        //왼쪽 메뉴
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -70,23 +83,61 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         Log.d("디버그","키 : " + getKeyHash(getApplicationContext()));
 
-
-        Button logout = findViewById(R.id.logout);
-        logout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                            @Override
-                            public void onCompleteLogout() {
-                                NetworkService.Connect();
-                                redirectLoginActivity();
-                            }
-                        });
-                    }
-                }
-        );
+        //아래 메뉴
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_menu);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_home:
+                    Toast.makeText(getApplicationContext(),"홈",Toast.LENGTH_LONG).show();
+                    SwitchView(Menu_HomeFragment.class);
+                    return true;
+                case R.id.menu_waiting:
+                    SwitchView(Menu_WaitingFragment.class);
+                    Toast.makeText(getApplicationContext(),"대기",Toast.LENGTH_LONG).show();
+                    return true;
+                case R.id.menu_ranking:
+                    SwitchView(Menu_Ranking.class);
+                    Toast.makeText(getApplicationContext(),"랭킹",Toast.LENGTH_LONG).show();
+                    return true;
+                case R.id.menu_boarding:
+                    SwitchView(Menu_Board.class);
+                    Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
+                    return true;
+                case R.id.menu_setting:
+                    SwitchView(Menu_Setting.class);
+                    Toast.makeText(getApplicationContext(),"세팅",Toast.LENGTH_LONG).show();
+                    return true;
+
+            }
+            return false;
+        }
+    };
+
+
+    private void SwitchView(Class fragment)
+    {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.Fragment newf = null;
+        try {
+            newf = (android.support.v4.app.Fragment) fragment.newInstance();
+            transaction.replace(R.id.menu_home, newf);
+        }
+        catch (Exception e)
+        {
+            Log.d("메뉴 이동", "에러1 : " + e.toString());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        transaction.commit();
+    }
+
     protected void redirectLoginActivity() {
         final Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -102,46 +153,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
+    //왼쪽 네비게이션 bar
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.menu_logout) {
+            // 로그아웃
+            UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                @Override
+                public void onCompleteLogout() {
+                    NetworkService.Connect();
+                    redirectLoginActivity();
+                }
+            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
