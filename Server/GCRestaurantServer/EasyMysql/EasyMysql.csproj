@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B4CE3DCA-82AE-452D-BC5D-D76BE300A005}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>GCRestaurantServer</RootNamespace>
-    <AssemblyName>GCRestaurantServer</AssemblyName>
+    <ProjectGuid>{B75EA7A8-D27B-4A48-AFF0-6410CF3DDDF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EasyMysql</RootNamespace>
+    <AssemblyName>EasyMysql</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,30 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KakaoModule.cs" />
+    <Compile Include="MysqlNode.cs" />
     <Compile Include="MysqlOption.cs" />
-    <Compile Include="OnlineUser.cs" />
-    <Compile Include="PacketType.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EasyMysql\EasyMysql.csproj">
-      <Project>{b75ea7a8-d27b-4a48-aff0-6410cf3dddf6}</Project>
-      <Name>EasyMysql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogSystem\LogSystem.csproj">
-      <Project>{f756a2cc-5ba0-42f5-9b51-53db3ba14541}</Project>
-      <Name>LogSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetworkLibrary\NetworkLibrary.csproj">
-      <Project>{27aa39a8-a284-4054-a84c-72cec54ed6bf}</Project>
-      <Name>NetworkLibrary</Name>
-    </ProjectReference>
+    <None Include="MySql.Data.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
