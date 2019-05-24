@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KakaoModule.cs" />
+    <Compile Include="Module\ConfigManagement.cs" />
+    <Compile Include="Module\KakaoModule.cs" />
     <Compile Include="MysqlOption.cs" />
     <Compile Include="OnlineUser.cs" />
     <Compile Include="PacketType.cs" />
