@@ -8,12 +8,18 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <FrameLayout
-        android:id="@+id/menu_home"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_menu">
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/menu_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_menu">
+        </FrameLayout>
+    </ScrollView>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_menu"
