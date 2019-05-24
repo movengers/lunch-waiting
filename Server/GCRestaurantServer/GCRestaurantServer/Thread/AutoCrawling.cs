@@ -30,12 +30,34 @@ namespace GCRestaurantServer
                     update["mapx"] = (string)restaurant["mapx"];
                     update["mapy"] = (string)restaurant["mapy"];
                     update["category"] = (string)restaurant["category"];
-
                     update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"]);
                     update.ExecuteNonQuery();
                     Program.LogSystem.AddLog(1, "AutoCrawling", update["title"] + " 를 리스트에 등록");
 
                     // 메뉴 갱신
+
+                    JArray menus = NaverAPIModule.GetPlaceMenu((int)update["no"]);
+                    foreach (JObject json in menus)
+                    {
+                        MysqlNode menu_update = new MysqlNode(Program.mysqlOption, "INSERT INTO menu (restaurant_no, priority, name, price, description, image) VALUES (?restaurant_no, ?priority, ?name, ?price, ?description, ?image)");
+                        menu_update["restaurant_no"] = update["no"];
+                        menu_update["priority"] = (string)json["priority"];
+                        menu_update["name"] = (string)json["name"];
+                        menu_update["price"] = (string)json["price"];
+
+                        if (String.IsNullOrEmpty((string)json["desc"]))
+                            menu_update["description"] = null;
+                        else
+                            menu_update["description"] = (string)json["desc"];
+
+                        if (((JArray)json["images"]).Count > 0)
+                            menu_update["image"] = (string)json["images"][0];
+                        else
+                            menu_update["image"] = null;
+
+                        menu_update.ExecuteNonQuery();
+                        Program.LogSystem.AddLog(1, "AutoCrawling", json["name"] + " 를 메뉴 리스트에 등록");
+                    }
                 }
             }
             Program.LogSystem.AddLog(1, "AutoCrawling", "ra");
