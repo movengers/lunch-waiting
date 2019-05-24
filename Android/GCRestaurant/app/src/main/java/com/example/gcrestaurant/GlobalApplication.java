@@ -25,7 +25,7 @@ public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
     public static String user_name = null;
-
+    public static String user_icon = null;
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
          * Session Config에 대해서는 default값들이 존재한다.
