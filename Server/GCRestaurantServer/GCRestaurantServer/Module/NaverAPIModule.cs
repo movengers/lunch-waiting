@@ -57,9 +57,19 @@ namespace GCRestaurantServer
         public static int GetPlaceID(string RestaurantTitle)
         {
             HtmlDocument dom = ParseSupport.Crawling("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + HttpUtility.HtmlEncode(RestaurantTitle));
-            HtmlNode ds = dom.DocumentNode.SelectSingleNode("//a[@class='api_more_theme']");
+            HtmlNode ds = null;
 
-            return (int)ParseSupport.UrlQueryParser(ds)["id"];
+            ds = dom.DocumentNode.SelectSingleNode("//a[@class='api_more_theme']");
+            if (ds != null)
+                return (int)ParseSupport.UrlQueryParser(ds)["id"];
+
+            // 만약 상단에 플레이스 정보가 없다면, 지도 카테고리도 확인한다.
+
+            ds = dom.DocumentNode.SelectSingleNode("//a[@title='" + RestaurantTitle + "']");
+            if (ds != null)
+                return (int)ParseSupport.UrlQueryParser(ds)["code"];
+
+            return -1;
         }
         public static int GetPlaceID(string RestaurantTitle, string roadAddress)
         {
@@ -72,7 +82,8 @@ namespace GCRestaurantServer
                     return (int)ParseSupport.UrlQueryParser(node)["code"];
                 }
             }
-            return -1;
+            // 도로명으로 검색이 불가능 한 경우 이름으로 재검색
+            return GetPlaceID(RestaurantTitle);
         }
     }
 }
