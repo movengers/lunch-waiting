@@ -21,8 +21,7 @@ namespace GCRestaurantServer
         {
             try
             {
-                string data = File.ReadAllText("MysqlConfig.json");
-                JObject json = JObject.Parse(data);
+                JObject json = ConfigManagement.GetObject("mysql");
                 Host = (string)json["host"];
                 Database = (string)json["database"];
                 ID = (string)json["id"];

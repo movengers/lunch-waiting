@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetworkLibrary;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 namespace GCRestaurantServer
 {
     class Program
@@ -22,6 +23,7 @@ namespace GCRestaurantServer
             server.Exit += Server_Exit;
 
             LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
+            new Thread(AutoCrawling.main).Start();
             while (true)
             {
                 System.Threading.Thread.Sleep(4000);
