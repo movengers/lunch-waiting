@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetworkLibrary;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 namespace GCRestaurantServer
 {
     class Program
@@ -22,6 +23,7 @@ namespace GCRestaurantServer
             server.Exit += Server_Exit;
 
             LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
+            new Thread(AutoCrawling.main).Start();
             while (true)
             {
                 System.Threading.Thread.Sleep(4000);
@@ -67,6 +69,18 @@ namespace GCRestaurantServer
                     break;
                 case PacketType.Debug:
                     LogSystem.AddLog(0, "Program", (string)Message["message"]);
+                    break;
+                case PacketType.RestaurantInfo:
+                    if (Message["no"] == null)
+                        user.Message("음식점 고유 번호값이 존재하지 않습니다.");
+                    else
+                    {
+                        JObject json = Module.Handler.Restaurant.Infomation((int)Message["no"]);
+                        if (json == null)
+                            user.Message("해당하는 번호의 음식점이 없습니다.");
+                        else
+                            user.socket.Send(json);
+                    }
                     break;
             }
         }

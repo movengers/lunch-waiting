@@ -1,6 +1,8 @@
 package com.example.gcrestaurant;
 
 import android.app.FragmentManager;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +22,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -82,6 +87,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Log.d("디버그","키 : " + getKeyHash(getApplicationContext()));
+
+        // 프로필 이름, 사진 등록
+        TextView nameview = navigationView.getHeaderView(0).findViewById(R.id.user_name);
+        ImageView imageView = navigationView.getHeaderView(0).findViewById(R.id.user_icon);
+        nameview.setText(GlobalApplication.user_name);
+        if (GlobalApplication.user_icon != null) {
+            Glide.with(this).load(GlobalApplication.user_icon).into(imageView);
+        }
+        else
+        {
+            imageView.setImageDrawable(getDrawable(R.drawable.kakao_default_profile_image));
+        }
+        imageView.setBackground(new ShapeDrawable(new OvalShape()));
+        imageView.setClipToOutline(true);
+
 
         //아래 메뉴
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_menu);

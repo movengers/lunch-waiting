@@ -113,7 +113,9 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                     if (json.getBoolean("result"))
                     {
                         GlobalApplication.user_name = json.getString("name");
-                        SendDebugMessage(GlobalApplication.user_name + "으로 로그인 성공");
+                        if (!json.isNull("icon"))
+                            GlobalApplication.user_icon = json.getString("icon");
+                        SendDebugMessage(GlobalApplication.user_name + "으로 로그인 성공" + " 이미지 : " + GlobalApplication.user_icon);
                     }
                     break;
             }
@@ -138,7 +140,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
 
         try
         {
-            json.put("type",1000);
+            json.put("type",PacketType.Debug);
             json.put("message",data);
         }
         catch ( Exception e)
