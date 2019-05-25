@@ -29,6 +29,9 @@ public class Menu_Setting extends Fragment {
         adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 1, "피자헛","삼마넌");
         adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 2, "피자헛","삼마넌");
         adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 3, "피자헛","삼마넌");
+        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 4, "피자헛","삼마넌");
+        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 5, "피자헛","삼마넌");
+        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 6, "피자헛","삼마넌");
         listview.setAdapter(adapter);
         setListViewHeightBasedOnChildren(listview);
 
