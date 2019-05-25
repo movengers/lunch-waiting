@@ -14,5 +14,7 @@
     <string name="title_setting">설정</string>
 
     <string name="kakao_app_key">a982ee11034c9d329709feeb030781f1</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDR-wFBQ6vrMaqAw4Io2N191zyjjoa0mPg</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
