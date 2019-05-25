@@ -28,12 +28,12 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager_content"
-        android:layout_width="370dp"
+        android:layout_width="380dp"
         android:layout_height="480dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#ee4232"
+        android:background="#FAF2F2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_tab" />
