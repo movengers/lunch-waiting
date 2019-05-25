@@ -38,6 +38,17 @@ namespace GCRestaurantServer
             return (string)result["business"][id.ToString()]["base"]["description"];
         }
 
+        public static string GetPlaceImage(int id)
+        {
+            JObject result = GetInfomationDetail(id);
+            JArray images = (JArray)result["business"][id.ToString()]["base"]["images"];
+
+            if (images.Count > 0)
+                return (string)images[0]["origin"];
+            else
+                return null;
+        }
+
         public static JObject GetInfomationDetail(int id)
         {
             HtmlDocument dom = ParseSupport.Crawling("https://store.naver.com/restaurants/detail?id=" + HttpUtility.HtmlEncode(id));
