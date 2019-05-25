@@ -84,36 +84,47 @@ namespace GCRestaurantServer
             JArray menus =(JArray)result["business"][id.ToString()]["biz"]["menus"];
             return menus;
         }
-        public static int GetPlaceID(string RestaurantTitle)
+        public static int GetPlaceID(string RestaurantTitle, string keyword = null)
         {
-            HtmlDocument dom = ParseSupport.Crawling("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + HttpUtility.HtmlEncode(RestaurantTitle));
+            HtmlDocument dom = ParseSupport.Crawling("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + HttpUtility.HtmlEncode(keyword + " " + RestaurantTitle));
             HtmlNode ds = null;
 
             ds = dom.DocumentNode.SelectSingleNode("//a[@class='api_more_theme']");
             if (ds != null)
                 return (int)ParseSupport.UrlQueryParser(ds)["id"];
 
-            // 만약 상단에 플레이스 정보가 없다면, 지도 카테고리도 확인한다.
+            // 만약 상단에 플레이스 정보가 없다면, 지도 카테고리도 확인한다. + 플레이스 정보
 
             ds = dom.DocumentNode.SelectSingleNode("//a[@title='" + RestaurantTitle + "']");
             if (ds != null)
-                return (int)ParseSupport.UrlQueryParser(ds)["code"];
+            {
+                string code = (string)ParseSupport.UrlQueryParser(ds)["code"];
+                if (code != null)
+                    return Int32.Parse(code);
+
+                string id= (string)ParseSupport.UrlQueryParser(ds)["id"];
+                if (id != null)
+                    return Int32.Parse(id);
+            }
 
             return -1;
         }
-        public static int GetPlaceID(string RestaurantTitle, string roadAddress)
+        public static int GetPlaceID(string RestaurantTitle, string roadAddress, string keyword = null)
         {
             HtmlDocument dom = ParseSupport.Crawling("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + HttpUtility.HtmlEncode(roadAddress));
             HtmlNodeCollection ds = dom.DocumentNode.SelectNodes("//dd[@class='vicinity']/a");
-            foreach (HtmlNode node in ds)
+            if (ds != null)
             {
-                if (node.InnerText == RestaurantTitle)
+                foreach (HtmlNode node in ds)
                 {
-                    return (int)ParseSupport.UrlQueryParser(node)["code"];
+                    if (node.InnerText == RestaurantTitle)
+                    {
+                        return (int)ParseSupport.UrlQueryParser(node)["code"];
+                    }
                 }
             }
             // 도로명으로 검색이 불가능 한 경우 이름으로 재검색
-            return GetPlaceID(RestaurantTitle);
+            return GetPlaceID(RestaurantTitle, keyword);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace GCRestaurantServer
         {
             return UrlQueryParser(node.Attributes["href"].Value);
         }
-        public static HtmlDocument Crawling(string url)
+        public static HtmlDocument Crawling(string url, int retry = 3)
         {
             HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create(url);
             hreq.Method = "GET";
@@ -61,27 +61,30 @@ namespace GCRestaurantServer
             HttpWebResponse hres = null;
             Stream dataStream = null;
             StreamReader sr = null;
-            try
+            for (int i = 0; i < retry; i++)
             {
-                hres = (HttpWebResponse)hreq.GetResponse();
-                if (hres.StatusCode == HttpStatusCode.OK)
+                try
                 {
-                    dataStream = hres.GetResponseStream();
-                    sr = new StreamReader(dataStream, Encoding.UTF8);
-                    HtmlDocument dom = new HtmlDocument();
-                    dom.LoadHtml(sr.ReadToEnd());
-                    return dom;
+                    hres = (HttpWebResponse)hreq.GetResponse();
+                    if (hres.StatusCode == HttpStatusCode.OK)
+                    {
+                        dataStream = hres.GetResponseStream();
+                        sr = new StreamReader(dataStream, Encoding.UTF8);
+                        HtmlDocument dom = new HtmlDocument();
+                        dom.LoadHtml(sr.ReadToEnd());
+                        return dom;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-            finally
-            {
-                if (hres != null) hres.Close();
-                if (dataStream != null) dataStream.Close();
-                if (sr != null) sr.Close();
+                catch (Exception e)
+                {
+                    // return null;
+                }
+                finally
+                {
+                    if (hres != null) hres.Close();
+                    if (dataStream != null) dataStream.Close();
+                    if (sr != null) sr.Close();
+                }
             }
             return null;
         }

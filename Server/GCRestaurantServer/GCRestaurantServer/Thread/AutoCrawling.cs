@@ -31,7 +31,7 @@ namespace GCRestaurantServer
                     update["mapy"] = (string)restaurant["mapy"];
                     update["category"] = (string)restaurant["category"];
 
-                    update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"]);
+                    update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"], (string)keyword);
                     update["image"] = NaverAPIModule.GetPlaceImage((int)update["no"]);
                     update["description"] = NaverAPIModule.GetPlaceDescription((int)update["no"]);
 
