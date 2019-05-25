@@ -64,5 +64,12 @@ namespace GCRestaurantServer
                 }
             }
         }
+        public void Message(string message)
+        {
+            JObject json = new JObject();
+            json["type"] = PacketType.Message;
+            json["message"] = message;
+            socket.Send(json);
+        }
     }
 }

@@ -2,4 +2,10 @@ package com.example.gcrestaurant;
 
 public class PacketType {
     public static final int Login = 1;
+
+    public static final int Debug = 1000;
+
+    public static final int RestaurantInfo = 1001;
+
+    public static final int Message = 1002;
 }

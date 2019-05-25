@@ -140,7 +140,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
 
         try
         {
-            json.put("type",1000);
+            json.put("type",PacketType.Debug);
             json.put("message",data);
         }
         catch ( Exception e)
