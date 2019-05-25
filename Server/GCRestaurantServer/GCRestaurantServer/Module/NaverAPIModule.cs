@@ -12,24 +12,39 @@ namespace GCRestaurantServer
 {
     public static class NaverAPIModule
     {
-        public static JObject SearchPlace(string client_id, string client_key, string keyword)
+        /// 한번에 읽어오는 개수
+        private static int ReadingParameter = 30;
+        public static JObject SearchPlace(string client_id, string client_key, string keyword, int count = 30)
         {
-            HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create("https://openapi.naver.com/v1/search/local?query="+ HttpUtility.HtmlEncode(keyword) + "&display=30&start=1&sort=random");
-            hreq.Method = "GET";
-            hreq.ContentType = "plain/text;charset=utf-8";
-            hreq.Headers["X-Naver-Client-Id"] = client_id;
-            hreq.Headers["X-Naver-Client-Secret"] = client_key;
-            HttpWebResponse hres = (HttpWebResponse)hreq.GetResponse();
-            if (hres.StatusCode == HttpStatusCode.OK)
+            JObject json = null;
+            for (int i = 1; i <= count; i += ReadingParameter)
             {
-                Stream dataStream = hres.GetResponseStream();
-                StreamReader sr = new StreamReader(dataStream, Encoding.UTF8);
-                string result = sr.ReadToEnd();
-                dataStream.Close();
-                sr.Close();
-                return JObject.Parse(result);
+                int need_item = count - i + 1;
+                int now_count = ReadingParameter;
+                if (ReadingParameter > need_item) now_count = need_item;
+                HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create("https://openapi.naver.com/v1/search/local?query=" + HttpUtility.HtmlEncode(keyword) + "&display=" + now_count+ "&start=" + i + "&sort=random");
+                hreq.Method = "GET";
+                hreq.ContentType = "plain/text;charset=utf-8";
+                hreq.Headers["X-Naver-Client-Id"] = client_id;
+                hreq.Headers["X-Naver-Client-Secret"] = client_key;
+                HttpWebResponse hres = (HttpWebResponse)hreq.GetResponse();
+                if (hres.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream dataStream = hres.GetResponseStream();
+                    StreamReader sr = new StreamReader(dataStream, Encoding.UTF8);
+                    string result = sr.ReadToEnd();
+                    dataStream.Close();
+                    sr.Close();
+                    JObject new_json = JObject.Parse(result);
+
+                    if (json == null) json = new_json;
+                    else
+                        foreach (JObject item in new_json["items"])
+                            ((JArray)json["items"]).Add(item);
+                }
             }
-            return null;
+            json["display"] = count;
+            return json;
         }
 
         public static string GetPlaceDescription(int id)

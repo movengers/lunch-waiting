@@ -20,7 +20,7 @@ namespace GCRestaurantServer
                 Program.LogSystem.AddLog(1, "AutoCrawling", keyword + " 키워드로 검색 시작");
                 JObject search_data = NaverAPIModule.SearchPlace((string)ConfigManagement.GetObject("naver_api")["client_id"], 
                     (string)ConfigManagement.GetObject("naver_api")["client_secret"],
-                    keyword);
+                    keyword, 300);
                 foreach (JObject restaurant in search_data["items"])
                 {
 
@@ -63,13 +63,7 @@ namespace GCRestaurantServer
                     }
                 }
             }
-            Program.LogSystem.AddLog(1, "AutoCrawling", "ra");
-           
-            int id = NaverAPIModule.GetPlaceID("원조 태평동 곱창");
-            NaverAPIModule.GetPlaceMenu(id);
-
-            string description = NaverAPIModule.GetPlaceDescription(id);
-            JObject jsoan = NaverAPIModule.GetInfomationDetail(id);
+            Program.LogSystem.AddLog(1, "AutoCrawling", "크롤링 완료");
         }
     }
 }
