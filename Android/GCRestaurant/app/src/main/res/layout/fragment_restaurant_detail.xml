@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -76,14 +75,13 @@
     <View
         android:id="@+id/divider"
         android:layout_width="376dp"
-        android:layout_height="7dp"
+        android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="?android:attr/listDivider"
-        android:backgroundTint="@color/colorAccent"
+        android:background="#6F6F6F"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -183,14 +181,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="388dp"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
@@ -232,12 +230,13 @@
 
         <TextView
             android:layout_width="235dp"
-            android:layout_height="100dp"
+            android:layout_height="80dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/speech_bubble"
+            android:gravity="center"
             android:padding="20dp"
             android:text="상세정보를 보고싶으면\n 메뉴를 꾹 누르세요~!"
             app:layout_constraintBottom_toBottomOf="@+id/imageView6"
@@ -246,13 +245,32 @@
             app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
 
-        <ListView
-            android:layout_width="370dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="12dp"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView6"
-            tools:layout_editor_absoluteX="2dp"></ListView>
+            app:layout_constraintVertical_bias="0.0">
 
+            <ListView
+                android:id="@+id/menu_list"
+                android:layout_width="370dp"
+                android:layout_height="500dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView6">
+                
+            </ListView>
+        </ScrollView>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
