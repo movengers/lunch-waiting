@@ -30,4 +30,6 @@ dependencies {
 
     // 카카오 로그인 sdk를 사용하기 위해 필요.
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.17.0'
+    implementation 'com.android.support:cardview-v7:27.0.1'
+    implementation 'com.android.support:recyclerview-v7:27.0.1'
 }
