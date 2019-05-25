@@ -50,7 +50,11 @@ namespace GCRestaurantServer
         public static string GetPlaceDescription(int id)
         {
             JObject result = GetInfomationDetail(id);
-            return (string)result["business"][id.ToString()]["base"]["description"];
+            string desc = (string)result["business"][id.ToString()]["base"]["description"];
+            if (String.IsNullOrEmpty(desc))
+                return null;
+            else
+                return desc;
         }
 
         public static string GetPlaceImage(int id)

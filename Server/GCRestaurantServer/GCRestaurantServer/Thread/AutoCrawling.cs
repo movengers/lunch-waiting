@@ -24,7 +24,7 @@ namespace GCRestaurantServer
                 foreach (JObject restaurant in search_data["items"])
                 {
 
-                    MysqlNode update = new MysqlNode(Program.mysqlOption, "INSERT INTO restaurant (no, title, roadAddress, mapx, mapy, category, image) VALUES (?no, ?title, ?roadAddress, ?mapx, ?mapy, ?category, ?image)");
+                    MysqlNode update = new MysqlNode(Program.mysqlOption, "INSERT INTO restaurant (no, title, description, roadAddress, mapx, mapy, category, image) VALUES (?no, ?title, ?description, ?roadAddress, ?mapx, ?mapy, ?category, ?image)");
                     update["title"] = Regex.Replace((string)restaurant["title"], "(<[/a-zA-Z]+>)", "");
                     update["roadAddress"] = (string)restaurant["roadAddress"];
                     update["mapx"] = (string)restaurant["mapx"];
@@ -33,6 +33,7 @@ namespace GCRestaurantServer
 
                     update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"]);
                     update["image"] = NaverAPIModule.GetPlaceImage((int)update["no"]);
+                    update["description"] = NaverAPIModule.GetPlaceDescription((int)update["no"]);
 
                     update.ExecuteNonQuery();
                     Program.LogSystem.AddLog(1, "AutoCrawling", update["title"] + " 를 리스트에 등록");

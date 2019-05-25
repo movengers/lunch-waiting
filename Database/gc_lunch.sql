@@ -20,6 +20,7 @@ CREATE TABLE `restaurant` (
   `no` int(11) NOT NULL,
   `title` char(50) NOT NULL,
   `category` char(40) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `roadAddress` char(60) DEFAULT '',
   `image` varchar(100) DEFAULT NULL,
   `mapx` int(11) DEFAULT NULL,
