@@ -1,7 +1,9 @@
 package com.example.gcrestaurant;
 
+import android.app.FragmentManager;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
