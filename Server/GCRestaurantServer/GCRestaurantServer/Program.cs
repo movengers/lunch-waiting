@@ -33,7 +33,7 @@ namespace GCRestaurantServer
                 {
                     foreach(OnlineUser user in users.Values)
                     {
-                        user.socket.Send(json);
+                        user.Send(json);
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace GCRestaurantServer
         private static void Server_Receive(ESocket socket, JObject Message)
         {
             OnlineUser user = users[socket];
-            LogSystem.AddLog(-1, "Program", Message.ToString());
+            LogSystem.AddLog(-1, "Program - Receive", Message.ToString());
             switch ((int)Message["type"])
             {
                 case PacketType.Login:
@@ -79,12 +79,12 @@ namespace GCRestaurantServer
                         if (json == null)
                             user.Message("해당하는 번호의 음식점이 없습니다.");
                         else
-                            user.socket.Send(json);
+                            user.Send(json);
                     }
                     break;
 
                 case PacketType.RestaurantWaitingList:
-                    user.socket.Send(Module.Handler.Restaurant.WaitingList());
+                    user.Send(Module.Handler.Restaurant.WaitingList());
                     break;
             }
         }

@@ -19,10 +19,15 @@ namespace GCRestaurantServer
         public string name { get; private set; }
         public string img { get; private set; }
 
-        public ESocket socket { get; private set; }
+        private ESocket socket;
         public OnlineUser(ESocket socket)
         {
             this.socket = socket;
+        }
+        public void Send(JObject json)
+        {
+            Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
+            socket.Send(json);
         }
         public void Login(string token)
         {

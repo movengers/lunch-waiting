@@ -86,7 +86,9 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         public void handleMessage(Message msg) {
             String message = msg.getData().getString("data");
             JSONObject json = null;
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+            // 메세지 디버그가 필요하면 주석 해제
+            //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             try
             {
                 json = new JSONObject(message);
