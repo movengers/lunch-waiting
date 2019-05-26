@@ -75,6 +75,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         instance = this;
 
         Connect();
+        NetworkService.SendDebugMessage("키 : " + MainActivity.getKeyHash(getApplicationContext()));
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -134,6 +135,18 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
             ESocket.instance.SendMessage(json);
     }
 
+    public static void SendMessage(int type)
+    {
+        JSONObject json = new JSONObject();
+        try
+        {
+            json.put("type", type);
+        }
+        catch ( Exception e)
+        {
+        }
+        SendMessage(json);
+    }
     public static void SendMessage(int type, String key, String message)
     {
         JSONObject json = new JSONObject();
@@ -149,6 +162,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         }
         SendMessage(json);
     }
+
     public static void SendDebugMessage(String data)
     {
         JSONObject json = new JSONObject();

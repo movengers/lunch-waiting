@@ -27,8 +27,20 @@ namespace GCRestaurantServer
                     MysqlNode update = new MysqlNode(Program.mysqlOption, "INSERT INTO restaurant (no, title, description, roadAddress, mapx, mapy, category, image) VALUES (?no, ?title, ?description, ?roadAddress, ?mapx, ?mapy, ?category, ?image)");
                     update["title"] = Regex.Replace((string)restaurant["title"], "(<[/a-zA-Z]+>)", "");
                     update["roadAddress"] = (string)restaurant["roadAddress"];
-                    update["mapx"] = (string)restaurant["mapx"];
-                    update["mapy"] = (string)restaurant["mapy"];
+                    JObject map = NaverAPIModule.Geocoding((string)ConfigManagement.GetObject("naver_cloud_api")["client_id"],
+                    (string)ConfigManagement.GetObject("naver_cloud_api")["client_secret"],
+                     (string)restaurant["roadAddress"]);
+                    if (map == null)
+                    {
+                        update["mapx"] = null;
+                        update["mapy"] = null;
+                    }
+                    else
+                    {
+                        update["mapx"] = map["x"].ToString();
+                        update["mapy"] = map["y"].ToString();
+                    }
+
                     update["category"] = (string)restaurant["category"];
 
                     update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"], (string)keyword);

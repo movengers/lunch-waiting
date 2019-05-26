@@ -46,6 +46,29 @@ namespace GCRestaurantServer
             json["display"] = count;
             return json;
         }
+        public static JObject Geocoding(string client_id, string client_key, string address)
+        {
+            if (string.IsNullOrEmpty(address)) return null;
+
+            HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create("https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + HttpUtility.HtmlEncode(address) + "");
+            hreq.Method = "GET";
+            hreq.ContentType = "plain/text;charset=utf-8";
+            hreq.Headers["X-NCP-APIGW-API-KEY-ID"] = client_id;
+            hreq.Headers["X-NCP-APIGW-API-KEY"] = client_key;
+            HttpWebResponse hres = (HttpWebResponse)hreq.GetResponse();
+            if (hres.StatusCode == HttpStatusCode.OK)
+            {
+                Stream dataStream = hres.GetResponseStream();
+                StreamReader sr = new StreamReader(dataStream, Encoding.UTF8);
+                string result = sr.ReadToEnd();
+                dataStream.Close();
+                sr.Close();
+                JArray new_json = (JArray)JObject.Parse(result)["addresses"];
+                if (new_json.Count > 0) return (JObject)new_json[0];
+                else return null;
+            }
+            return null;
+        }
 
         public static string GetPlaceDescription(int id)
         {

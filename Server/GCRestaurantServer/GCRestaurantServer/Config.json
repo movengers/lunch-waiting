@@ -7,6 +7,15 @@
 			client_id: "naver client id",
 			client_secret: "key"
 		},
+		naver_cloud_api:
+		{
+			client_id: "naver client id",
+			client_secret: "key"
+		},
+		google_api:
+		{
+			key: "api key"
+		},
 		mysql:
 		{
 			host: "localhost",

@@ -82,6 +82,10 @@ namespace GCRestaurantServer
                             user.socket.Send(json);
                     }
                     break;
+
+                case PacketType.RestaurantWaitingList:
+                    user.socket.Send(Module.Handler.Restaurant.WaitingList());
+                    break;
             }
         }
 

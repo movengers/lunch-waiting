@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,6 +52,33 @@ namespace GCRestaurantServer.Module.Handler
                     return null;
                 }
             }
+        }
+        public static JObject WaitingList()
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM waiting_view");
+
+            JObject json = new JObject();
+            json["type"] = PacketType.RestaurantWaitingList;
+            JArray list = new JArray();
+            using (node.ExecuteReader())
+            {
+                while (node.Read())
+                {
+                    if (!node.IsNull("mapx"))
+                    {
+                        JObject item = new JObject();
+                        item["no"] = node.GetInt("no");
+                        item["title"] = node.GetString("title");
+                        item["time"] = node.GetString("waiting");
+                        item["x"] = node.GetDouble("mapx");
+                        item["y"] = node.GetDouble("mapy");
+                        list.Add(item);
+                    }
+                }
+            }
+
+            json["list"] = list;
+            return json;
         }
     }
 }
