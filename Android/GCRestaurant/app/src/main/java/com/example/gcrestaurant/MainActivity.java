@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
     };
 
 
-    private void SwitchView(android.support.v4.app.Fragment fragment)
+    public void SwitchView(android.support.v4.app.Fragment fragment)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {

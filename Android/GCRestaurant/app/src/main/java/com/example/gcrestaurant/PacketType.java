@@ -10,4 +10,6 @@ public class PacketType {
     public static final int Message = 1002;
 
     public static final int RestaurantWaitingList = 1003;
+
+    public static final int GetRestaurantID = 1004;
 }

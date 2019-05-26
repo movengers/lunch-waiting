@@ -11,6 +11,23 @@ namespace GCRestaurantServer.Module.Handler
 {
     public static class Restaurant
     {
+        public static JObject GetID(string title)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant WHERE title = ?title");
+            node["title"] = title;
+
+            using (node.ExecuteReader())
+            {
+                if (node.Read())
+                {
+                    JObject json = new JObject();
+                    json["type"] = PacketType.GetRestaurantID;
+                    json["no"] = node.GetInt("no");
+                    return json;
+                }
+            }
+            return null;
+        }
         public static JObject Infomation(int id)
         {
             MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant WHERE no = ?no");

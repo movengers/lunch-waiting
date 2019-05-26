@@ -86,6 +86,9 @@ namespace GCRestaurantServer
                 case PacketType.RestaurantWaitingList:
                     user.Send(Module.Handler.Restaurant.WaitingList());
                     break;
+                case PacketType.GetRestaurantID:
+                    user.Send(Module.Handler.Restaurant.GetID((string)Message["title"]));
+                    break;
             }
         }
 

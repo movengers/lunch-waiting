@@ -38,4 +38,10 @@ public abstract class NetworkFragment extends Fragment implements NetworkReceive
         super.onDestroy();
         NetworkService.removeListener(this);
     }
+
+    public void SwitchView(Fragment fragment)
+    {
+        MainActivity activity = (MainActivity)getActivity();
+        activity.SwitchView(fragment);
+    }
 }

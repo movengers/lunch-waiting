@@ -15,6 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,42 +35,42 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Toast.makeText(getContext(), "눌림", Toast.LENGTH_LONG).show();
-        View view = inflater.inflate(R.layout.fragment_menu_waiting,container, false);
+        View view = inflater.inflate(R.layout.fragment_menu_waiting, container, false);
 
         return view;
     }
+
     JSONArray MapMark = null;
+
     @Override
-    public void ReceivePacket(JSONObject json)
-    {
-        try
-        {
-            switch (json.getInt("type"))
-            {
+    public void ReceivePacket(JSONObject json) {
+        try {
+            switch (json.getInt("type")) {
                 case PacketType.RestaurantWaitingList:
                     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_f);
                     NetworkService.SendDebugMessage(getChildFragmentManager().getFragments().toString());
                     MapMark = json.getJSONArray("list");
                     mapFragment.getMapAsync(this);
                     break;
+                case PacketType.GetRestaurantID:
+                    SwitchView(Menu_RestaurantDetail.newInstance(json.getInt("no")));
+                    break;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         NetworkService.SendMessage(PacketType.RestaurantWaitingList);
     }
+
     @Override
     public void onMapReady(final GoogleMap map) {
 
-        LatLng SEOUL = new LatLng(37.448828,127.127128);
+        LatLng SEOUL = new LatLng(37.448828, 127.127128);
 
         if (MapMark != null) {
             for (int i = 0; i < MapMark.length(); i++) {
@@ -83,15 +84,22 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
                         markerOptions.snippet("대기시간 정보 없음");
                     else
                         markerOptions.snippet("대기시간 " + item.getString("time") + "분");
-
                     map.addMarker(markerOptions);
                 } catch (Exception e) {
 
                 }
 
             }
-
         }
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                NetworkService.SendMessage(PacketType.GetRestaurantID, "title", marker.getTitle());
+
+            }
+        });
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 17));
     }
 }
+
+
