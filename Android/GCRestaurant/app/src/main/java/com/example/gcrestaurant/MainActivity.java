@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //프래그먼트
-        SwitchView(Menu_HomeFragment.class);
+        SwitchView(new Menu_HomeFragment());
 
 
 
@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity
         //아래 메뉴
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_menu);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+
+        SwitchView(Menu_RestaurantDetail.newInstance(36358225));
     }
 
 
@@ -117,38 +121,35 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     Toast.makeText(getApplicationContext(),"홈",Toast.LENGTH_LONG).show();
-                    SwitchView(Menu_HomeFragment.class);
+                    SwitchView(new Menu_HomeFragment());
                     return true;
                 case R.id.menu_waiting:
-                    SwitchView(Menu_WaitingFragment.class);
+                    SwitchView(new Menu_WaitingFragment());
                     Toast.makeText(getApplicationContext(),"대기",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_ranking:
-                    SwitchView(Menu_Ranking.class);
+                    SwitchView(new Menu_Ranking());
                     Toast.makeText(getApplicationContext(),"랭킹",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_boarding:
-                    SwitchView(Menu_Board.class);
+                    SwitchView(new Menu_Board());
                     Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_setting:
-                    SwitchView(Menu_Setting.class);
+                    SwitchView(new Menu_Setting());
                     Toast.makeText(getApplicationContext(),"세팅",Toast.LENGTH_LONG).show();
                     return true;
-
             }
             return false;
         }
     };
 
 
-    private void SwitchView(Class fragment)
+    private void SwitchView(android.support.v4.app.Fragment fragment)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        android.support.v4.app.Fragment newf = null;
         try {
-            newf = (android.support.v4.app.Fragment) fragment.newInstance();
-            transaction.replace(R.id.menu_home, newf);
+            transaction.replace(R.id.menu_home, fragment);
         }
         catch (Exception e)
         {

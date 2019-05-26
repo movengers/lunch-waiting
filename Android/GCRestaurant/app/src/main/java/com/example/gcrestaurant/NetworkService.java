@@ -134,6 +134,21 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
             ESocket.instance.SendMessage(json);
     }
 
+    public static void SendMessage(int type, String key, String message)
+    {
+        JSONObject json = new JSONObject();
+
+        try
+        {
+            json.put("type", type);
+            json.put(key, message);
+        }
+        catch ( Exception e)
+        {
+
+        }
+        SendMessage(json);
+    }
     public static void SendDebugMessage(String data)
     {
         JSONObject json = new JSONObject();
