@@ -16,6 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -39,28 +40,6 @@ public class Menu_RestaurantDetail extends NetworkFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, null) ;
-        ListView listview = view.findViewById(R.id.menu_list);
-
-        adapter = new ListViewAdapter();
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 1, "피자헛","삼마넌");
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 2, "피자헛","삼마넌");
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 3, "피자헛","삼마넌");
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 4, "피자헛","삼마넌");
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 5, "피자헛","삼마넌");
-        adapter.addItem(getResources().getDrawable(R.drawable.doughnut), 6, "피자헛","삼마넌");
-        listview.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(listview);
-
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListViewItem item = (ListViewItem) parent.getItemAtPosition(position);
-
-                String titleStr =  item.getItemName();
-                Drawable iconDrawable = item.getIcon();
-            }
-        });
 
         int no = getArguments().getInt("no");
         NetworkService.SendMessage(PacketType.RestaurantInfo,"no", String.valueOf(no));
@@ -75,7 +54,34 @@ public class Menu_RestaurantDetail extends NetworkFragment{
             {
                 case PacketType.RestaurantInfo:
                     SetText(R.id.rest_detail_title, json.getString("title"));
+                    SetText(R.id.rest_detail_category, json.getString("category"));
                     SetImage(R.id.rest_detail_image, json.getString("image"));
+                    SetText(R.id.rest_detail_desc, json.getString("description"));
+
+
+
+                    JSONArray menus = json.getJSONArray("menus");
+                    ListView listview = getView().findViewById(R.id.menu_list);
+                    adapter = new ListViewAdapter();
+                    for (int i = 0; i < menus.length(); i++)
+                    {
+                        JSONObject item = menus.getJSONObject(i);
+                        adapter.addItem(new  ListViewAdapter.ListViewItem(item.getString("image") ,i, item.getString("name"),item.getString("price"),item.getString("description")));
+                    }
+                    listview.setAdapter(adapter);
+                    setListViewHeightBasedOnChildren(listview);
+
+
+                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ListViewAdapter.ListViewItem item = ( ListViewAdapter.ListViewItem) parent.getItemAtPosition(position);
+
+                            SetText(R.id.rest_detail_menu_desc, item.desc);
+                        }
+                    });
+
+
                     break;
             }
         }
