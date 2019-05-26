@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -68,7 +69,7 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
     @Override
     public void onMapReady(final GoogleMap map) {
 
-        LatLng SEOUL = new LatLng(37.450426,127.127039);
+        LatLng SEOUL = new LatLng(37.448828,127.127128);
 
         if (MapMark != null) {
             for (int i = 0; i < MapMark.length(); i++) {
@@ -78,7 +79,11 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(lla);
                     markerOptions.title(item.getString("title"));
-                    markerOptions.snippet("대기시간 없음");
+                    if (item.isNull("time"))
+                        markerOptions.snippet("대기시간 정보 없음");
+                    else
+                        markerOptions.snippet("대기시간 " + item.getString("time") + "분");
+
                     map.addMarker(markerOptions);
                 } catch (Exception e) {
 
@@ -87,7 +92,6 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
             }
 
         }
-        map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        map.animateCamera(CameraUpdateFactory.zoomTo(10));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 17));
     }
 }
