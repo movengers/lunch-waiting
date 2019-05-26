@@ -8,4 +8,6 @@ public class PacketType {
     public static final int RestaurantInfo = 1001;
 
     public static final int Message = 1002;
+
+    public static final int RestaurantWaitingList = 1003;
 }

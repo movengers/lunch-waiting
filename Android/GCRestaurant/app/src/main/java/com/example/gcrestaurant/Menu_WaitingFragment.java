@@ -24,7 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.google.android.gms.maps.MapFragment;
 
-public class Menu_WaitingFragment extends Fragment implements OnMapReadyCallback {
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyCallback {
 
     @Nullable
     @Override
@@ -32,33 +35,58 @@ public class Menu_WaitingFragment extends Fragment implements OnMapReadyCallback
         Toast.makeText(getContext(), "눌림", Toast.LENGTH_LONG).show();
         View view = inflater.inflate(R.layout.fragment_menu_waiting,container, false);
 
-
         return view;
+    }
+    JSONArray MapMark = null;
+    @Override
+    public void ReceivePacket(JSONObject json)
+    {
+        try
+        {
+            switch (json.getInt("type"))
+            {
+                case PacketType.RestaurantWaitingList:
+                    SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_f);
+                    NetworkService.SendDebugMessage(getChildFragmentManager().getFragments().toString());
+                    MapMark = json.getJSONArray("list");
+                    mapFragment.getMapAsync(this);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_f);
-        NetworkService.SendDebugMessage(getChildFragmentManager().getFragments().toString());
-        mapFragment.getMapAsync(this);
-     //   mapFragment.getMapAsync(this);
-
+        NetworkService.SendMessage(PacketType.RestaurantWaitingList);
     }
     @Override
     public void onMapReady(final GoogleMap map) {
 
-        LatLng SEOUL = new LatLng(37.56, 126.97);
+        LatLng SEOUL = new LatLng(37.450426,127.127039);
 
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("한국의 수도");
-        map.addMarker(markerOptions);
+        if (MapMark != null) {
+            for (int i = 0; i < MapMark.length(); i++) {
+                try {
+                    JSONObject item = MapMark.getJSONObject(i);
+                    LatLng lla = new LatLng(item.getDouble("y"), item.getDouble("x"));
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(lla);
+                    markerOptions.title(item.getString("title"));
+                    markerOptions.snippet("대기시간 없음");
+                    map.addMarker(markerOptions);
+                } catch (Exception e) {
 
+                }
+
+            }
+
+        }
         map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         map.animateCamera(CameraUpdateFactory.zoomTo(10));
     }

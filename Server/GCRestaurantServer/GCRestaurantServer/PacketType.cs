@@ -14,5 +14,6 @@ namespace GCRestaurantServer
         public const int RestaurantInfo = 1001;
 
         public const int Message = 1002;
+        public const int RestaurantWaitingList = 1003;
     }
 }
