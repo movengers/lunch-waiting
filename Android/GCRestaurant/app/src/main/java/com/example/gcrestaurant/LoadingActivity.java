@@ -22,6 +22,7 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
 
         NetworkService.setListener(this);
 
+        if (NetworkService.instance != null) NetworkService.Connect();
         // 서비스 시작
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
