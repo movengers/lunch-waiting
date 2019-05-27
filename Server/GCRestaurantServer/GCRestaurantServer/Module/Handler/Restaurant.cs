@@ -72,7 +72,7 @@ namespace GCRestaurantServer.Module.Handler
         }
         public static JObject WaitingList()
         {
-            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM waiting_view");
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant");
 
             JObject json = new JObject();
             json["type"] = PacketType.RestaurantWaitingList;
@@ -86,7 +86,7 @@ namespace GCRestaurantServer.Module.Handler
                         JObject item = new JObject();
                         item["no"] = node.GetInt("no");
                         item["title"] = node.GetString("title");
-                        item["time"] = node.GetString("waiting");
+                        item["time"] = node.GetString("compueted_waiting");
                         item["x"] = node.GetDouble("mapx");
                         item["y"] = node.GetDouble("mapy");
                         list.Add(item);
