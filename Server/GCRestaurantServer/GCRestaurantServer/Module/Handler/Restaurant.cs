@@ -86,7 +86,7 @@ namespace GCRestaurantServer.Module.Handler
                         JObject item = new JObject();
                         item["no"] = node.GetInt("no");
                         item["title"] = node.GetString("title");
-                        item["time"] = node.GetString("compueted_waiting");
+                        item["time"] = node.GetString("computed_waiting");
                         item["x"] = node.GetDouble("mapx");
                         item["y"] = node.GetDouble("mapy");
                         list.Add(item);
