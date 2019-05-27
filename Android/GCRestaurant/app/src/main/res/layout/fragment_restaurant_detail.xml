@@ -118,7 +118,7 @@
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/unheart"
+            android:background="@drawable/heartoff"
             android:textOff=""
             android:textOn=""
             app:layout_constraintBottom_toBottomOf="@+id/e"

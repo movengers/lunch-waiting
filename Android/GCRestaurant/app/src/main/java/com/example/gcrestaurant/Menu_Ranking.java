@@ -63,10 +63,4 @@ public class Menu_Ranking extends Fragment {
         return view;
     }
 
-    private View createTabView(String tabName) {
-        View tabView = LayoutInflater.from(mContext).inflate(R.layout.custom_tab, null);
-        TextView txt_name = (TextView) tabView.findViewById(R.id.txt_name);
-        txt_name.setText(tabName);
-        return tabView;
-    }
 }
