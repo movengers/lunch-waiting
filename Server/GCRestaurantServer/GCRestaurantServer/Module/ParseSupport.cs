@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using HtmlAgilityPack;
 using System.Net;
+using System.Threading;
 using System.IO;
 namespace GCRestaurantServer
 {
@@ -53,7 +54,7 @@ namespace GCRestaurantServer
         {
             return UrlQueryParser(node.Attributes["href"].Value);
         }
-        public static HtmlDocument Crawling(string url, int retry = 3)
+        public static HtmlDocument Crawling(string url, int retry = 10)
         {
             HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create(url);
             hreq.Method = "GET";
@@ -77,7 +78,8 @@ namespace GCRestaurantServer
                 }
                 catch (Exception e)
                 {
-                    // return null;
+                    // 오류가 날 경우 오류 횟수 * 2초만큼 더 기다린다.
+                    Thread.Sleep(2000 * (i + 1));
                 }
                 finally
                 {
