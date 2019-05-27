@@ -1,28 +1,21 @@
 package com.example.gcrestaurant;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-
 public class Menu_RestaurantDetail extends NetworkFragment{
     private ListViewAdapter adapter;
+    ToggleButton toggleHeart;
 
     public static Menu_RestaurantDetail newInstance(int no)
     {
@@ -81,6 +74,24 @@ public class Menu_RestaurantDetail extends NetworkFragment{
                         }
                     });
 
+                    toggleHeart = getView().findViewById(R.id.toggleButton_heart);
+                    toggleHeart.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            if(toggleHeart.isChecked()){
+                                toggleHeart.setBackgroundDrawable(
+                                        getResources().
+                                                getDrawable(R.drawable.hearton)
+                                );
+                            }else{
+                                toggleHeart.setBackgroundDrawable(
+                                        getResources().
+                                                getDrawable(R.drawable.heartoff)
+                                );
+                            }
+                        }
+                    });
 
                     break;
             }
