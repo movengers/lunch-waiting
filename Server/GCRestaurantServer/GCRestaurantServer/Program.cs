@@ -24,6 +24,7 @@ namespace GCRestaurantServer
 
             LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
             new Thread(AutoCrawling.main).Start();
+            new Thread(AutoWaitingComputing.main).Start();
             while (true)
             {
                 System.Threading.Thread.Sleep(4000);
