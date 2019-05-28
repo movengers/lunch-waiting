@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSystem", "LogSystem\LogS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMysql", "EasyMysql\EasyMysql.csproj", "{B75EA7A8-D27B-4A48-AFF0-6410CF3DDDF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{52159CFE-38DE-49BD-B199-8507163CE15A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B75EA7A8-D27B-4A48-AFF0-6410CF3DDDF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B75EA7A8-D27B-4A48-AFF0-6410CF3DDDF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B75EA7A8-D27B-4A48-AFF0-6410CF3DDDF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52159CFE-38DE-49BD-B199-8507163CE15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52159CFE-38DE-49BD-B199-8507163CE15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52159CFE-38DE-49BD-B199-8507163CE15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52159CFE-38DE-49BD-B199-8507163CE15A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

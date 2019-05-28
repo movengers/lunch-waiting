@@ -11,7 +11,7 @@ using System.Threading;
 using System.IO;
 namespace GCRestaurantServer
 {
-    class ParseSupport
+    public class ParseSupport
     {
         private static Regex url_reg = new Regex(@"([0-9a-zA-Z_]+)=([0-9a-zA-Z_]+)", RegexOptions.Compiled);
         private static Regex reg_CyberCampus = new Regex(@"([가-힣0-9a-zA-z\- ]+) \(([0-9]+)_([0-9]+)\)", RegexOptions.Compiled);
