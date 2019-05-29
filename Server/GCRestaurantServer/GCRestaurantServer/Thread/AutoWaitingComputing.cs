@@ -9,8 +9,9 @@ using Newtonsoft.Json.Linq;
 using System.Threading;
 namespace GCRestaurantServer
 {
-    class AutoWaitingComputing
+    public static class AutoWaitingComputing
     {
+        public static bool UnitTest = false;
         public static void main()
         {
             MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT `no` FROM restaurant ORDER BY no");
@@ -29,6 +30,7 @@ namespace GCRestaurantServer
                         update.ExecuteNonQuery();
                     }
                 }
+                if (UnitTest == true) break;
                 // 10분에 한번씩 계산
                 Thread.Sleep(60000 * 10);
             }

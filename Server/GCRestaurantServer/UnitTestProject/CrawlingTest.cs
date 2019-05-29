@@ -62,6 +62,13 @@ namespace GCRestaurantServer.UnitTest
                 //Assert.AreEqual(NaverAPIModule.GetInfomationDetail(0), null);
                 Assert.AreNotEqual(NaverAPIModule.GetInfomationDetail(628782093), null);
             }
+            [TestMethod]
+            public void Handler()
+            {
+                GCRestaurantServer.Module.Handler.Restaurant.GetID("태평 돈가스");
+                GCRestaurantServer.Module.Handler.Restaurant.Infomation(628782093);
+                GCRestaurantServer.Module.Handler.Restaurant.WaitingList();
+            }
 
         }
     }

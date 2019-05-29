@@ -22,10 +22,22 @@ namespace GCRestaurantServer.UnitTest
         {
             Server server = new Server(1231);
             SocketEvent.Receive p = delegate (ESocket socket, JObject json)
-               {
-                   count++;
-               };
+            {
+                count++;
+            };
+
+            SocketEvent.Connect p2 = delegate (ESocket socket)
+            {
+                count++;
+            };
+
+            SocketEvent.Exit p3 = delegate (ESocket socket)
+            {
+                count++;
+            };
             server.Receive += p;
+            server.Connect += p2;
+            server.Exit += p3;
         }
 
         [TestMethod]
