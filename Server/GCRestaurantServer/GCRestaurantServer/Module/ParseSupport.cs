@@ -56,7 +56,20 @@ namespace GCRestaurantServer
         }
         public static HtmlDocument Crawling(string url, int retry = 10)
         {
-            HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest hreq = null;
+            if (String.IsNullOrEmpty(url)) return null;
+            try
+            {
+                hreq = (HttpWebRequest)WebRequest.Create(url);
+            }
+            catch (UriFormatException e)
+            {
+                return null;
+            }
+            catch (System.InvalidCastException e) // http https 형식이 아닌경우
+            {
+                return null;
+            }
             hreq.Method = "GET";
             hreq.ContentType = "application/x-www-form-urlencoded";
             HttpWebResponse hres = null;
