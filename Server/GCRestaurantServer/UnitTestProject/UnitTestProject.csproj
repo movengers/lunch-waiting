@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="CrawlingTest.cs" />
     <Compile Include="MysqlTest.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ServerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

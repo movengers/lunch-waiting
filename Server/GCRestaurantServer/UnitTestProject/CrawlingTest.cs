@@ -8,6 +8,7 @@ using GCRestaurantServer;
 using EasyMysql;
 using System.IO;
 using GCRestaurantServer.Module;
+using GCRestaurantServer.Module.Handler;
 namespace GCRestaurantServer.UnitTest
 {
     [TestClass]
@@ -31,10 +32,36 @@ namespace GCRestaurantServer.UnitTest
         }
 
         [TestMethod]
-        public void CrawlingTestUnit()
+        public void CrawlingErrorDetectTest()
         {
-            HtmlAgilityPack.HtmlDocument dom = ParseSupport.Crawling("");
-            Assert.AreEqual(dom, null);
+            // 빈 값을 입력했을때 오류
+            Assert.AreEqual(ParseSupport.Crawling(null), null);
+
+            Assert.AreEqual(ParseSupport.Crawling(""), null);
+            Assert.AreEqual(ParseSupport.Crawling("ftp://aeawe"), null);
+        }
+
+        [TestClass]
+        public class Restaurant
+        {
+            [TestMethod]
+            public void GetPlaceIDTest()
+            {
+                Assert.AreEqual(NaverAPIModule.GetPlaceID(null), -1);
+                Assert.AreEqual(NaverAPIModule.GetPlaceID(""), -1);
+                Assert.AreEqual(NaverAPIModule.GetPlaceID("태평 돈가스"), 628782093);
+            }
+            [TestMethod]
+            public void GetPlaceDescTest()
+            {
+                Assert.AreNotEqual(NaverAPIModule.GetPlaceDescription(628782093), null);
+            }
+            [TestMethod]
+            public void GetPlaceCrawling()
+            {
+                //Assert.AreEqual(NaverAPIModule.GetInfomationDetail(0), null);
+                Assert.AreNotEqual(NaverAPIModule.GetInfomationDetail(628782093), null);
+            }
 
         }
     }

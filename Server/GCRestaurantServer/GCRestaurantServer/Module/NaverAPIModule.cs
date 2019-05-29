@@ -94,6 +94,7 @@ namespace GCRestaurantServer
         public static JObject GetInfomationDetail(int id)
         {
             HtmlDocument dom = ParseSupport.Crawling("https://store.naver.com/restaurants/detail?id=" + HttpUtility.HtmlEncode(id));
+            if (dom == null) return null;
             HtmlNode ds = dom.DocumentNode.SelectSingleNode("//body/script");
 
             string result = ParseSupport.UTF8Char((string)ds.InnerHtml);
