@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading;
 namespace GCRestaurantServer
 {
-    class Program
+    public static class Program
     {
 
         public static LogSystem.LogSystem LogSystem = new LogSystem.LogSystem();

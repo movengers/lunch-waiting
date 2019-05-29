@@ -11,7 +11,7 @@ using System.Threading;
 using System.IO;
 namespace GCRestaurantServer
 {
-    class ParseSupport
+    public class ParseSupport
     {
         private static Regex url_reg = new Regex(@"([0-9a-zA-Z_]+)=([0-9a-zA-Z_]+)", RegexOptions.Compiled);
         private static Regex reg_CyberCampus = new Regex(@"([가-힣0-9a-zA-z\- ]+) \(([0-9]+)_([0-9]+)\)", RegexOptions.Compiled);
@@ -56,7 +56,20 @@ namespace GCRestaurantServer
         }
         public static HtmlDocument Crawling(string url, int retry = 10)
         {
-            HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest hreq = null;
+            if (String.IsNullOrEmpty(url)) return null;
+            try
+            {
+                hreq = (HttpWebRequest)WebRequest.Create(url);
+            }
+            catch (UriFormatException e)
+            {
+                return null;
+            }
+            catch (System.InvalidCastException e) // http https 형식이 아닌경우
+            {
+                return null;
+            }
             hreq.Method = "GET";
             hreq.ContentType = "application/x-www-form-urlencoded";
             HttpWebResponse hres = null;
