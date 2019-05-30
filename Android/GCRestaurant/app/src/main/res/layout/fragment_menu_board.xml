@@ -6,11 +6,40 @@
     android:layout_height="match_parent"
     android:layout_margin = "5dp">
 
+    <RelativeLayout
+        android:id = "@+id/questionAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background = "@drawable/border">
+
+        <EditText
+            android:id = "@+id/edit_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint = "질문을 입력해 주세요!"/>
+
+        <ImageButton
+            android:id = "@+id/qBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_question"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:src="@drawable/qadd"
+            android:background="#FFF"/>
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_below="@id/questionAdd"
         app:layoutManager="LinearLayoutManager">
 
     </android.support.v7.widget.RecyclerView>
