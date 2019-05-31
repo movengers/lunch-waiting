@@ -114,6 +114,12 @@ namespace GCRestaurantServer
             JArray menus =(JArray)result["business"][id.ToString()]["biz"]["menus"];
             return menus;
         }
+        public static int GetPlaceReview(int id)
+        {
+
+            JObject result = GetInfomationDetail(id);
+            return (int)result["business"][id.ToString()]["fsasReviews"]["total"];
+        }
         public static int GetPlaceID(string RestaurantTitle, string keyword = null)
         {
             HtmlDocument dom = ParseSupport.Crawling("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + HttpUtility.HtmlEncode(keyword + " " + RestaurantTitle));

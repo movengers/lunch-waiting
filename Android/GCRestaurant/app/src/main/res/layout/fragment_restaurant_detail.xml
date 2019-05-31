@@ -153,11 +153,11 @@
         app:layout_constraintTop_toBottomOf="@+id/divider">
 
         <TextView
-            android:id="@+id/e"
+            android:id="@+id/likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="39"
+            android:text="로딩중"
             android:textColor="@color/colorAccent"
             android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@+id/toggleButton_heart"
@@ -171,9 +171,9 @@
             android:background="@drawable/heartoff"
             android:textOff=""
             android:textOn=""
-            app:layout_constraintBottom_toBottomOf="@+id/e"
+            app:layout_constraintBottom_toBottomOf="@+id/likes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/e"
+            app:layout_constraintTop_toTopOf="@+id/likes"
             app:layout_constraintVertical_bias="0.0" />
 
 

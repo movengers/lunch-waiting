@@ -14,4 +14,8 @@ public class PacketType {
     public static final int GetRestaurantID = 1004;
 
     public static int PositionUpdate = 2000;
+
+
+    public static final int GetLikes = 10000;
+    public static final int ClickLikes = 10001;
 }

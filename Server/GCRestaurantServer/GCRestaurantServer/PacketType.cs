@@ -19,5 +19,8 @@ namespace GCRestaurantServer
         public const int GetRestaurantID = 1004;
 
         public const int PositionUpdate = 2000;
+
+        public const int GetLikes = 10000;
+        public const int ClickLikes = 10001;
     }
 }

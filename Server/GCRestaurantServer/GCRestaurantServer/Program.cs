@@ -93,6 +93,13 @@ namespace GCRestaurantServer
                 case PacketType.PositionUpdate:
                     user.position = new Position(Message);
                     break;
+                case PacketType.ClickLikes:
+                    Module.Handler.Restaurant.Likes(user, (int)Message["no"], (bool)Message["positive"]);
+                    break;
+                case PacketType.GetLikes:
+                    user.Send(Module.Handler.Restaurant.StateLikes(user, (int)Message["no"]));
+                    break;
+
             }
         }
 
