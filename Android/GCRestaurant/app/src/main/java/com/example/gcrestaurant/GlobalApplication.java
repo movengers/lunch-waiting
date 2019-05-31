@@ -24,6 +24,7 @@ import org.json.JSONObject;
 public class GlobalApplication extends Application {
 
     private static volatile GlobalApplication instance = null;
+    public static int user_id = 0;
     public static String user_name = null;
     public static String user_icon = null;
     private static class KakaoSDKAdapter extends KakaoAdapter {

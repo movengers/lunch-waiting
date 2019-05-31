@@ -115,11 +115,15 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                 case PacketType.Login:
                     if (json.getBoolean("result"))
                     {
+                        GlobalApplication.user_id = json.getInt("id");
                         GlobalApplication.user_name = json.getString("name");
                         if (!json.isNull("icon"))
                             GlobalApplication.user_icon = json.getString("icon");
                         SendDebugMessage(GlobalApplication.user_name + "으로 로그인 성공" + " 이미지 : " + GlobalApplication.user_icon);
                     }
+                    break;
+                case PacketType.Message:
+                    Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                     break;
             }
         }

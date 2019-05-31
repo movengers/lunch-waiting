@@ -53,8 +53,9 @@ public class Menu_Board extends NetworkFragment {
             @Override
             public void onClick(View view) {
                 String question = questionAdd.getText().toString(); // 질문 edittext 값 받아오기
+                NetworkService.SendMessage(PacketType.WriteBoardItem, "content", question);
 
-                expandableCategoryRecyclerViewAdapter.AddWithAnimation(new QuestionItem("글 올린사람", question, "시간"));
+                //expandableCategoryRecyclerViewAdapter.AddWithAnimation(new QuestionItem("글 올린사람", question, "시간"));
             }
         });
     }
@@ -63,8 +64,8 @@ public class Menu_Board extends NetworkFragment {
     public void ReceivePacket(JSONObject json) {
         try {
             switch (json.getInt("type")) {
-                case PacketType.ReadBoard:
-                    ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater)expanderRecyclerView.getAdapter();
+                case PacketType.ReadBoard: {
+                    ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater) expanderRecyclerView.getAdapter();
                     JSONArray array = json.getJSONArray("list");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject item = array.getJSONObject(i);
@@ -72,6 +73,17 @@ public class Menu_Board extends NetworkFragment {
                     }
                     adpater.notifyDataSetChanged();
                     break;
+                }
+                case PacketType.WriteBoardItem: {
+                    ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater)expanderRecyclerView.getAdapter();
+                    JSONObject item = json.getJSONObject("item");
+                    adpater.AddWithAnimation(new QuestionItem(item.getString("name"), item.getString("content"), item.getString("time")));
+                    if (item.getInt("user_id") == GlobalApplication.user_id)
+                    {
+                        questionAdd.setText("");
+                    }
+                    break;
+                }
             }
         } catch (Exception e) {
 

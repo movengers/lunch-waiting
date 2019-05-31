@@ -93,6 +93,9 @@ namespace GCRestaurantServer
                 case PacketType.ReadBoard:
                     user.Send(Module.Handler.Board.GetList());
                     break;
+                case PacketType.WriteBoardItem:
+                    Module.Handler.Board.WriteArticle(user, (string)Message["content"]);
+                    break;
             }
         }
 
