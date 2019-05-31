@@ -35,13 +35,11 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
 
-        GPS_permission = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION);
-        if (GPS_permission == PackageManager.PERMISSION_GRANTED)
-        {
+        GPS_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (GPS_permission == PackageManager.PERMISSION_GRANTED) {
             View view = findViewById(R.id.GPS_BOX);
             view.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             Button GPS_Button = findViewById(R.id.GPS_PERMISSION);
             final LoadingActivity activity_instance = this;
             GPS_Button.setOnClickListener(new View.OnClickListener() {

@@ -76,6 +76,12 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
 
         Connect();
         NetworkService.SendDebugMessage("키 : " + MainActivity.getKeyHash(getApplicationContext()));
+
+        // GPS 서비스를 실행시켜 백그라운드에서도 실시간으로 위치 정보 전송
+        if (GPSService.instance == null) {
+            GPSService service = new GPSService(this);
+            service.Start();
+        }
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
