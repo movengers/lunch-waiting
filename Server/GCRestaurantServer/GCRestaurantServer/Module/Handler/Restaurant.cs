@@ -97,5 +97,65 @@ namespace GCRestaurantServer.Module.Handler
             json["list"] = list;
             return json;
         }
+        public static void Likes(OnlineUser user, int restaurant_no, bool positive)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SQL");
+
+            if (positive)
+                node.ChangeSql("INSERT INTO rest_likes_data (restaurant_no, user_id) VALUES (?restaurant_no, ?user_id)");
+            else
+                node.ChangeSql("DELETE FROM rest_likes_data where restaurant_no = ?restaurant_no AND user_id = ?user_id");
+            node["restaurant_no"] = restaurant_no;
+            node["user_id"] = user.id;
+            int result = node.ExecuteNonQuery();
+            if (result > 0)
+            {
+                user.Send(StateLikes(user,restaurant_no));
+            }
+            else
+            {
+                user.Message("요청이 실패했습니다.");
+            }
+        }
+
+        public static int GetLikes(int restaurant_no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM rest_likes WHERE no = ?no");
+            node["no"] = restaurant_no;
+            using (node.ExecuteReader())
+            {
+                if (node.Read())
+                {
+                    return node.GetInt("likes");
+                }
+            }
+            return 0;
+        }
+        public static bool ClickedLikes(OnlineUser user, int restaurant_no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM rest_likes_data WHERE user_id = ?id and restaurant_no = ?no");
+            node["no"] = restaurant_no;
+            node["id"] = user.id;
+            using (node.ExecuteReader())
+            {
+                if (node.Read())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public static JObject StateLikes(OnlineUser user, int restaurant_no)
+        {
+            JObject json = new JObject();
+            json["type"] = PacketType.GetLikes;
+            json["no"] = restaurant_no;
+            json["positive"] = ClickedLikes(user, restaurant_no);
+            json["likes"] = GetLikes(restaurant_no);
+            return json;
+        }
     }
 }

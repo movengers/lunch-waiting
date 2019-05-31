@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import org.json.JSONArray;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 public class Menu_RestaurantDetail extends NetworkFragment{
     private ListViewAdapter adapter;
+    TextView textHeart;
     ToggleButton toggleHeart;
 
     public static Menu_RestaurantDetail newInstance(int no)
@@ -33,10 +35,44 @@ public class Menu_RestaurantDetail extends NetworkFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, null) ;
-
-        int no = getArguments().getInt("no");
+        final int no = getArguments().getInt("no");
         NetworkService.SendMessage(PacketType.RestaurantInfo,"no", String.valueOf(no));
+        NetworkService.SendMessage(PacketType.GetLikes,"no", String.valueOf(no));
+
+        toggleHeart = view.findViewById(R.id.toggleButton_heart);
+        toggleHeart.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                JSONObject json = new JSONObject();
+                try
+                {
+                    json.put("type", PacketType.ClickLikes);
+                    json.put("no", no);
+                    json.put("positive", !toggleHeart.isChecked());
+                }
+                catch ( Exception e)
+                {
+
+                }
+                NetworkService.SendMessage(json);
+            }
+        });
         return view;
+    }
+    private void heart_on()
+    {
+        toggleHeart.setBackgroundDrawable(
+                getResources().
+                        getDrawable(R.drawable.hearton)
+        );
+    }
+    private void heart_off()
+    {
+        toggleHeart.setBackgroundDrawable(
+                getResources().
+                        getDrawable(R.drawable.heartoff)
+        );
     }
     @Override
     public void ReceivePacket(JSONObject json)
@@ -45,6 +81,13 @@ public class Menu_RestaurantDetail extends NetworkFragment{
         {
             switch (json.getInt("type"))
             {
+                case PacketType.GetLikes:
+                    SetText(R.id.likes, json.getString("likes"));
+                    if (json.getBoolean("positive"))
+                        heart_on();
+                    else
+                        heart_off();
+                    break;
                 case PacketType.RestaurantInfo:
                     SetText(R.id.rest_detail_title, json.getString("title"));
                     SetText(R.id.rest_detail_category, json.getString("category"));
@@ -74,24 +117,6 @@ public class Menu_RestaurantDetail extends NetworkFragment{
                         }
                     });
 
-                    toggleHeart = getView().findViewById(R.id.toggleButton_heart);
-                    toggleHeart.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            if(toggleHeart.isChecked()){
-                                toggleHeart.setBackgroundDrawable(
-                                        getResources().
-                                                getDrawable(R.drawable.hearton)
-                                );
-                            }else{
-                                toggleHeart.setBackgroundDrawable(
-                                        getResources().
-                                                getDrawable(R.drawable.heartoff)
-                                );
-                            }
-                        }
-                    });
 
                     break;
             }
