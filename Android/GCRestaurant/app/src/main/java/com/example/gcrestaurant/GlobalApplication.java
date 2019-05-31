@@ -1,8 +1,13 @@
 package com.example.gcrestaurant;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
@@ -120,5 +125,19 @@ public class GlobalApplication extends Application {
                 NetworkService.SendDebugMessage("로그인 성공 (id: " + userId + ", expires: "+ expiresInMilis +")");
             }
         });
+    }
+
+    public void NotificationChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel notificationChannel = new NotificationChannel("comment", "게시글 알림 수신", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("나와 관련있는 게시글 알림을 수신합니다.");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.GREEN);
+            notificationChannel.enableVibration(true); notificationChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 }
