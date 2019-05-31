@@ -90,6 +90,9 @@ namespace GCRestaurantServer
                 case PacketType.GetRestaurantID:
                     user.Send(Module.Handler.Restaurant.GetID((string)Message["title"]));
                     break;
+                case PacketType.PositionUpdate:
+                    user.position = new Position(Message);
+                    break;
             }
         }
 

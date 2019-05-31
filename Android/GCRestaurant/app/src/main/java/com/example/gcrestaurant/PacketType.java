@@ -12,4 +12,6 @@ public class PacketType {
     public static final int RestaurantWaitingList = 1003;
 
     public static final int GetRestaurantID = 1004;
+
+    public static int PositionUpdate = 2000;
 }

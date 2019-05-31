@@ -18,7 +18,7 @@ namespace GCRestaurantServer
         }
         public string name { get; private set; }
         public string img { get; private set; }
-
+        public Position position = null;
         private ESocket socket;
         public OnlineUser(ESocket socket)
         {
