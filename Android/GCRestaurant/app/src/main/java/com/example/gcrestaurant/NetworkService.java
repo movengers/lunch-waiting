@@ -170,6 +170,21 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         }
         SendMessage(json);
     }
+    public static void SendMessage(int type, String key, String[] message)
+    {
+        JSONObject json = new JSONObject();
+
+        try
+        {
+            json.put("type", type);
+            json.put(key, new JSONArray(message));
+        }
+        catch ( Exception e)
+        {
+
+        }
+        SendMessage(json);
+    }
 
     public static void SendDebugMessage(String data)
     {

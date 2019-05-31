@@ -50,7 +50,7 @@ public class ESocket extends Thread {
         while(instance == this)
         {
             try {
-                SocketAddress socketAddress = new InetSocketAddress("easyrobot.co.kr", 1231);
+                SocketAddress socketAddress = new InetSocketAddress("easyrobot.co.kr", 1232);
 
                 socket = new Socket();
                 socket.setSoTimeout(10000);

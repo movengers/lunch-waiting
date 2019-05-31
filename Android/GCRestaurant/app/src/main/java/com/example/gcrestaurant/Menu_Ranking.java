@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import java.util.zip.Inflater;
 
-public class Menu_Ranking extends Fragment {
+public class Menu_Ranking extends NetworkFragment {
+    String[] category = new String[]{"한식", "분식", "돈까스,회,일식", "치킨", "피자", "중식"};
     private Context mContext;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -27,12 +28,12 @@ public class Menu_Ranking extends Fragment {
 
         mTabLayout = (TabLayout) view.findViewById(R.id.layout_tab);
 
-        mTabLayout.addTab(mTabLayout.newTab().setText("한식"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("분식"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("돈까스,회,일식"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("치킨"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("피자"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("중국집"));
+        for(String i : category)
+        {
+            TabLayout.Tab tab = mTabLayout.newTab();
+            tab.setText(i);
+            mTabLayout.addTab(tab);
+        }
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_content);
         mContentsPagerAdapter = new ContentsPagerAdapter(
@@ -59,7 +60,7 @@ public class Menu_Ranking extends Fragment {
                 Toast.makeText(getContext(), "ㅊㅊ",Toast.LENGTH_LONG).show();
             }
         });
-
+        NetworkService.SendMessage(PacketType.RestaurantRankingList,"categories",category);
         return view;
     }
 
