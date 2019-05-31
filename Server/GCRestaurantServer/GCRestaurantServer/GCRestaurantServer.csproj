@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Module\GoogleAPIModule.cs" />
+    <Compile Include="Module\Handler\Board.cs" />
     <Compile Include="Module\Handler\Restaurant.cs" />
     <Compile Include="Thread\AutoCrawling.cs" />
     <Compile Include="Module\ConfigManagement.cs" />

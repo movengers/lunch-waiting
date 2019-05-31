@@ -17,5 +17,10 @@ namespace GCRestaurantServer
         public const int RestaurantWaitingList = 1003;
 
         public const int GetRestaurantID = 1004;
+
+        public const int ReadBoard = 3000;
+        public const int WriteBoardItem = 3001;
+        public const int DeleteBoardItem = 3002;
+
     }
 }

@@ -90,6 +90,9 @@ namespace GCRestaurantServer
                 case PacketType.GetRestaurantID:
                     user.Send(Module.Handler.Restaurant.GetID((string)Message["title"]));
                     break;
+                case PacketType.ReadBoard:
+                    user.Send(Module.Handler.Board.GetList());
+                    break;
             }
         }
 

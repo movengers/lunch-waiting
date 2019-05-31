@@ -20,12 +20,11 @@ import java.util.Dictionary;
 import java.util.List;
 
 public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<ExpandableRecyclerViewAdpater.ViewHolder> {
-    ArrayList<QuestionItem> items = new ArrayList<QuestionItem>();
+    private ArrayList<QuestionItem> items = new ArrayList<QuestionItem>();
 
     private Context context;
 
-    public ExpandableRecyclerViewAdpater(Context context, ArrayList<QuestionItem> items) {
-        this.items = items;
+    public ExpandableRecyclerViewAdpater(Context context) {
         this.context = context;
     }
 
@@ -58,6 +57,10 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
         items.add(0,item);
         notifyItemInserted(0);
         //expanderRecyclerView.scrollToPosition(position);
+    }
+    public void Add(QuestionItem item)
+    {
+        items.add(item);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {

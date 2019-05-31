@@ -1,5 +1,19 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
+-- Table structure for board
+-- ----------------------------
+CREATE TABLE `board` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `content` text NOT NULL,
+  `parent_no` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`no`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `board_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for menu
 -- ----------------------------
 CREATE TABLE `menu` (
@@ -62,3 +76,8 @@ CREATE TABLE `waiting_data` (
   CONSTRAINT `waiting_data_ibfk_1` FOREIGN KEY (`restaurant_no`) REFERENCES `restaurant` (`no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `waiting_data_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- View structure for board_writer
+-- ----------------------------
+CREATE ALGORITHM=UNDEFINED DEFINER=`banksemi`@`%` SQL SECURITY DEFINER VIEW `board_writer` AS select `board`.`no` AS `no`,`board`.`user_id` AS `user_id`,`board`.`content` AS `content`,`board`.`parent_no` AS `parent_no`,`user`.`name` AS `name`,`board`.`time` AS `time` from (`board` join `user` on(`user`.`id` = `board`.`user_id`));

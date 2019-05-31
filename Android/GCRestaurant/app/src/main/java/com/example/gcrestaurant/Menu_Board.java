@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,34 +34,17 @@ public class Menu_Board extends NetworkFragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NetworkService.SendMessage(PacketType.ReadBoard);
     }
 
     private void initiateExpander(View view) {
         qBtnAdd =  view.findViewById(R.id.qBtn);
         questionAdd = view.findViewById(R.id.edit_question);
 
-        ArrayList<QuestionItem> items = new ArrayList<>();
-        QuestionItem item;
-
-
-        item = new QuestionItem("이름", "질문1", "ㅁ");
-        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글1", "시간"));
-        items.add(item);
-
-        item = new QuestionItem("이름", "질문1", "ㅁ");
-        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글1", "시간"));
-        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글31", "시간"));
-        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글12323413412", "시간"));
-        items.add(item);
-
-        item = new QuestionItem("이름", "질문1", "ㅁ");
-        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글12341", "시간"));
-        items.add(item);
-
 
         final ExpandableRecyclerViewAdpater expandableCategoryRecyclerViewAdapter =
-                new ExpandableRecyclerViewAdpater(getContext(), items);
-
+                new ExpandableRecyclerViewAdpater(getContext());
+        expandableCategoryRecyclerViewAdapter.notifyDataSetChanged();
         expanderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
 
         expanderRecyclerView.setAdapter(expandableCategoryRecyclerViewAdapter);
@@ -77,6 +61,20 @@ public class Menu_Board extends NetworkFragment {
 
     @Override
     public void ReceivePacket(JSONObject json) {
+        try {
+            switch (json.getInt("type")) {
+                case PacketType.ReadBoard:
+                    ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater)expanderRecyclerView.getAdapter();
+                    JSONArray array = json.getJSONArray("list");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject item = array.getJSONObject(i);
+                        adpater.Add(new QuestionItem(item.getString("name"), item.getString("content"), item.getString("time")));
+                    }
+                    adpater.notifyDataSetChanged();
+                    break;
+            }
+        } catch (Exception e) {
 
+        }
     }
 }
