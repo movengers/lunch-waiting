@@ -14,5 +14,13 @@ namespace GCRestaurantServer
         public const int RestaurantInfo = 1001;
 
         public const int Message = 1002;
+        public const int RestaurantWaitingList = 1003;
+
+        public const int GetRestaurantID = 1004;
+
+        public const int PositionUpdate = 2000;
+
+        public const int GetLikes = 10000;
+        public const int ClickLikes = 10001;
     }
 }

@@ -23,6 +23,10 @@ namespace EasyMysql
             }
             return Reader.GetString(name);
         }
+        public bool IsNull(string name)
+        {
+            return Reader[name] is DBNull;
+        }
         public int GetInt(string name)
         {
             return Reader.GetInt32(name);
@@ -30,6 +34,10 @@ namespace EasyMysql
         public float GetFloat(string name)
         {
             return Reader.GetFloat(name);
+        }
+        public double GetDouble(string name)
+        {
+            return Reader.GetDouble(name);
         }
         public DateTime GetDateTime(string name)
         {

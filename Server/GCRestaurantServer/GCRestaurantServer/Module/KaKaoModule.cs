@@ -33,7 +33,7 @@ namespace GCRestaurantServer
                 message["result"] = false;
                 message["message"] = e.Message;
             }
-            user.socket.Send(message);
+            user.Send(message);
         }
         public static int CheckToken(string token)
         {

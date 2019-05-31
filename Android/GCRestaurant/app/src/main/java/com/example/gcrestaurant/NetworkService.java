@@ -75,6 +75,13 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         instance = this;
 
         Connect();
+        NetworkService.SendDebugMessage("키 : " + MainActivity.getKeyHash(getApplicationContext()));
+
+        // GPS 서비스를 실행시켜 백그라운드에서도 실시간으로 위치 정보 전송
+        if (GPSService.instance == null) {
+            GPSService service = new GPSService(this);
+            service.Start();
+        }
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -85,7 +92,9 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         public void handleMessage(Message msg) {
             String message = msg.getData().getString("data");
             JSONObject json = null;
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+            // 메세지 디버그가 필요하면 주석 해제
+            //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             try
             {
                 json = new JSONObject(message);
@@ -132,6 +141,34 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
     {
         if (ESocket.instance != null)
             ESocket.instance.SendMessage(json);
+    }
+
+    public static void SendMessage(int type)
+    {
+        JSONObject json = new JSONObject();
+        try
+        {
+            json.put("type", type);
+        }
+        catch ( Exception e)
+        {
+        }
+        SendMessage(json);
+    }
+    public static void SendMessage(int type, String key, String message)
+    {
+        JSONObject json = new JSONObject();
+
+        try
+        {
+            json.put("type", type);
+            json.put(key, message);
+        }
+        catch ( Exception e)
+        {
+
+        }
+        SendMessage(json);
     }
 
     public static void SendDebugMessage(String data)

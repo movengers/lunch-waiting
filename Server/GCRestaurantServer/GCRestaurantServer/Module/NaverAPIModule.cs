@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ namespace GCRestaurantServer
 {
     public static class NaverAPIModule
     {
+        private static Dictionary<int, JObject> InformationCache = new Dictionary<int, JObject>();
         /// 한번에 읽어오는 개수
         private static int ReadingParameter = 30;
         public static JObject SearchPlace(string client_id, string client_key, string keyword, int count = 30)
@@ -46,6 +47,29 @@ namespace GCRestaurantServer
             json["display"] = count;
             return json;
         }
+        public static JObject Geocoding(string client_id, string client_key, string address)
+        {
+            if (string.IsNullOrEmpty(address)) return null;
+
+            HttpWebRequest hreq = (HttpWebRequest)WebRequest.Create("https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + HttpUtility.HtmlEncode(address) + "");
+            hreq.Method = "GET";
+            hreq.ContentType = "plain/text;charset=utf-8";
+            hreq.Headers["X-NCP-APIGW-API-KEY-ID"] = client_id;
+            hreq.Headers["X-NCP-APIGW-API-KEY"] = client_key;
+            HttpWebResponse hres = (HttpWebResponse)hreq.GetResponse();
+            if (hres.StatusCode == HttpStatusCode.OK)
+            {
+                Stream dataStream = hres.GetResponseStream();
+                StreamReader sr = new StreamReader(dataStream, Encoding.UTF8);
+                string result = sr.ReadToEnd();
+                dataStream.Close();
+                sr.Close();
+                JArray new_json = (JArray)JObject.Parse(result)["addresses"];
+                if (new_json.Count > 0) return (JObject)new_json[0];
+                else return null;
+            }
+            return null;
+        }
 
         public static string GetPlaceDescription(int id)
         {
@@ -70,12 +94,18 @@ namespace GCRestaurantServer
 
         public static JObject GetInfomationDetail(int id)
         {
-            HtmlDocument dom = ParseSupport.Crawling("https://store.naver.com/restaurants/detail?id=" + HttpUtility.HtmlEncode(id));
-            HtmlNode ds = dom.DocumentNode.SelectSingleNode("//body/script");
+            if (!InformationCache.ContainsKey(id))
+            {
+                HtmlDocument dom = ParseSupport.Crawling("https://store.naver.com/restaurants/detail?id=" + HttpUtility.HtmlEncode(id));
+                if (dom == null)
+                    return null;
+                HtmlNode ds = dom.DocumentNode.SelectSingleNode("//body/script");
 
-            string result = ParseSupport.UTF8Char((string)ds.InnerHtml);
-            result = ds.InnerHtml.Substring(result.IndexOf("=") + 1);
-            return JObject.Parse(result);
+                string result = ParseSupport.UTF8Char((string)ds.InnerHtml);
+                result = ds.InnerHtml.Substring(result.IndexOf("=") + 1);
+                InformationCache.Add(id, JObject.Parse(result));
+            }
+            return InformationCache[id];
         }
 
         public static JArray GetPlaceMenu(int id)
@@ -83,6 +113,12 @@ namespace GCRestaurantServer
             JObject result = GetInfomationDetail(id);
             JArray menus =(JArray)result["business"][id.ToString()]["biz"]["menus"];
             return menus;
+        }
+        public static int GetPlaceReview(int id)
+        {
+
+            JObject result = GetInfomationDetail(id);
+            return (int)result["business"][id.ToString()]["fsasReviews"]["total"];
         }
         public static int GetPlaceID(string RestaurantTitle, string keyword = null)
         {

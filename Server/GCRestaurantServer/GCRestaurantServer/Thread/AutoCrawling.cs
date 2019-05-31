@@ -24,16 +24,29 @@ namespace GCRestaurantServer
                 foreach (JObject restaurant in search_data["items"])
                 {
 
-                    MysqlNode update = new MysqlNode(Program.mysqlOption, "INSERT INTO restaurant (no, title, description, roadAddress, mapx, mapy, category, image) VALUES (?no, ?title, ?description, ?roadAddress, ?mapx, ?mapy, ?category, ?image)");
+                    MysqlNode update = new MysqlNode(Program.mysqlOption, "INSERT INTO restaurant (no, title, description, roadAddress, mapx, mapy, category, image, default_likes) VALUES (?no, ?title, ?description, ?roadAddress, ?mapx, ?mapy, ?category, ?image, ?default_likes)");
                     update["title"] = Regex.Replace((string)restaurant["title"], "(<[/a-zA-Z]+>)", "");
                     update["roadAddress"] = (string)restaurant["roadAddress"];
-                    update["mapx"] = (string)restaurant["mapx"];
-                    update["mapy"] = (string)restaurant["mapy"];
+                    JObject map = NaverAPIModule.Geocoding((string)ConfigManagement.GetObject("naver_cloud_api")["client_id"],
+                    (string)ConfigManagement.GetObject("naver_cloud_api")["client_secret"],
+                     (string)restaurant["roadAddress"]);
+                    if (map == null)
+                    {
+                        update["mapx"] = null;
+                        update["mapy"] = null;
+                    }
+                    else
+                    {
+                        update["mapx"] = map["x"].ToString();
+                        update["mapy"] = map["y"].ToString();
+                    }
+
                     update["category"] = (string)restaurant["category"];
 
                     update["no"] = NaverAPIModule.GetPlaceID((string)update["title"], (string)update["roadAddress"], (string)keyword);
                     update["image"] = NaverAPIModule.GetPlaceImage((int)update["no"]);
                     update["description"] = NaverAPIModule.GetPlaceDescription((int)update["no"]);
+                    update["default_likes"] = NaverAPIModule.GetPlaceReview((int)update["no"]);
 
                     update.ExecuteNonQuery();
                     Program.LogSystem.AddLog(1, "AutoCrawling", update["title"] + " 를 리스트에 등록");

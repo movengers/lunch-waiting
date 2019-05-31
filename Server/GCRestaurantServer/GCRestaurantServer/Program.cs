@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading;
 namespace GCRestaurantServer
 {
-    class Program
+    public static class Program
     {
 
         public static LogSystem.LogSystem LogSystem = new LogSystem.LogSystem();
@@ -24,6 +24,7 @@ namespace GCRestaurantServer
 
             LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
             new Thread(AutoCrawling.main).Start();
+            new Thread(AutoWaitingComputing.main).Start();
             while (true)
             {
                 System.Threading.Thread.Sleep(4000);
@@ -33,7 +34,7 @@ namespace GCRestaurantServer
                 {
                     foreach(OnlineUser user in users.Values)
                     {
-                        user.socket.Send(json);
+                        user.Send(json);
                     }
                 }
             }
@@ -61,7 +62,7 @@ namespace GCRestaurantServer
         private static void Server_Receive(ESocket socket, JObject Message)
         {
             OnlineUser user = users[socket];
-            LogSystem.AddLog(-1, "Program", Message.ToString());
+            LogSystem.AddLog(-1, "Program - Receive", Message.ToString());
             switch ((int)Message["type"])
             {
                 case PacketType.Login:
@@ -79,9 +80,26 @@ namespace GCRestaurantServer
                         if (json == null)
                             user.Message("해당하는 번호의 음식점이 없습니다.");
                         else
-                            user.socket.Send(json);
+                            user.Send(json);
                     }
                     break;
+
+                case PacketType.RestaurantWaitingList:
+                    user.Send(Module.Handler.Restaurant.WaitingList());
+                    break;
+                case PacketType.GetRestaurantID:
+                    user.Send(Module.Handler.Restaurant.GetID((string)Message["title"]));
+                    break;
+                case PacketType.PositionUpdate:
+                    user.position = new Position(Message);
+                    break;
+                case PacketType.ClickLikes:
+                    Module.Handler.Restaurant.Likes(user, (int)Message["no"], (bool)Message["positive"]);
+                    break;
+                case PacketType.GetLikes:
+                    user.Send(Module.Handler.Restaurant.StateLikes(user, (int)Message["no"]));
+                    break;
+
             }
         }
 
