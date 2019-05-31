@@ -21,12 +21,8 @@ public class Fragment_RankingList extends Fragment {
 
         ListView listView = (ListView)view.findViewById(R.id.ranking_list);
         adapter = new ListViewRankingAdapter();
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 1, "맛있는 술집","51");
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 2, "태평 돈가스","23");
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 3, "피자헛","43");
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 4, "피자헛","54");
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 5, "피자헛","33");
-        adapter.addItem(getResources().getDrawable(R.drawable.hearton), 6, "피자헛","22");
+        adapter.addItem(new ListViewRankingAdapter.Item(1,22121,"A",1));
+        adapter.addItem(new ListViewRankingAdapter.Item(2,1142,"Ab",1));
         listView.setAdapter(adapter);
         setListViewHeightBasedOnChildren(listView);
 

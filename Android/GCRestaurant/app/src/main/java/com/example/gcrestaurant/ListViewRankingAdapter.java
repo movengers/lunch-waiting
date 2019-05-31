@@ -14,8 +14,21 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ListViewRankingAdapter extends BaseAdapter {
+    public static class Item {
+        public int rank;
+        public int no;
+        public String title;
+        public int likes;
+        public Item(int rank, int no, String title, int likes)
+        {
+            this.rank = rank;
+            this.no = no;
+            this.title = title;
+            this.likes = likes;
+        }
+    }
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
+    private ArrayList<Item> listViewItemList = new ArrayList<Item>() ;
 
     // ListViewAdapter의 생성자
     public ListViewRankingAdapter() {
@@ -41,17 +54,17 @@ public class ListViewRankingAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.rank_heart) ;
+        TextView restRankView = (TextView) convertView.findViewById(R.id.rank) ;
         TextView restNameTextView = (TextView) convertView.findViewById(R.id.rank_rest_name) ;
         TextView restHeartTextView = (TextView) convertView.findViewById(R.id.rank_heart_num) ;
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        ListViewItem listViewItem = listViewItemList.get(position);
+        Item listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        iconImageView.setImageDrawable(listViewItem.getIcon());
-        restNameTextView.setText(listViewItem.getItemName());
-        restHeartTextView.setText(listViewItem.getItemPrice());
+        restRankView.setText(String.valueOf(listViewItem.rank));
+        restNameTextView.setText(listViewItem.title);
+        restHeartTextView.setText(String.valueOf(listViewItem.likes));
 
 
         // 버튼을 클릭헀을 때
@@ -81,15 +94,8 @@ public class ListViewRankingAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(Drawable icon, int no, String restName, String heartNum) {
-        ListViewItem item = new ListViewItem();
-
-        item.setIcon(icon);
-        item.setItemName(restName);
-        item.setItemPrice(heartNum);
-        item.setNo(no);
-
-        listViewItemList.add(0,item);
+    public void addItem(Item item) {
+        listViewItemList.add(item);
     }
 
 }
