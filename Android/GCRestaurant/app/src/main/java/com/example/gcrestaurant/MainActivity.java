@@ -22,7 +22,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,7 +105,6 @@ public class MainActivity extends AppCompatActivity
         imageView.setBackground(new ShapeDrawable(new OvalShape()));
         imageView.setClipToOutline(true);
 
-
         //아래 메뉴
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_menu);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -179,6 +181,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        final Switch sw = (Switch)findViewById(R.id.tooglebtn);
 
         if (id == R.id.menu_logout) {
             // 로그아웃
@@ -190,6 +193,16 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) // ON이면
+                    Toast.makeText(getApplicationContext(), sw.getTextOn().toString(),Toast.LENGTH_LONG).show();
+                else // OFF면
+                    Toast.makeText(getApplicationContext(), sw.getTextOff().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
