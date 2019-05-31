@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-public class Menu_Board extends Fragment {
+public class Menu_Board extends NetworkFragment {
     RecyclerView expanderRecyclerView;
     ImageButton qBtnAdd;
     EditText questionAdd;
@@ -34,79 +36,30 @@ public class Menu_Board extends Fragment {
     }
 
     private void initiateExpander(View view) {
-        final ArrayList<String> parentList = new ArrayList<>();
-        final ArrayList<ArrayList> childListHolder = new ArrayList<>();
         qBtnAdd =  view.findViewById(R.id.qBtn);
         questionAdd = view.findViewById(R.id.edit_question);
 
-        parentList.add("Question");
-        parentList.add("Question2");
-        parentList.add("Question3");
-        parentList.add("Question4");
-        parentList.add("Question5");
-        parentList.add("Question6");
-        parentList.add("Question7");
-        parentList.add("Question8");
+        ArrayList<QuestionItem> items = new ArrayList<>();
+        QuestionItem item;
 
-        ArrayList<String> childList = new ArrayList<>();
-        childList.add("answer1");
-        childList.add("answer1-2");
-        childList.add("answer1-3");
 
-        childListHolder.add(childList);
+        item = new QuestionItem("이름", "질문1", "ㅁ");
+        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글1", "시간"));
+        items.add(item);
 
-        childList = new ArrayList<>();
-        childList.add("answer2");
-        childList.add("answer2-2");
-        childList.add("answer2-3");
+        item = new QuestionItem("이름", "질문1", "ㅁ");
+        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글1", "시간"));
+        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글31", "시간"));
+        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글12323413412", "시간"));
+        items.add(item);
 
-        childListHolder.add(childList);
+        item = new QuestionItem("이름", "질문1", "ㅁ");
+        item.Comment.add(new QuestionItem("덧글 올린사람", "덧글12341", "시간"));
+        items.add(item);
 
-        childList = new ArrayList<>();
-        childList.add("answer3");
-        childList.add("answer3-2");
-        childList.add("answer3-3");
-
-        childListHolder.add(childList);
-
-        childList = new ArrayList<>();
-        childList.add("answer4");
-        childList.add("answer4-2");
-        childList.add("answer4-3");
-
-        childListHolder.add(childList);
-
-        childList = new ArrayList<>();
-        childList.add("answer5");
-        childList.add("answer5-2");
-        childList.add("answer5-3");
-
-        childListHolder.add(childList);
-
-        childList = new ArrayList<>();
-        childList.add("answer6");
-        childList.add("answer6-2");
-        childList.add("answer6-3");
-
-        childListHolder.add(childList);
-
-        childList = new ArrayList<>();
-        childList.add("answer7");
-        childList.add("answer7-2");
-        childList.add("answer7-3");
-
-        childListHolder.add(childList);
-
-        childList = new ArrayList<>();
-        childList.add("answer8");
-        childList.add("answer8-2");
-        childList.add("answer8-3");
-
-        childListHolder.add(childList);
 
         final ExpandableRecyclerViewAdpater expandableCategoryRecyclerViewAdapter =
-                new ExpandableRecyclerViewAdpater(getActivity().getApplicationContext(), parentList,
-                        childListHolder);
+                new ExpandableRecyclerViewAdpater(getContext(), items);
 
         expanderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
 
@@ -115,16 +68,15 @@ public class Menu_Board extends Fragment {
         qBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position = 0;
-                ArrayList<String> childList = new ArrayList<>(); // 댓글 arrayList
-
                 String question = questionAdd.getText().toString(); // 질문 edittext 값 받아오기
-                parentList.add(position, "" + question); // 질문 parentList에 추가
-                childListHolder.add(position, childList); // 빈 댓글 arrayList 추가
 
-                expandableCategoryRecyclerViewAdapter.notifyItemInserted(position);
-                expanderRecyclerView.scrollToPosition(position);
+                expandableCategoryRecyclerViewAdapter.AddWithAnimation(new QuestionItem("글 올린사람", question, "시간"));
             }
         });
+    }
+
+    @Override
+    public void ReceivePacket(JSONObject json) {
+
     }
 }

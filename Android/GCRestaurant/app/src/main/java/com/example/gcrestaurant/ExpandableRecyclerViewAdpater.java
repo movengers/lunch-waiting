@@ -17,25 +17,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.List;
 
 public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<ExpandableRecyclerViewAdpater.ViewHolder> {
-    ArrayList<String> childList = new ArrayList<String>();
-    ArrayList<Integer> counter = new ArrayList<Integer>();
-    ArrayList<ArrayList> itemNameList = new ArrayList<ArrayList>();
-    Context context;
+    ArrayList<QuestionItem> items = new ArrayList<QuestionItem>();
 
-    public ExpandableRecyclerViewAdpater(Context context, ArrayList<String> childList, ArrayList<ArrayList> itemNameList) {
-        this.childList = childList;
+    private Context context;
+
+    public ExpandableRecyclerViewAdpater(Context context, ArrayList<QuestionItem> items) {
+        this.items = items;
         this.context = context;
-        this.itemNameList = itemNameList;
-
-        Log.d("답변", childList.toString());
-
-        Log.d("답변2", itemNameList.toString());
-
-        for(int i = 0; i < childList.size(); i++) {
-            counter.add(0);
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,37 +53,31 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
         return vh;
     }
 
+    public void AddWithAnimation(QuestionItem item)
+    {
+        items.add(0,item);
+        notifyItemInserted(0);
+        //expanderRecyclerView.scrollToPosition(position);
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("parentToChild", String.valueOf(itemNameList.get(position)));
-        Log.d("parentString", String.valueOf(childList.get(position)));
-        Log.d("parentposition", String.valueOf(position));
+        final QuestionItem item = items.get(position);
+        holder.writing.setText(item.Content);
 
-        holder.writing.setText(childList.get(position));
+        InnerRecyclerViewAdapter itemInnerRecyclerView = new InnerRecyclerViewAdapter(item);
 
-        InnerRecyclerViewAdapter itemInnerRecyclerView = new InnerRecyclerViewAdapter(itemNameList.get(position));
         LinearLayoutManager linearVertical = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         holder.cardRecyclerView.setLayoutManager(linearVertical);
 
         holder.cardView.setOnClickListener(new dropOnClickListener(position, holder) {
             @Override
             public void onClick(View view) {
-                if(counter.size() != childList.size())
-                {
-                    while(counter.size() != childList.size())
-                    {
-                        counter.add(0, 0);
-                    }
-                }
-
-                if (counter.get(position) % 2 == 0) {
+                if (item.Opened == false) {
                     holder.cardRecyclerView.setVisibility(View.VISIBLE);
                 } else {
                     holder.cardRecyclerView.setVisibility(View.GONE);
                 }
-
-                counter.set(position, counter.get(position) + 1);
-                Log.d("counter2", String.valueOf(counter));
+                item.Opened = !item.Opened;
             }
         });
         holder.cardRecyclerView.setAdapter(itemInnerRecyclerView);
@@ -117,7 +102,7 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
 
     @Override
     public int getItemCount() {
-        return childList.size();
+        return items.size();
     }
 
 }
