@@ -26,6 +26,8 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView writing;
+        TextView name;
+        TextView date;
         Button dropBtn;
         RecyclerView cardRecyclerView;
         CardView cardView;
@@ -34,6 +36,8 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
         public ViewHolder(View itemView) {
             super(itemView);
             writing = (TextView) itemView.findViewById(R.id.board_content);
+            name = (TextView) itemView.findViewById(R.id.board_name);
+            date = (TextView) itemView.findViewById(R.id.board_date);
             dropBtn = itemView.findViewById(R.id.add_comment);
             cardRecyclerView = itemView.findViewById(R.id.innerRecyclerView);
             cardView = itemView.findViewById(R.id.cardView);
@@ -64,6 +68,8 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
     public void onBindViewHolder(ViewHolder holder, int position) {
         final QuestionItem item = items.get(position);
         holder.writing.setText(item.Content);
+        holder.name.setText(item.Name);
+        holder.date.setText(item.Time);
 
         InnerRecyclerViewAdapter itemInnerRecyclerView = new InnerRecyclerViewAdapter(item);
 
