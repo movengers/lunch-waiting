@@ -120,6 +120,9 @@ namespace GCRestaurantServer
                 case PacketType.ContainsWaitingListener:
                     user.Send(Module.Handler.Restaurant.GetContainsWaitingListener(user, (int)Message["no"]));
                     break;
+                case PacketType.RequestWaitingToUser:
+                    Module.Handler.Restaurant.UpdateWaiting(user, (int)Message["no"], (int)Message["time"]);
+                    break;;
             }
         }
 

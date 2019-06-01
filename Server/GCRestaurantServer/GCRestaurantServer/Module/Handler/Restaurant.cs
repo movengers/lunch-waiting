@@ -31,13 +31,14 @@ namespace GCRestaurantServer.Module.Handler
             {
                 if (other_user.position != null && other_user.position.DistanceToMeter(position) < 256)
                 {
-                    other_user.Send(json);
+                    if (!OnlineUser.receive_waiting_user.Contains(other_user.id))
+                        other_user.Send(json);
                 }
             }
         }
         public static List<int> GetWaitingListener(int no)
         {
-            if (!get_waiting_queue.ContainsKey(no))
+            if (get_waiting_queue.ContainsKey(no))
                 return get_waiting_queue[no].Values;
             else
                 return new List<int>();
@@ -57,6 +58,31 @@ namespace GCRestaurantServer.Module.Handler
             json["no"] = no;
             json["contains"] = ContainsWaitingListener(user, no);
             return json;
+        }
+        public static void UpdateWaiting(OnlineUser user, int no, int time) // 0~1~2
+        {
+            // 수신 금지 목록에 등록
+            OnlineUser.receive_waiting_user.Add(user.id);
+            user.Message("소중한 정보 감사합니다.");
+
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "INSERT INTO waiting_data (restaurant_no, user_id, waiting) VALUES (?restaurant_no, ?user_id, ?waiting)");
+            node["restaurant_no"] = no;
+            node["user_id"] = user.id;
+            if (time < 2)
+                node["waiting"] = time * 5;
+            else
+                node["waiting"] = 15;
+            node.ExecuteNonQuery();
+            int? result = AutoWaitingComputing.Update(no);
+            foreach(int id in GetWaitingListener(no))
+            {
+
+                foreach (OnlineUser vvvvv in Program.users.Values)
+                {
+                    if (vvvvv.id == id)
+                        user.Notify("waiting", no,GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
+                }
+            }
         }
         public static JObject GetID(string title)
         {

@@ -116,8 +116,21 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                 case PacketType.RequestWaitingToUser:
                     int no = json.getInt("no");
                     String title = json.getString("title");
-                    Intent intent = new Intent(this, MainActivity.class); //버튼을 누르면 이동할 Activity 또는 Service
-                    PendingIntent pi = PendingIntent.getActivity(this,(int) System.currentTimeMillis(), intent, 0);
+                    Intent intent = new Intent(this, ResponseWaitingService.class);
+                    intent.putExtra("no", no);
+                    intent.putExtra("time", 0);
+                    PendingIntent pi = PendingIntent.getService(this,(int) System.currentTimeMillis(), intent, 0);
+
+                    intent = new Intent(this, ResponseWaitingService.class);
+                    intent.putExtra("no", no);
+                    intent.putExtra("time", 1);
+                    PendingIntent pi2 = PendingIntent.getService(this,(int) System.currentTimeMillis(), intent, 0);
+
+
+                    intent = new Intent(this, ResponseWaitingService.class);
+                    intent.putExtra("no", no);
+                    intent.putExtra("time", 2);
+                    PendingIntent pi3 = PendingIntent.getService(this,(int) System.currentTimeMillis(), intent, 0);
 
                     Bitmap notiIconLarge = BitmapFactory.decodeResource(getResources(),R.drawable.doughnut);
 
@@ -131,8 +144,8 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                             .setContentText("대기 시간 요청")
                             .setContentIntent(pi);
                     builder.addAction(R.drawable.ic_menu_send,"없음",pi);
-                    builder.addAction(R.drawable.ic_menu_camera,"조금",pi);
-                    builder.addAction(R.drawable.doughnut,"많음",pi);
+                    builder.addAction(R.drawable.ic_menu_camera,"조금",pi2);
+                    builder.addAction(R.drawable.doughnut,"많음",pi3);
 
 
                     //NetworkService.SendMessage(1,"A","없음");
@@ -140,6 +153,13 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
 
                     NotificationManager manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
                     manager.notify(no, builder.build());
+                    break;
+                case PacketType.Notify:
+                    Notify(json.getString("tag"),
+                            json.getInt("no"),
+                            json.getString("title"),
+                            json.getString("content"));
+                    break;
             }
         }
         catch (Exception e)
@@ -150,6 +170,24 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
         SendDebugMessage("서비스가 패킷을 수신함");
     }
 
+    int no = 0;
+    public void Notify(String tag, int no, String title, String content)
+    {
+        Bitmap notiIconLarge = BitmapFactory.decodeResource(getResources(),R.drawable.doughnut);
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"comment")
+                .setSmallIcon(R.drawable.doughnut)
+                .setContentTitle(title)
+                .setLargeIcon(notiIconLarge)
+                .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                .setColor(Color.rgb(150,150,220))
+                .setContentText(content);
+
+
+        NotificationManager manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(tag, no, builder.build());
+    }
     public static void SendMessage(JSONObject json)
     {
         if (ESocket.instance != null)

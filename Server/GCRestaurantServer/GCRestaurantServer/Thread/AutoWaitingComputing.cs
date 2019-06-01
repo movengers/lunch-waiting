@@ -15,7 +15,7 @@ namespace GCRestaurantServer
         public static void main()
         {
             MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT `no` FROM restaurant ORDER BY no");
-            MysqlNode update = new MysqlNode(Program.mysqlOption, "UPDATE restaurant SET `computed_waiting` = ?data WHERE no=?no");
+
             while (true)
             {
                 Program.LogSystem.AddLog(2, "AutoWaitingComputing", "갱신을 시작합니다");
@@ -23,11 +23,7 @@ namespace GCRestaurantServer
                 {
                     while(node.Read())
                     {
-                        update["no"] = node.GetInt("no");
-                        int time = Compute(DateTime.Now.AddDays(0), node.GetInt("no"));
-                        if (time == -1) update["data"] = null;
-                        else update["data"] = time;
-                        update.ExecuteNonQuery();
+                        Update(node.GetInt("no"));
                     }
                 }
                 if (UnitTest == true) break;
@@ -64,12 +60,25 @@ namespace GCRestaurantServer
             if (data.Count == 0) return -1;
             else  return avg / data.Count;
         }
+        public static int? Update(int no)
+        {
+            MysqlNode update = new MysqlNode(Program.mysqlOption, "UPDATE restaurant SET `computed_waiting` = ?data WHERE no=?no");
+            update["no"] = no;
+            int time = Compute(DateTime.Now, no);
+
+            if (time == -1) update["data"] = null;
+            else update["data"] = time;
+
+            update.ExecuteNonQuery();
+            if (time == -1) return null;
+            return time;
+        }
         /// <summary>
         /// 해당 시간에 맞는 음식점의 대기 시간을 반환합니다.
         /// </summary>
         /// <param name="date">기준 시간대로 + 30 - 30분의 데이터를 가져옵니다.</param>
         /// <param name="rest_no"></param>
-        public static int Compute(DateTime date, int rest_no)
+        private static int Compute(DateTime date, int rest_no)
         {
             // 0 -> 6  일요일 
             // 1 -> 0  월요일

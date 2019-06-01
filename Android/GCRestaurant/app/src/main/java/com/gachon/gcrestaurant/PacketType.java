@@ -27,4 +27,5 @@ public class PacketType {
     public static final int RequestWaitingToServer = 14000;
     public static final int RequestWaitingToUser = 14001;
     public static final int ContainsWaitingListener = 14002;
+    public static final int Notify = 14003;
 }
