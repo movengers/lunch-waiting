@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         final Switch switchitem = (Switch) navigationView.getMenu().findItem(R.id.setting_alarm).getActionView().findViewById(R.id.tooglebtn);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        boolean silent = settings.getBoolean("switchkey", false);
+        boolean silent = settings.getBoolean("switchkey", true);
         switchitem.setChecked(silent);
 
         switchitem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
