@@ -80,7 +80,7 @@ namespace GCRestaurantServer.Module.Handler
                 foreach (OnlineUser vvvvv in Program.users.Values)
                 {
                     if (vvvvv.id == id)
-                        user.Notify("waiting", no,GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
+                        vvvvv.Notify("waiting", no,GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
                 }
             }
         }
