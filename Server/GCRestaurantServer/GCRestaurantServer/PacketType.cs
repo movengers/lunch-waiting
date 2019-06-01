@@ -19,5 +19,9 @@ namespace GCRestaurantServer
         public const int GetRestaurantID = 1004;
 
         public const int PositionUpdate = 2000;
+
+        public const int RequestWaitingToServer = 14000;
+        public const int RequestWaitingToUser = 14001;
+        public const int ContainsWaitingListener = 14002;
     }
 }

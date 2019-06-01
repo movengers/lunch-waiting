@@ -10,6 +10,7 @@ namespace GCRestaurantServer
 {
     public class OnlineUser
     {
+        public static CacheList<int> receive_waiting_user = new CacheList<int>(3600);
         public int id = 0;
         public bool IsLogin {
             get {
@@ -28,6 +29,13 @@ namespace GCRestaurantServer
         {
             Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
             socket.Send(json);
+        }
+        public static void Send(int id, JObject json)
+        {
+            foreach (OnlineUser user in Program.users.Values)
+            {
+                if (user.id == id) user.Send(json);
+            }
         }
         public void Login(string token)
         {

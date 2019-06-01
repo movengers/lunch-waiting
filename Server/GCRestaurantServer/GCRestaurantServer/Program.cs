@@ -93,6 +93,13 @@ namespace GCRestaurantServer
                 case PacketType.PositionUpdate:
                     user.position = new Position(Message);
                     break;
+                case PacketType.RequestWaitingToServer:
+                    Module.Handler.Restaurant.AddWaitingListener(user, (int)Message["no"]);
+                    break;
+                case PacketType.ContainsWaitingListener:
+                    user.Send(Module.Handler.Restaurant.GetContainsWaitingListener(user, (int)Message["no"]));
+                    break;
+
             }
         }
 
