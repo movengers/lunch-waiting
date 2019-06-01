@@ -19,6 +19,7 @@ public class PacketType {
     public static final int ReadBoard = 3000;
     public static final int WriteBoardItem = 3001;
     public static final int DeleteBoardItem = 3002;
+    public static final int ReadComments = 3003;
 
     public static final int GetLikes = 10000;
     public static final int ClickLikes = 10001;

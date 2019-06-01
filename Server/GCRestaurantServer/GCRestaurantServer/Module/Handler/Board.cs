@@ -40,16 +40,20 @@ namespace GCRestaurantServer.Module.Handler
             return json;
         }
 
-        public static bool WriteArticle(OnlineUser user, string content)
+        public static bool WriteArticle(OnlineUser user, string content, int parent_no = 0)
         {
             if (string.IsNullOrEmpty(content))
             {
                 user.Message("내용을 입력해주세요.");
                 return false;
             }
-            MysqlNode menu_update = new MysqlNode(Program.mysqlOption, "INSERT INTO board (user_id, content) VALUES (?user_id, ?content)");
+            MysqlNode menu_update = new MysqlNode(Program.mysqlOption, "INSERT INTO board (user_id, content, parent_no) VALUES (?user_id, ?content, ?parent_no)");
             menu_update["user_id"] = user.id;
             menu_update["content"] = content;
+            if (parent_no == 0)
+                menu_update["parent_no"] = null;
+            else
+                menu_update["parent_no"] = parent_no;
             long result = menu_update.ExecuteInsertQuery();
             if (result > 0)
             {
@@ -65,6 +69,30 @@ namespace GCRestaurantServer.Module.Handler
                 user.Message("등록에 실패했습니다.");
                 return false;
             }
+        }
+        public static JObject GetCommentList(int no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM board_writer WHERE parent_no = ?no");
+            node["no"] = no;
+            JObject json = new JObject();
+            json["type"] = PacketType.ReadComments;
+            json["no"] = no;
+            JArray list = new JArray();
+            using (node.ExecuteReader())
+            {
+                while (node.Read())
+                {
+                    JObject item = new JObject();
+                    item["no"] = node.GetInt("no");
+                    item["content"] = node.GetString("content");
+                    item["time"] = node.GetString("time");
+                    item["user_id"] = node.GetInt("user_id");
+                    item["name"] = node.GetString("name");
+                    list.Add(item);
+                }
+            }
+            json["list"] = list;
+            return json;
         }
     }
 }

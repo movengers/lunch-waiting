@@ -9,10 +9,10 @@ import android.widget.TextView;
 import java.util.List;
 
 public class InnerRecyclerViewAdapter extends RecyclerView.Adapter<InnerRecyclerViewAdapter.ViewHolder> {
-    public List<QuestionItem> comments = null;
+    public QuestionItem parent = null;
 
     public InnerRecyclerViewAdapter(QuestionItem item) {
-        this.comments = item.Comment;
+        this.parent = item;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,12 +34,12 @@ public class InnerRecyclerViewAdapter extends RecyclerView.Adapter<InnerRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.writing2.setText(comments.get(position).Content);
+        holder.writing2.setText(parent.Comment.get(position).Content);
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return parent.Comment.size();
     }
 
 }

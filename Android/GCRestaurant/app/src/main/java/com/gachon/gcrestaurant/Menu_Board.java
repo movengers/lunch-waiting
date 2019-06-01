@@ -13,6 +13,9 @@ import android.widget.ImageButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Menu_Board extends NetworkFragment {
     RecyclerView expanderRecyclerView;
     ImageButton qBtnAdd;
@@ -65,7 +68,7 @@ public class Menu_Board extends NetworkFragment {
                     JSONArray array = json.getJSONArray("list");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject item = array.getJSONObject(i);
-                        adpater.Add(new QuestionItem(item.getString("name"), item.getString("content"), item.getString("time")));
+                        adpater.Add(new QuestionItem(item.getInt("no"),item.getString("name"), item.getString("content"), item.getString("time")));
                     }
                     adpater.notifyDataSetChanged();
                     break;
@@ -73,16 +76,29 @@ public class Menu_Board extends NetworkFragment {
                 case PacketType.WriteBoardItem: {
                     ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater)expanderRecyclerView.getAdapter();
                     JSONObject item = json.getJSONObject("item");
-                    adpater.AddWithAnimation(new QuestionItem(item.getString("name"), item.getString("content"), item.getString("time")));
+                    adpater.AddWithAnimation(new QuestionItem(item.getInt("no"), item.getString("name"), item.getString("content"), item.getString("time")));
                     if (item.getInt("user_id") == GlobalApplication.user_id)
                     {
                         questionAdd.setText("");
                     }
                     break;
                 }
+                case PacketType.ReadComments:
+                {
+                    ExpandableRecyclerViewAdpater adpater = (ExpandableRecyclerViewAdpater)expanderRecyclerView.getAdapter();
+                    JSONArray array = json.getJSONArray("list");
+                    List<QuestionItem> aa = new ArrayList<QuestionItem>();
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject item = array.getJSONObject(i);
+                        aa.add(new QuestionItem(item.getInt("no"),item.getString("name"), item.getString("content"), item.getString("time")));
+                    }
+                    NetworkService.SendDebugMessage("받음" + aa.size());
+                    adpater.AddComment(json.getInt("no"), aa);
+                }
+                    break;
             }
         } catch (Exception e) {
-
+            NetworkService.SendDebugMessage(e.toString());
         }
     }
 }

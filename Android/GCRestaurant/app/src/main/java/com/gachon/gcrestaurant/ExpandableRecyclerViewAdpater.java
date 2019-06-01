@@ -13,7 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<ExpandableRecyclerViewAdpater.ViewHolder> {
     private ArrayList<QuestionItem> items = new ArrayList<QuestionItem>();
@@ -64,6 +67,22 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
     {
         items.add(item);
     }
+    public void AddComment(int item_id, List<QuestionItem> item)
+    {
+        for (QuestionItem pitem:items) {
+            if (pitem.No == item_id)
+            {
+                InnerRecyclerViewAdapter a = (InnerRecyclerViewAdapter)pitem.comment_view.getAdapter();
+                pitem.Comment = item;
+                a.notifyDataSetChanged();
+                pitem.Opened = true;
+                pitem.comment_view.setVisibility(View.VISIBLE);
+                NetworkService.SendDebugMessage("설정 완료");
+            }
+
+
+        }
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final QuestionItem item = items.get(position);
@@ -72,26 +91,20 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
         holder.date.setText(item.Time);
 
         InnerRecyclerViewAdapter itemInnerRecyclerView = new InnerRecyclerViewAdapter(item);
-
         LinearLayoutManager linearVertical = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         holder.cardRecyclerView.setLayoutManager(linearVertical);
-
+        holder.cardRecyclerView.setAdapter(itemInnerRecyclerView);
+        item.comment_view = holder.cardRecyclerView;
         holder.cardView.setOnClickListener(new dropOnClickListener(position, holder) {
             @Override
             public void onClick(View view) {
                 if (item.Opened == false) {
-                    holder.cardRecyclerView.setVisibility(View.VISIBLE);
+                    NetworkService.SendMessage(PacketType.ReadComments, "no", String.valueOf(item.No));
+                    //holder.cardRecyclerView.setVisibility(View.VISIBLE);
                 } else {
                     holder.cardRecyclerView.setVisibility(View.GONE);
+                    item.Opened = false;
                 }
-                item.Opened = !item.Opened;
-            }
-        });
-        holder.cardRecyclerView.setAdapter(itemInnerRecyclerView);
-
-        holder.dropBtn.setOnClickListener(new dropOnClickListener(position, holder) {
-            @Override
-            public void onClick(View v) { // 버튼 누르면 답글 추가
 
             }
         });
@@ -101,12 +114,11 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
             public void onClick(View view) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
 
-                ad.setTitle("댓글 달기");
-                ad.setMessage(" ");
+                ad.setTitle("댓글 달기" + item.No);
+                ad.setMessage(item.Content);
 
                 final EditText et = new EditText(context);
                 ad.setView(et);
-
 
 
                 ad.setNegativeButton("등록", new DialogInterface.OnClickListener() {
@@ -114,6 +126,7 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String value = et.getText().toString();
 
+                        NetworkService.SendMessage(PacketType.WriteBoardItem, "content", value, "parent_no", item.No);
                         dialogInterface.dismiss();
                     }
                 });
