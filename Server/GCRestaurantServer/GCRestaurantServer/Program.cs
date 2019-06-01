@@ -102,12 +102,17 @@ namespace GCRestaurantServer
                 case PacketType.RestaurantRankingList:
                     user.Send(Module.Handler.Restaurant.RankingList((string)Message["category"]));
                     break;
-
                 case PacketType.ReadBoard:
                     user.Send(Module.Handler.Board.GetList());
                     break;
                 case PacketType.WriteBoardItem:
                     Module.Handler.Board.WriteArticle(user, (string)Message["content"]);
+                    break;
+                case PacketType.RequestWaitingToServer:
+                    Module.Handler.Restaurant.AddWaitingListener(user, (int)Message["no"]);
+                    break;
+                case PacketType.ContainsWaitingListener:
+                    user.Send(Module.Handler.Restaurant.GetContainsWaitingListener(user, (int)Message["no"]));
                     break;
             }
         }

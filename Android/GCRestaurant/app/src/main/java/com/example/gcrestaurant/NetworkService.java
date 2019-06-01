@@ -1,5 +1,8 @@
 package com.example.gcrestaurant;
 
+import android.app.PendingIntent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Debug;
 import android.util.Log;
 
@@ -131,6 +134,33 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                 case PacketType.Message:
                     Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                     break;
+                case PacketType.RequestWaitingToUser:
+                    int no = json.getInt("no");
+                    String title = json.getString("title");
+                    Intent intent = new Intent(this, MainActivity.class); //버튼을 누르면 이동할 Activity 또는 Service
+                    PendingIntent pi = PendingIntent.getActivity(this,(int) System.currentTimeMillis(), intent, 0);
+
+                    Bitmap notiIconLarge = BitmapFactory.decodeResource(getResources(),R.drawable.doughnut);
+
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"comment")
+                            .setSmallIcon(R.drawable.doughnut)
+                            .setContentTitle(title)
+                            .setLargeIcon(notiIconLarge)
+                            .setDefaults(NotificationCompat.DEFAULT_SOUND)
+                            .setColor(Color.rgb(150,150,220))
+                            .setContentText("대기 시간 요청")
+                            .setContentIntent(pi);
+                    builder.addAction(R.drawable.ic_menu_send,"없음",pi);
+                    builder.addAction(R.drawable.ic_menu_camera,"조금",pi);
+                    builder.addAction(R.drawable.doughnut,"많음",pi);
+
+
+                    //NetworkService.SendMessage(1,"A","없음");
+
+
+                    NotificationManager manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+                    manager.notify(no, builder.build());
             }
         }
         catch (Exception e)

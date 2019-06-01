@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,6 +40,14 @@ public class Menu_RestaurantDetail extends NetworkFragment{
         NetworkService.SendMessage(PacketType.RestaurantInfo,"no", String.valueOf(no));
         NetworkService.SendMessage(PacketType.GetLikes,"no", String.valueOf(no));
 
+        NetworkService.SendMessage(PacketType.ContainsWaitingListener,"no", String.valueOf(no));
+        Button request = view.findViewById(R.id.request_button);
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkService.SendMessage(PacketType.RequestWaitingToServer,"no", String.valueOf(no));
+            }
+        });
         toggleHeart = view.findViewById(R.id.toggleButton_heart);
         toggleHeart.setOnClickListener(new View.OnClickListener() {
 
@@ -81,6 +90,12 @@ public class Menu_RestaurantDetail extends NetworkFragment{
         {
             switch (json.getInt("type"))
             {
+                case PacketType.ContainsWaitingListener:
+                    if (json.getBoolean("contains"))
+                    {
+                        SetText(R.id.request_button, "대기열 정보를 요청했습니다.");
+                    }
+                    break;
                 case PacketType.GetLikes:
                     SetText(R.id.likes, json.getString("likes"));
                     if (json.getBoolean("positive"))

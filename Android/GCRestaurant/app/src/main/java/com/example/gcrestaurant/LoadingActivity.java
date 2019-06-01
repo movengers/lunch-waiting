@@ -28,6 +28,9 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        // 알림 채널 만들기
+        GlobalApplication.getGlobalApplicationContext().NotificationChannel();
+
         NetworkService.setListener(this);
 
         if (NetworkService.instance != null) NetworkService.Connect();

@@ -27,5 +27,9 @@ namespace GCRestaurantServer
 
         public const int GetLikes = 10000;
         public const int ClickLikes = 10001;
+
+        public const int RequestWaitingToServer = 14000;
+        public const int RequestWaitingToUser = 14001;
+        public const int ContainsWaitingListener = 14002;
     }
 }
