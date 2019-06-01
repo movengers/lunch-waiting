@@ -6,15 +6,19 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.zip.Inflater;
 
-public class Menu_Ranking extends NetworkFragment {
+public class Menu_Ranking extends Fragment {
     String[] category = new String[]{"한식", "분식", "돈까스,회,일식", "치킨", "피자", "중식"};
     private Context mContext;
     private TabLayout mTabLayout;
@@ -37,7 +41,7 @@ public class Menu_Ranking extends NetworkFragment {
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_content);
         mContentsPagerAdapter = new ContentsPagerAdapter(
-                getActivity().getSupportFragmentManager(), mTabLayout.getTabCount());
+                getActivity().getSupportFragmentManager(), category);
 
         mViewPager.setAdapter(mContentsPagerAdapter);
        // mViewPager.setCurrentItem(0);
@@ -60,8 +64,6 @@ public class Menu_Ranking extends NetworkFragment {
                 Toast.makeText(getContext(), "ㅊㅊ",Toast.LENGTH_LONG).show();
             }
         });
-        NetworkService.SendMessage(PacketType.RestaurantRankingList,"categories",category);
         return view;
     }
-
 }

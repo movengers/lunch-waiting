@@ -97,35 +97,28 @@ namespace GCRestaurantServer.Module.Handler
             json["list"] = list;
             return json;
         }
-        public static JObject RankingList(String[] categoies)
+        public static JObject RankingList(String category)
         {
             JObject json = new JObject();
             json["type"] = PacketType.RestaurantRankingList;
-            JObject result = new JObject();
-            json["categoies"] = result;
-            foreach (string category in categoies)
+            json["category"] = category;
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant join rest_likes on restaurant.no=rest_likes.no WHERE category REGEXP (?data) ORDER BY likes desc");
+            node["data"] = category.Replace(",","|");
+            JArray list = new JArray();
+            json["list"] = list;
+            using (node.ExecuteReader())
             {
-                MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant join rest_likes on restaurant.no=rest_likes.no WHERE category REGEXP (?data) ORDER BY likes desc");
-                node["data"] = category.Replace(",","|");
-                JArray list = new JArray();
-                using (node.ExecuteReader())
+                while (node.Read())
                 {
-                    while (node.Read())
-                    {
-                        if (!node.IsNull("mapx"))
-                        {
-                            JObject item = new JObject();
-                            item["no"] = node.GetInt("no");
-                            item["title"] = node.GetString("title");
-                            item["time"] = node.GetString("computed_waiting");
-                            item["likes"] = node.GetString("likes");
-                            item["category"] = node.GetString("category");
+                    JObject item = new JObject();
+                    item["no"] = node.GetInt("no");
+                    item["title"] = node.GetString("title");
+                    item["time"] = node.GetString("computed_waiting");
+                    item["likes"] = node.GetString("likes");
+                    item["category"] = node.GetString("category");
 
-                            list.Add(item);
-                        }
-                    }
+                    list.Add(item);
                 }
-                result[category] = list;
             }
             return json;
 

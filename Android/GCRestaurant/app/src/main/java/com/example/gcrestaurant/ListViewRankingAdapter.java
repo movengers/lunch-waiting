@@ -84,12 +84,12 @@ public class ListViewRankingAdapter extends BaseAdapter {
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
-        return position ;
+        return getItem(position).no ;
     }
 
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
-    public Object getItem(int position) {
+    public ListViewRankingAdapter.Item getItem(int position) {
         return listViewItemList.get(position) ;
     }
 

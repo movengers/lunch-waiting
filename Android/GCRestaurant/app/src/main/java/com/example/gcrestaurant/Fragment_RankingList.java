@@ -4,32 +4,51 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Fragment_RankingList extends Fragment {
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class Fragment_RankingList extends NetworkFragment {
     private ListViewRankingAdapter adapter;
+    private ListView listView;
+    private String category;
+    public static Fragment_RankingList newInstance(String category)
+    {
+        Fragment_RankingList temp = new Fragment_RankingList();
+        Bundle bundle = new Bundle();
+        bundle.putString("category", category);
+        temp.setArguments(bundle);
+        return temp;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Toast.makeText(getContext(),"새로운 객체 생성",Toast.LENGTH_LONG).show();
         View view = inflater.inflate(R.layout.fragment_menu_ranking_list, null) ;
 
-        ListView listView = (ListView)view.findViewById(R.id.ranking_list);
+        listView = (ListView)view.findViewById(R.id.ranking_list);
         adapter = new ListViewRankingAdapter();
-        adapter.addItem(new ListViewRankingAdapter.Item(1,22121,"A",1));
-        adapter.addItem(new ListViewRankingAdapter.Item(2,1142,"Ab",1));
+
         listView.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                SwitchView(Menu_RestaurantDetail.newInstance((int)id));
+            }
+        });
+        category = getArguments().getString("category");
 
-
-
+        NetworkService.SendMessage(PacketType.RestaurantRankingList,"category",category);
         return view;
     }
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -51,5 +70,30 @@ public class Fragment_RankingList extends Fragment {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+    @Override
+    public void ReceivePacket(JSONObject json) {
+        try {
+            switch (json.getInt("type")) {
+                case PacketType.RestaurantRankingList:
+                    if (json.getString("category").equals(category)) {
+                        JSONArray array = json.getJSONArray("list");
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject item = array.getJSONObject(i);
+
+                            adapter.addItem(new ListViewRankingAdapter.Item(i + 1,
+                                    item.getInt("no"),
+                                    item.getString("title"),
+                                    item.getInt("likes")));
+                        }
+                        adapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(listView);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            NetworkService.SendDebugMessage(e.toString());
+        }
     }
 }
