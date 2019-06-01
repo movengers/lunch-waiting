@@ -1,6 +1,8 @@
 package com.example.gcrestaurant;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
         Button dropBtn;
         RecyclerView cardRecyclerView;
         CardView cardView;
+        Button commentAdd;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -33,6 +37,7 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
             dropBtn = itemView.findViewById(R.id.add_comment);
             cardRecyclerView = itemView.findViewById(R.id.innerRecyclerView);
             cardView = itemView.findViewById(R.id.cardView);
+            commentAdd = itemView.findViewById(R.id.add_comment);
         }
     }
 
@@ -84,6 +89,43 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
 
             }
         });
+
+        holder.commentAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(context);
+
+                ad.setTitle("댓글 달기");
+                ad.setMessage(" ");
+
+                final EditText et = new EditText(context);
+                ad.setView(et);
+
+
+
+                ad.setNegativeButton("등록", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String value = et.getText().toString();
+
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                ad.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+
+
+                ad.show();
+
+            }
+        });
+
     }
 
     public abstract class dropOnClickListener implements View.OnClickListener { // onclicklistener로 parameter 전달

@@ -1,5 +1,6 @@
 package com.example.gcrestaurant;
 
+import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,7 +42,6 @@ public class Menu_Board extends NetworkFragment {
         qBtnAdd =  view.findViewById(R.id.qBtn);
         questionAdd = view.findViewById(R.id.edit_question);
 
-
         final ExpandableRecyclerViewAdpater expandableCategoryRecyclerViewAdapter =
                 new ExpandableRecyclerViewAdpater(getContext());
         expandableCategoryRecyclerViewAdapter.notifyDataSetChanged();
@@ -58,6 +58,7 @@ public class Menu_Board extends NetworkFragment {
                 //expandableCategoryRecyclerViewAdapter.AddWithAnimation(new QuestionItem("글 올린사람", question, "시간"));
             }
         });
+
     }
 
     @Override
