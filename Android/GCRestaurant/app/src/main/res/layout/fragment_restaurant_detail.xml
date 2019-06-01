@@ -223,7 +223,7 @@
                 android:lineSpacingExtra="3sp"
                 android:maxWidth="370dp"
                 android:padding="15dp"
-                android:text="불러오는 중\nsdf"
+                android:text="상세 설명이 없습니다."
                 android:textSize="16sp" />
 
         </android.support.v4.widget.NestedScrollView>
