@@ -1,4 +1,4 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 public class PacketType {
     public static final int Login = 1;

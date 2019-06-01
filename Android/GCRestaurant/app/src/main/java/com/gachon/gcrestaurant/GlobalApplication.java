@@ -1,15 +1,12 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.Toast;
 
 import com.kakao.auth.ApiResponseCallback;
@@ -23,8 +20,6 @@ import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.network.response.AccessTokenInfoResponse;
 import com.kakao.network.ErrorResult;
 import com.kakao.util.helper.log.Logger;
-
-import org.json.JSONObject;
 
 public class GlobalApplication extends Application {
 

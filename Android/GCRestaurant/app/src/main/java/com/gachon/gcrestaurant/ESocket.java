@@ -1,13 +1,10 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
-import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.MessageQueue;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.kakao.auth.Session;
 
@@ -20,8 +17,6 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

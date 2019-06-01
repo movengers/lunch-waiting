@@ -1,4 +1,4 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 import android.content.Context;
 import android.content.DialogInterface;

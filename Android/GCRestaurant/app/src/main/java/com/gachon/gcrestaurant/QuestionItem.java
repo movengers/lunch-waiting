@@ -1,4 +1,4 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 import java.util.ArrayList;
 import java.util.List;

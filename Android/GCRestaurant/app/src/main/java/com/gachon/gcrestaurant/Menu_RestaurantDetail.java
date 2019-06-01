@@ -1,4 +1,4 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

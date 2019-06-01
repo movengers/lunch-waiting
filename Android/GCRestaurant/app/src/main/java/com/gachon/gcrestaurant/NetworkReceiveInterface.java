@@ -1,9 +1,6 @@
-package com.example.gcrestaurant;
+package com.gachon.gcrestaurant;
 
 import org.json.JSONObject;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public interface NetworkReceiveInterface {
     public void ReceivePacket(JSONObject json);
