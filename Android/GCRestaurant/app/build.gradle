@@ -36,4 +36,7 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.17.0'
     implementation 'com.android.support:cardview-v7:27.0.1'
     implementation 'com.android.support:recyclerview-v7:27.0.1'
+
+    // TabLayout을 위한
+    implementation 'com.android.support:design:27.0.0'
 }

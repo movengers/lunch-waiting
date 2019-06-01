@@ -99,6 +99,9 @@ namespace GCRestaurantServer
                 case PacketType.GetLikes:
                     user.Send(Module.Handler.Restaurant.StateLikes(user, (int)Message["no"]));
                     break;
+                case PacketType.RestaurantRankingList:
+                    user.Send(Module.Handler.Restaurant.RankingList((string)Message["category"]));
+                    break;
 
                 case PacketType.ReadBoard:
                     user.Send(Module.Handler.Board.GetList());

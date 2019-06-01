@@ -11,6 +11,31 @@
         android:id="@+id/layout_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="랭킹"
-        android:textSize="30dp"/>
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="#000000" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_content"
+        android:layout_width="380dp"
+        android:layout_height="480dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#FAF2F2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_tab" />
+
 </android.support.constraint.ConstraintLayout>
+

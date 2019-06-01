@@ -15,6 +15,7 @@ namespace GCRestaurantServer
 
         public const int Message = 1002;
         public const int RestaurantWaitingList = 1003;
+        public const int RestaurantRankingList = 1100;
 
         public const int GetRestaurantID = 1004;
 
