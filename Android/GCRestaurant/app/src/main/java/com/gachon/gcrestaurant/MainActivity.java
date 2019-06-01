@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -38,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private boolean doubleBackToExitPressedOnce = false;
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo;
         try {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity
 
 
         //프래그먼트
-        SwitchView(new Menu_HomeFragment());
+        SwitchView(new Menu_HomeFragment(), true);
 
 
 
@@ -147,18 +149,18 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.menu_home:
                     Toast.makeText(getApplicationContext(),"홈",Toast.LENGTH_LONG).show();
-                    SwitchView(new Menu_HomeFragment());
+                    SwitchView(new Menu_HomeFragment(), true);
                     return true;
                 case R.id.menu_waiting:
-                    SwitchView(new Menu_WaitingFragment());
+                    SwitchView(new Menu_WaitingFragment(), true);
                     Toast.makeText(getApplicationContext(),"대기",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_ranking:
-                    SwitchView(new Menu_Ranking());
+                    SwitchView(new Menu_Ranking(), true);
                     Toast.makeText(getApplicationContext(),"랭킹",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_boarding:
-                    SwitchView(new Menu_Board());
+                    SwitchView(new Menu_Board(), true);
                     Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
                     return true;
             }
@@ -166,8 +168,10 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-
-    public void SwitchView(android.support.v4.app.Fragment fragment)
+    public void SwitchView(android.support.v4.app.Fragment fragment) {
+        SwitchView(fragment, false);
+    }
+    public void SwitchView(android.support.v4.app.Fragment fragment, boolean main)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         try {
@@ -177,6 +181,14 @@ public class MainActivity extends AppCompatActivity
         {
             Log.d("메뉴 이동", "에러1 : " + e.toString());
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        if (main == true)
+        {
+            getSupportFragmentManager().popBackStack();
+        }
+        else
+        {
+            transaction.addToBackStack(null);
         }
         transaction.commit();
     }
@@ -192,7 +204,28 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                //  뒤로가기 키를 막기 위한 오버라이드
+                if (doubleBackToExitPressedOnce) {
+                    finishAffinity();
+                    return;
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "프로그램을 종료하려면 뒤로가기 버튼을 한번 더 눌러주세요.", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            }
+            else
+            {
+                super.onBackPressed();
+            }
         }
     }
 
