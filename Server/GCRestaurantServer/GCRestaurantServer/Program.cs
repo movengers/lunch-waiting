@@ -100,6 +100,12 @@ namespace GCRestaurantServer
                     user.Send(Module.Handler.Restaurant.StateLikes(user, (int)Message["no"]));
                     break;
 
+                case PacketType.ReadBoard:
+                    user.Send(Module.Handler.Board.GetList());
+                    break;
+                case PacketType.WriteBoardItem:
+                    Module.Handler.Board.WriteArticle(user, (string)Message["content"]);
+                    break;
             }
         }
 

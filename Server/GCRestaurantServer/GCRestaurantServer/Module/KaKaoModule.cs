@@ -26,6 +26,7 @@ namespace GCRestaurantServer
                 message["result"] = true;
                 message["name"] = user.name;
                 message["icon"] = user.img;
+                message["id"] = user.id;
                 message["message"] = "success";
             }
             catch (Exception e)

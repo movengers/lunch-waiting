@@ -29,6 +29,16 @@ namespace GCRestaurantServer
             Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
             socket.Send(json);
         }
+        public static void SendAll(JObject json)
+        {
+            lock(Program.users)
+            {
+                foreach (OnlineUser user in Program.users.Values)
+                {
+                    user.Send(json);
+                }
+            }
+        }
         public void Login(string token)
         {
             Program.LogSystem.AddLog(4, "LoginModule", "토큰을 통한 로그인 시도 " + token);
