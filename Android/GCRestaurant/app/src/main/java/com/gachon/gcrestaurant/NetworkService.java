@@ -146,6 +146,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                     builder.addAction(R.drawable.ic_menu_send,"없음",pi);
                     builder.addAction(R.drawable.ic_menu_camera,"조금",pi2);
                     builder.addAction(R.drawable.doughnut,"많음",pi3);
+                    builder.setAutoCancel(true);
 
 
                     //NetworkService.SendMessage(1,"A","없음");
