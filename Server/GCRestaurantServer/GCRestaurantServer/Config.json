@@ -1,0 +1,27 @@
+{
+	NOTE: "Copy this file to the executable folder on the server.",
+	config: 
+	{
+		naver_api:
+		{
+			client_id: "naver client id",
+			client_secret: "key"
+		},
+		naver_cloud_api:
+		{
+			client_id: "naver client id",
+			client_secret: "key"
+		},
+		google_api:
+		{
+			key: "api key"
+		},
+		mysql:
+		{
+			host: "localhost",
+			database: "db_name",
+			id: "user_id",
+			password:"password"
+		}
+	}
+}
