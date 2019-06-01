@@ -1,5 +1,6 @@
 package com.gachon.gcrestaurant;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -35,7 +37,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    public static final String PREFS_NAME = "Myalarm";
 
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
+
         //프래그먼트
         SwitchView(new Menu_HomeFragment());
 
@@ -91,6 +94,32 @@ public class MainActivity extends AppCompatActivity
         // 프로필 이름, 사진 등록
         TextView nameview = navigationView.getHeaderView(0).findViewById(R.id.user_name);
         ImageView imageView = navigationView.getHeaderView(0).findViewById(R.id.user_icon);
+
+        //getting alarm id
+        final Switch switchitem = (Switch) navigationView.getMenu().findItem(R.id.setting_alarm).getActionView().findViewById(R.id.tooglebtn);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean silent = settings.getBoolean("switchkey", true);
+        switchitem.setChecked(silent);
+
+        switchitem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) // ON이면
+                {
+                    Toast.makeText(getApplicationContext(), "알림 " + switchitem.getTextOn().toString(),Toast.LENGTH_LONG).show();
+                }
+                else // OFF면
+                {
+                    Toast.makeText(getApplicationContext(), "알림 " + switchitem.getTextOff().toString(),Toast.LENGTH_LONG).show();
+                }
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("switchkey", isChecked);
+                editor.commit();
+            }
+        });
+
         nameview.setText(GlobalApplication.user_name);
         if (GlobalApplication.user_icon != null) {
             Glide.with(this).load(GlobalApplication.user_icon).into(imageView);
@@ -187,15 +216,7 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) // ON이면
-                    Toast.makeText(getApplicationContext(), sw.getTextOn().toString(),Toast.LENGTH_LONG).show();
-                else // OFF면
-                    Toast.makeText(getApplicationContext(), sw.getTextOff().toString(),Toast.LENGTH_LONG).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
