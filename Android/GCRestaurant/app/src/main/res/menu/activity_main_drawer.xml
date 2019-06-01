@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+        <item
+            android:id = "@+id/setting_alarm"
+            android:icon = "@drawable/alarm"
+            android:checkable="true"
+            app:actionLayout = "@layout/togglebutton"
+            android:title = "알림 수신 여부"/>
+
         <item
             android:id="@+id/menu_logout"
             android:icon="@drawable/logout"
