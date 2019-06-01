@@ -21,9 +21,4 @@
         android:icon="@drawable/image_board"
         android:title="@string/title_board" />
 
-    <item
-        android:id="@+id/menu_setting"
-        android:icon="@drawable/ic_menu_manage"
-        android:title="@string/title_setting" />
-
 </menu>

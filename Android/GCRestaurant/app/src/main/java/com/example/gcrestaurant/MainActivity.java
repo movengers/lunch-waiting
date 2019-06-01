@@ -135,10 +135,6 @@ public class MainActivity extends AppCompatActivity
                     SwitchView(new Menu_Board());
                     Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
                     return true;
-                case R.id.menu_setting:
-                    SwitchView(new Menu_Setting());
-                    Toast.makeText(getApplicationContext(),"세팅",Toast.LENGTH_LONG).show();
-                    return true;
             }
             return false;
         }
