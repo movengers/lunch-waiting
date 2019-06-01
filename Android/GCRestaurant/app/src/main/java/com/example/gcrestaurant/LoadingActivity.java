@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
@@ -32,6 +35,18 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
         GlobalApplication.getGlobalApplicationContext().NotificationChannel();
 
         NetworkService.setListener(this);
+
+        // add moving gif
+        ImageView sushi = (ImageView) findViewById(R.id.sushi_gif);
+        ImageView hotdog = (ImageView) findViewById(R.id.hotdog_gif);
+        ImageView pizza = (ImageView) findViewById(R.id.pizza_gif);
+
+        GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(sushi);
+        Glide.with(this).load(R.drawable.sushi_resize).into(gifImage);
+        GlideDrawableImageViewTarget gifImage2 = new GlideDrawableImageViewTarget(hotdog);
+        Glide.with(this).load(R.drawable.hotdog_resize).into(gifImage2);
+        GlideDrawableImageViewTarget gifImage3 = new GlideDrawableImageViewTarget(pizza);
+        Glide.with(this).load(R.drawable.pizza_resize4).into(gifImage3);
 
         if (NetworkService.instance != null) NetworkService.Connect();
         // 서비스 시작
