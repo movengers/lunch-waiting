@@ -57,10 +57,17 @@ namespace GCRestaurantServer.Module.Handler
             long result = menu_update.ExecuteInsertQuery();
             if (result > 0)
             {
-                JObject json = new JObject();
-                json["type"] = PacketType.WriteBoardItem;
-                json["item"] = ((JArray)GetList((int)result)["list"])[0];
-                OnlineUser.SendAll(json);
+                if (parent_no == 0)
+                {
+                    JObject json = new JObject();
+                    json["type"] = PacketType.WriteBoardItem;
+                    json["item"] = ((JArray)GetList((int)result)["list"])[0];
+                    OnlineUser.SendAll(json);
+                }
+                else
+                {
+                    user.Send(GetCommentList(parent_no));
+                }
                 user.Message("등록에 성공했습니다.");
                 return true;
             }
