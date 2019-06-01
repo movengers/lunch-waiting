@@ -49,6 +49,7 @@ namespace GCRestaurantServer
         }
         public bool Contains(class_type data)
         {
+            CleanArray();
             foreach (Item item in items)
             {
                 if (item.item.Equals(data))
