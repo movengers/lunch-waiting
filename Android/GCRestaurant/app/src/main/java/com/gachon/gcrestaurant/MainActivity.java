@@ -37,7 +37,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String PREFS_NAME = "Myalarm";
 
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo;
@@ -98,9 +97,8 @@ public class MainActivity extends AppCompatActivity
         //getting alarm id
         final Switch switchitem = (Switch) navigationView.getMenu().findItem(R.id.setting_alarm).getActionView().findViewById(R.id.tooglebtn);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        boolean silent = settings.getBoolean("switchkey", true);
-        switchitem.setChecked(silent);
+
+        switchitem.setChecked(NetworkService.NotifyOK);
 
         switchitem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     Toast.makeText(getApplicationContext(), "알림 " + switchitem.getTextOff().toString(),Toast.LENGTH_LONG).show();
                 }
-                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences settings = getSharedPreferences("Myalarm", 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("switchkey", isChecked);
                 editor.commit();

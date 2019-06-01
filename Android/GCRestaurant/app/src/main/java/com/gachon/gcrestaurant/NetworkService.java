@@ -1,6 +1,7 @@
 package com.gachon.gcrestaurant;
 
 import android.app.PendingIntent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 public class NetworkService extends Service implements NetworkReceiveInterface{
     private static List<NetworkReceiveInterface> Listener = new LinkedList<>(); // 메인 쓰레드에서만 작업
     public static NetworkService instance = null;
+    public static boolean NotifyOK = true;
 
     // 서버와 연결, 이때 인증 모듈도 다시 실행된다.
     public static void Connect()
@@ -64,6 +66,9 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
             GPSService service = new GPSService(this);
             service.Start();
         }
+
+        SharedPreferences settings = getSharedPreferences("Myalarm", 0);
+        NotifyOK = settings.getBoolean("switchkey", true);
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -114,6 +119,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                     Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                     break;
                 case PacketType.RequestWaitingToUser:
+                    if (NotifyOK == false) break;
                     int no = json.getInt("no");
                     String title = json.getString("title");
                     Intent intent = new Intent(this, ResponseWaitingService.class);
@@ -156,6 +162,7 @@ public class NetworkService extends Service implements NetworkReceiveInterface{
                     manager.notify(no, builder.build());
                     break;
                 case PacketType.Notify:
+                    if (NotifyOK == false) break;
                     Notify(json.getString("tag"),
                             json.getInt("no"),
                             json.getString("title"),
