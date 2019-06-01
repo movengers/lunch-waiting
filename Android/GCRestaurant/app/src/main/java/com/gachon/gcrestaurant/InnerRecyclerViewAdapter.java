@@ -17,10 +17,14 @@ public class InnerRecyclerViewAdapter extends RecyclerView.Adapter<InnerRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView writing2;
+        TextView name;
+        TextView date;
 
         public ViewHolder(View itemView) {
             super(itemView);
             writing2 = (TextView) itemView.findViewById(R.id.child_view);
+            name = (TextView) itemView.findViewById(R.id.board_name);
+            date = (TextView) itemView.findViewById(R.id.board_date);
         }
     }
 
@@ -35,6 +39,8 @@ public class InnerRecyclerViewAdapter extends RecyclerView.Adapter<InnerRecycler
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.writing2.setText(parent.Comment.get(position).Content);
+        holder.name.setText(parent.Comment.get(position).Name);
+        holder.date.setText(parent.Comment.get(position).Time);
     }
 
     @Override
