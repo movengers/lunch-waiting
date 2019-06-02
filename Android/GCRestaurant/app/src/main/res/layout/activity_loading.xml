@@ -46,6 +46,18 @@
         app:layout_constraintTop_toBottomOf="@id/imageView2"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/hannah"
+        android:text="Loading..."
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hotdog_gif" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/GPS_BOX"
         android:layout_width="0dp"
