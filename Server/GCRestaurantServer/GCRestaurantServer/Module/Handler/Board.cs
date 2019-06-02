@@ -67,6 +67,13 @@ namespace GCRestaurantServer.Module.Handler
                 else
                 {
                     user.Send(GetCommentList(parent_no));
+                    List<int> RelatedUser = GetRelatedUser(parent_no);
+                    foreach (int id in RelatedUser)
+                    {
+                        if (id != user.id) // 올린 사람은 제외
+                            OnlineUser.Notify(id, "comment", (int)result, "내가 올린 게시글에 답변이 등록되었습니다.", "("+ user.name+") "+ content);
+                    }
+
                 }
                 user.Message("등록에 성공했습니다.");
                 return true;
@@ -100,6 +107,20 @@ namespace GCRestaurantServer.Module.Handler
             }
             json["list"] = list;
             return json;
+        }
+        public static List<int> GetRelatedUser(int no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM board WHERE parent_no = ?no or no = ?no");
+            node["no"] = no;
+            List<int> list = new List<int>();
+            using (node.ExecuteReader())
+            {
+                while (node.Read())
+                {
+                    list.Add(node.GetInt("user_id"));
+                }
+            }
+            return list;
         }
     }
 }
