@@ -39,174 +39,28 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rest_recommend" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/parentR"
         android:layout_width="371dp"
         android:layout_height="168dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="8dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rest_recommend_text">
 
-        <RelativeLayout
-            android:id="@+id/r1"
+        <ListView
+            android:id="@+id/menu_rest_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/res1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/hannah"
-                android:text="태평돈까스"
-                android:textSize="18dp" />
+        </ListView>
 
-            <TextView
-                android:id="@+id/res1_waiting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:fontFamily="@font/hannah"
-                android:text="대기시간 : 10분"
-                android:textSize="18dp" />
+    </LinearLayout>
 
-            <View
-                android:id="@+id/res1_line"
-                android:layout_width="385dp"
-                android:layout_height="2dp"
-                android:layout_below="@id/res1"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="8dp"
-                android:background="#D0CECE" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/r2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/r1">
-
-            <TextView
-                android:id="@+id/res2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/hannah"
-                android:text="오늘오면"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/res2_waiting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="19dp"
-                android:fontFamily="@font/hannah"
-                android:text="대기시간 : 5분"
-                android:textSize="18dp" />
-
-            <View
-                android:id="@+id/res2_line"
-                android:layout_width="385dp"
-                android:layout_height="2dp"
-                android:layout_below="@id/res2"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="8dp"
-                android:background="#D0CECE" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/r3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/r2">
-
-            <TextView
-                android:id="@+id/res3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/hannah"
-                android:text="쩡이네 분식"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/res3_waiting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:fontFamily="@font/hannah"
-                android:text="대기시간 : 5분"
-                android:textSize="18dp" />
-
-            <View
-                android:id="@+id/res3_line"
-                android:layout_width="385dp"
-                android:layout_height="2dp"
-                android:layout_below="@id/res3"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="8dp"
-                android:background="#D0CECE" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/r4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/r3"
-            android:layout_marginTop="2dp">
-
-            <TextView
-                android:id="@+id/res4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="13dp"
-                android:fontFamily="@font/hannah"
-                android:text="준호네 부대찌개"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/res4_waiting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="21dp"
-                android:layout_marginBottom="13dp"
-                android:fontFamily="@font/hannah"
-                android:text="대기시간 : 8분"
-                android:textSize="18dp" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
 
 
     <Button
