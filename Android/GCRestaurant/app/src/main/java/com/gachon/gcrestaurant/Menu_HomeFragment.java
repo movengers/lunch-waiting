@@ -40,12 +40,7 @@ public class Menu_HomeFragment extends NetworkFragment {
         adapter = new ListViewHomeRestAdapter();
         listView.setAdapter(adapter);
         //setListViewHeightBasedOnChildren(listView);
-
-
-        adapter.addItem(new ListViewHomeRestAdapter.Item(1,"태평돈가스","15분","15m"));
-        adapter.addItem(new ListViewHomeRestAdapter.Item(2,"호식당","25분","220m"));
-        adapter.addItem(new ListViewHomeRestAdapter.Item(3,"룰루랄라","15분","150m"));
-        adapter.addItem(new ListViewHomeRestAdapter.Item(4,"...","...","..."));
+        
 
         inputButton = view.findViewById(R.id.inputbutton);
         inputButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +73,7 @@ public class Menu_HomeFragment extends NetworkFragment {
                 builder.show();
             }
         });
+        NetworkService.SendMessage(PacketType.RestaurantRecommendList);
         NetworkService.SendMessage(PacketType.ReadBoard);
         return view;
     }
@@ -107,13 +103,25 @@ public class Menu_HomeFragment extends NetworkFragment {
     public void ReceivePacket(JSONObject json) {
         try {
             switch (json.getInt("type")) {
+                case PacketType.RestaurantRecommendList: {
+                    JSONArray array = json.getJSONArray("list");
+                    for (int i = 0; i < array.length() && i < 4; i++) {
+                        JSONObject item = array.getJSONObject(i);
+                        adapter.addItem(new ListViewHomeRestAdapter.Item(item.getInt("no"),
+                                item.getString("title"),
+                                item.getString("time"),item.getString("meter")));
+
+                    }
+                    adapter.notifyDataSetChanged();
+                    break;
+                }
                 case PacketType.ReadBoard: {
                     JSONArray array = json.getJSONArray("list");
                     for (int i = 0; i < array.length() && i < 3; i++) {
                         JSONObject item = array.getJSONObject(i);
                         String content = item.getString("name") +  " (" + item.getString("time") + ")\n";
                         content += item.getString("content");
-                            if (i == 0)
+                        if (i == 0)
                             SetText(R.id.answer1, content);
                         if (i == 1)
                             SetText(R.id.answer2, content);

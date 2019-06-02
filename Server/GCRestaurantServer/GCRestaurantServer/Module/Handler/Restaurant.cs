@@ -223,6 +223,41 @@ namespace GCRestaurantServer.Module.Handler
             return json;
 
         }
+        public static JObject RecommendList(Position position)
+        {
+            if (position == null) return null;
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant join rest_likes on restaurant.no=rest_likes.no ORDER BY likes DESC");
+
+            JObject json = new JObject();
+            json["type"] = PacketType.RestaurantRecommendList;
+            JArray list = new JArray();
+            using (node.ExecuteReader())
+            {
+                while (node.Read())
+                {
+                    if (list.Count == 4) break;
+                    if (!node.IsNull("mapx"))
+                    {
+                        Position rest_position = new Position(node.GetDouble("mapy"), node.GetDouble("mapx"));
+                        double meter = position.DistanceToMeter(rest_position);
+                        if (meter < 1000)
+                        {
+                            JObject item = new JObject();
+                            item["no"] = node.GetInt("no");
+                            item["title"] = node.GetString("title");
+                            if (node.IsNull("computed_waiting"))
+                                item["time"] = "정보 없음";
+                            else
+                                item["time"] = node.GetInt("computed_waiting") + "분";
+                            item["meter"] = (int)meter + "M";
+                            list.Add(item);
+                        }
+                    }
+                }
+            }
+            json["list"] = list;
+            return json;
+        }
         public static void Likes(OnlineUser user, int restaurant_no, bool positive)
         {
             MysqlNode node = new MysqlNode(Program.mysqlOption, "SQL");

@@ -122,7 +122,11 @@ namespace GCRestaurantServer
                     break;
                 case PacketType.RequestWaitingToUser:
                     Module.Handler.Restaurant.UpdateWaiting(user, (int)Message["no"], (int)Message["time"]);
-                    break;;
+                    break;
+                case PacketType.RestaurantRecommendList:
+                    user.Send(Module.Handler.Restaurant.RecommendList(user.position));
+                    break;
+
             }
         }
 

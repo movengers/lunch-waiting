@@ -13,6 +13,7 @@ public class PacketType {
 
     public static final int GetRestaurantID = 1004;
     public static final int RestaurantRankingList = 1100;
+    public static final int RestaurantRecommendList = 1200;
 
     public static final int PositionUpdate = 2000;
 
