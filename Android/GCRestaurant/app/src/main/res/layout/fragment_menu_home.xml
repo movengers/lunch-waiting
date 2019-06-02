@@ -97,87 +97,86 @@
         android:id="@+id/new_answertext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="280dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="35dp"
         android:fontFamily="@font/jua_ttf"
         android:text="최근댓글"
         android:textColor="#44546A"
         android:textSize="20dp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/new_answer"
         app:layout_constraintTop_toBottomOf="@id/inputbutton" />
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/new_answer_parent"
-        android:layout_width="365dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:background="@drawable/boundary2"
         android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/boundary2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/new_answer">
 
-        <TextView
-            android:id="@+id/answer1"
-            android:layout_width="342dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/hannah"
-            android:text="안녕하세요!"
-            android:textSize="18dp" />
-
-        <View
-            android:id="@+id/answer1_line"
-            android:layout_width="385dp"
-            android:layout_height="2dp"
-            android:layout_below="@id/answer1"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="8dp"
-            android:background="#D0CECE" />
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/answer2"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/answer1"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="12dp"
-            android:fontFamily="@font/hannah"
-            android:text="제가 지금 태돈앞에 있는데 6팀 정도 있어요 기다리면 30분정도 걸릴거같은데"
-            android:textSize="18dp" />
+            <TextView
+                android:id="@+id/answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text="로딩중 ... "
+                android:textSize="18dp" />
 
-        <View
-            android:id="@+id/answer2_line"
-            android:layout_width="385dp"
-            android:layout_height="2dp"
-            android:layout_below="@id/answer2"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="8dp"
-            android:background="#D0CECE" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D0CECE"
+                android:layout_marginVertical="5dp"
+                />
+            <TextView
+                android:id="@+id/answer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text=" "
+                android:textSize="18dp" />
 
-        <TextView
-            android:id="@+id/answer3"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/answer2_line"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="13dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginRight="13dp"
-            android:layout_marginBottom="13dp"
-            android:fontFamily="@font/hannah"
-            android:text="지금 오늘오면 줄 없습니다~~"
-            android:textSize="18dp" />
-    </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D0CECE"
+                android:layout_marginVertical="5dp"
+                />
+            <TextView
+                android:id="@+id/answer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text=" "
+                android:textSize="18dp" />
+
+
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>
