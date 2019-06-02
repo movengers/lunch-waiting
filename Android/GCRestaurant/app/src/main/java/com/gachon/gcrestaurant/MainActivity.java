@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        SwitchView(Menu_RestaurantDetail.newInstance(36358225));
     }
 
 

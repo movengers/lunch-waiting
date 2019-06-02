@@ -17,12 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu_HomeFragment extends Fragment {
+public class Menu_HomeFragment extends NetworkFragment {
     private ListViewHomeRestAdapter adapter;
     private ListView listView;
     private Button inputButton;
@@ -67,6 +71,7 @@ public class Menu_HomeFragment extends Fragment {
                 builder.show();
             }
         });
+        NetworkService.SendMessage(PacketType.ReadBoard);
         return view;
     }
 
@@ -90,5 +95,39 @@ public class Menu_HomeFragment extends Fragment {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+    @Override
+    public void ReceivePacket(JSONObject json) {
+        try {
+            switch (json.getInt("type")) {
+                case PacketType.ReadBoard: {
+                    JSONArray array = json.getJSONArray("list");
+                    for (int i = 0; i < array.length() && i < 3; i++) {
+                        JSONObject item = array.getJSONObject(i);
+                        String content = item.getString("name") +  " (" + item.getString("time") + ")\n";
+                        content += item.getString("content");
+                            if (i == 0)
+                            SetText(R.id.answer1, content);
+                        if (i == 1)
+                            SetText(R.id.answer2, content);
+                        if (i == 2)
+                            SetText(R.id.answer3, content);
+                    }
+                    break;
+                }
+                case PacketType.WriteBoardItem: {
+                    JSONObject item = json.getJSONObject("item");
+                    String content = item.getString("name") +  " (" + item.getString("time") + ")\n";
+                    content += item.getString("content");
+
+                    SetText(R.id.answer3, ReadText(R.id.answer2));
+                    SetText(R.id.answer2, ReadText(R.id.answer1));
+                    SetText(R.id.answer1, content);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            NetworkService.SendDebugMessage(e.toString());
+        }
     }
 }

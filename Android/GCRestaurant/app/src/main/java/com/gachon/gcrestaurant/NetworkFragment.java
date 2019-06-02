@@ -18,6 +18,11 @@ public abstract class NetworkFragment extends Fragment implements NetworkReceive
             textView.setText(data);
         }
     }
+    protected String ReadText(@IdRes int id)
+    {
+            TextView textView = getView().findViewById(id);
+            return textView.getText().toString();
+    }
 
     protected void SetImage(@IdRes int id, String URL)
     {
