@@ -141,6 +141,10 @@ namespace GCRestaurantServer.Module.Handler
                     json["description"] = node.GetString("description");
                     json["address"] = node.GetString("roadAddress");
                     json["image"] = node.GetString("image");
+                    if (node.IsNull("computed_waiting"))
+                        json["waiting"] = null;
+                    else
+                        json["waiting"] = node.GetInt("computed_waiting");
 
                     JArray menus = new JArray();
                     MysqlNode menu_node = new MysqlNode(Program.mysqlOption, "SELECT * FROM menu WHERE restaurant_no = ?no ORDER BY priority");

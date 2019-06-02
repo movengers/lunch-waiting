@@ -108,6 +108,10 @@ public class Menu_RestaurantDetail extends NetworkFragment{
                     SetText(R.id.rest_detail_category, json.getString("category"));
                     SetImage(R.id.rest_detail_image, json.getString("image"));
                     SetText(R.id.rest_detail_desc, json.getString("description"));
+                    if (json.isNull("waiting"))
+                        SetText(R.id.estimated_time, "정보 없음");
+                    else
+                        SetText(R.id.estimated_time, json.getString("waiting") + "분");
 
 
 
