@@ -30,35 +30,36 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="230dp"
+        android:layout_width="250dp"
         android:layout_height="1dp"
         android:background="#6F6F6F"
         app:layout_constraintBottom_toBottomOf="@+id/rest_recommend"
-        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintLeft_toRightOf="@+id/rest_recommend_text"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rest_recommend" />
 
-    <LinearLayout
-        android:id="@+id/parentR"
-        android:layout_width="371dp"
-        android:layout_height="168dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rest_recommend_text">
 
-        <ListView
-            android:id="@+id/menu_rest_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/parentR"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rest_recommend_text">
 
-        </ListView>
+            <ListView
+                android:id="@+id/menu_rest_list"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_height="230dp">
+            </ListView>
 
-    </LinearLayout>
+        </LinearLayout>
 
 
 
@@ -68,7 +69,7 @@
         android:layout_width="344dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/image_border"
         android:fontFamily="@font/hannah"

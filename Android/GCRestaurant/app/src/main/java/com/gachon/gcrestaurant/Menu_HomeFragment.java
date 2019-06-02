@@ -35,6 +35,13 @@ public class Menu_HomeFragment extends Fragment {
         listView = view.findViewById(R.id.menu_rest_list);
         adapter = new ListViewHomeRestAdapter();
         listView.setAdapter(adapter);
+        //setListViewHeightBasedOnChildren(listView);
+
+
+        adapter.addItem(new ListViewHomeRestAdapter.Item(1,"태평돈가스","15분","15m"));
+        adapter.addItem(new ListViewHomeRestAdapter.Item(2,"호식당","25분","220m"));
+        adapter.addItem(new ListViewHomeRestAdapter.Item(3,"룰루랄라","15분","150m"));
+        adapter.addItem(new ListViewHomeRestAdapter.Item(4,"...","...","..."));
 
         inputButton = view.findViewById(R.id.inputbutton);
         inputButton.setOnClickListener(new View.OnClickListener() {
@@ -70,25 +77,4 @@ public class Menu_HomeFragment extends Fragment {
         return view;
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
 }
