@@ -86,7 +86,7 @@ namespace GCRestaurantServer.Module.Handler
         }
         public static JObject GetCommentList(int no)
         {
-            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM board_writer WHERE parent_no = ?no");
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM board_writer WHERE parent_no = ?no  ORDER BY no");
             node["no"] = no;
             JObject json = new JObject();
             json["type"] = PacketType.ReadComments;
