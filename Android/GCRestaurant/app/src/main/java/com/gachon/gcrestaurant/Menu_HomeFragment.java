@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -31,6 +32,7 @@ public class Menu_HomeFragment extends NetworkFragment {
     private ListView listView;
     private Button inputButton;
 
+    private int SelectRest = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +42,15 @@ public class Menu_HomeFragment extends NetworkFragment {
         adapter = new ListViewHomeRestAdapter();
         listView.setAdapter(adapter);
         //setListViewHeightBasedOnChildren(listView);
-        
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListViewHomeRestAdapter.Item item = ((ListViewHomeRestAdapter)listView.getAdapter()).getItem(position);
+                SelectRest = item.no;
+                SetText(R.id.inputbutton, item.rest_name + " - 대기 시간 등록");
+            }
+        });
 
         inputButton = view.findViewById(R.id.inputbutton);
         inputButton.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +68,8 @@ public class Menu_HomeFragment extends NetworkFragment {
                 builder.setTitle("대기시간 정보 입력");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int pos) {
-                        String selectedText = items[pos].toString();
-                        Toast.makeText(getContext(), selectedText, Toast.LENGTH_SHORT).show();
+
+                        NetworkService.SendMessage(PacketType.RequestWaitingToUser, "no",  String.valueOf(SelectRest), "time",  pos);
                     }
                 });
 
