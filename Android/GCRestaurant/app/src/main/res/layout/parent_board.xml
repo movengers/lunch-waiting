@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="20dp"
-        app:cardBackgroundColor="#EFEFEF"
+        app:cardBackgroundColor="#ffffff"
         >
 
         <android.support.constraint.ConstraintLayout
@@ -75,11 +75,14 @@
                 <Button
                     android:id="@+id/add_comment"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="30dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
+                    android:background="#37FF3C00"
+                    android:layout_margin="5dp"
                     android:text="의견 추가"
-                    android:textSize="12sp"
+                    android:fontFamily="@font/hannah"
+                    android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -91,6 +94,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:text="이승화"
+                    android:fontFamily="@font/hannah"
                     android:textColor="@color/textDefault"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
