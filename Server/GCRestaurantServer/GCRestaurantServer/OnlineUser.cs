@@ -10,6 +10,7 @@ namespace GCRestaurantServer
 {
     public class OnlineUser
     {
+        public static CacheList<int> receive_waiting_user = new CacheList<int>(3600);
         public int id = 0;
         public bool IsLogin {
             get {
@@ -26,8 +27,28 @@ namespace GCRestaurantServer
         }
         public void Send(JObject json)
         {
-            Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
-            socket.Send(json);
+            if (json != null)
+            {
+                Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
+                socket.Send(json);
+            }
+        }
+        public static void Send(int id, JObject json)
+        {
+            foreach (OnlineUser user in Program.users.Values)
+            {
+                if (user.id == id) user.Send(json);
+            }
+        }
+        public static void SendAll(JObject json)
+        {
+            lock(Program.users)
+            {
+                foreach (OnlineUser user in Program.users.Values)
+                {
+                    user.Send(json);
+                }
+            }
         }
         public void Login(string token)
         {
@@ -75,6 +96,26 @@ namespace GCRestaurantServer
             json["type"] = PacketType.Message;
             json["message"] = message;
             socket.Send(json);
+        }
+        public void Notify(string tag, int no, string title, string content)
+        {
+            JObject json = new JObject();
+            json["type"] = PacketType.Notify;
+            json["no"] = no;
+            json["tag"] = tag;
+            json["title"] = title;
+            json["content"] = content;
+            socket.Send(json);
+        }
+        public static void Notify(int id, string tag, int no, string title, string content)
+        {
+            JObject json = new JObject();
+            json["type"] = PacketType.Notify;
+            json["no"] = no;
+            json["tag"] = tag;
+            json["title"] = title;
+            json["content"] = content;
+            Send(id, json);
         }
     }
 }

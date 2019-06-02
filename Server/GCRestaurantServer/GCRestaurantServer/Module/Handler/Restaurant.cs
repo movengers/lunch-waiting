@@ -11,6 +11,74 @@ namespace GCRestaurantServer.Module.Handler
 {
     public static class Restaurant
     {
+        private static Dictionary<int, CacheList<int>> get_waiting_queue = new Dictionary<int, CacheList<int>>();
+        public static void AddWaitingListener(OnlineUser user, int no)
+        {
+            if (!get_waiting_queue.ContainsKey(no)) get_waiting_queue[no] = new CacheList<int>(1800);
+            get_waiting_queue[no].Add(user.id);
+            // 결과 전송
+            user.Send(GetContainsWaitingListener(user, no));
+            user.Message("30분간 이 음식점의 대기열 정보를 직접 수신합니다.");
+
+            // 다른 유저들에게 메세지 전송
+            JObject json = new JObject();
+            json["type"] = PacketType.RequestWaitingToUser;
+            json["no"] = no;
+            json["title"] = GetTitle(no);
+
+            Position position = GetPosition(no);
+            foreach (OnlineUser other_user in Program.users.Values)
+            {
+                if (other_user.position != null && other_user.position.DistanceToMeter(position) < 256)
+                {
+                    if (!OnlineUser.receive_waiting_user.Contains(other_user.id))
+                        other_user.Send(json);
+                }
+            }
+        }
+        public static List<int> GetWaitingListener(int no)
+        {
+            if (get_waiting_queue.ContainsKey(no))
+                return get_waiting_queue[no].Values;
+            else
+                return new List<int>();
+        }
+        public static bool ContainsWaitingListener(OnlineUser user, int no)
+        {
+            if (get_waiting_queue.ContainsKey(no))
+            {
+                return get_waiting_queue[no].Contains(user.id);
+            }
+            return false;
+        }
+        public static JObject GetContainsWaitingListener(OnlineUser user, int no)
+        {
+            JObject json = new JObject();
+            json["type"] = PacketType.ContainsWaitingListener;
+            json["no"] = no;
+            json["contains"] = ContainsWaitingListener(user, no);
+            return json;
+        }
+        public static void UpdateWaiting(OnlineUser user, int no, int time) // 0~1~2
+        {
+            // 수신 금지 목록에 등록
+            OnlineUser.receive_waiting_user.Add(user.id);
+            user.Message("소중한 정보 감사합니다.");
+
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "INSERT INTO waiting_data (restaurant_no, user_id, waiting) VALUES (?restaurant_no, ?user_id, ?waiting)");
+            node["restaurant_no"] = no;
+            node["user_id"] = user.id;
+            if (time < 2)
+                node["waiting"] = time * 5;
+            else
+                node["waiting"] = 15;
+            node.ExecuteNonQuery();
+            int? result = AutoWaitingComputing.Update(no);
+            foreach(int id in GetWaitingListener(no))
+            {
+                OnlineUser.Notify(id, "waiting", no, GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
+            }
+        }
         public static JObject GetID(string title)
         {
             MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant WHERE title = ?title");
@@ -24,6 +92,34 @@ namespace GCRestaurantServer.Module.Handler
                     json["type"] = PacketType.GetRestaurantID;
                     json["no"] = node.GetInt("no");
                     return json;
+                }
+            }
+            return null;
+        }
+        public static string GetTitle(int no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant WHERE no = ?no");
+            node["no"] = no;
+
+            using (node.ExecuteReader())
+            {
+                if (node.Read())
+                {
+                    return node.GetString("title");
+                }
+            }
+            return null;
+        }
+        public static Position GetPosition(int no)
+        {
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant WHERE no = ?no");
+            node["no"] = no;
+            using (node.ExecuteReader())
+            {
+                if (node.Read())
+                {
+                    Position position = new Position(node.GetDouble("mapy"), node.GetDouble("mapx"));
+                    return position;
                 }
             }
             return null;
@@ -45,6 +141,10 @@ namespace GCRestaurantServer.Module.Handler
                     json["description"] = node.GetString("description");
                     json["address"] = node.GetString("roadAddress");
                     json["image"] = node.GetString("image");
+                    if (node.IsNull("computed_waiting"))
+                        json["waiting"] = null;
+                    else
+                        json["waiting"] = node.GetInt("computed_waiting");
 
                     JArray menus = new JArray();
                     MysqlNode menu_node = new MysqlNode(Program.mysqlOption, "SELECT * FROM menu WHERE restaurant_no = ?no ORDER BY priority");
@@ -122,6 +222,41 @@ namespace GCRestaurantServer.Module.Handler
             }
             return json;
 
+        }
+        public static JObject RecommendList(Position position)
+        {
+            if (position == null) return null;
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "SELECT * FROM restaurant join rest_likes on restaurant.no=rest_likes.no ORDER BY likes DESC");
+
+            JObject json = new JObject();
+            json["type"] = PacketType.RestaurantRecommendList;
+            JArray list = new JArray();
+            using (node.ExecuteReader())
+            {
+                while (node.Read())
+                {
+                    if (list.Count == 4) break;
+                    if (!node.IsNull("mapx"))
+                    {
+                        Position rest_position = new Position(node.GetDouble("mapy"), node.GetDouble("mapx"));
+                        double meter = position.DistanceToMeter(rest_position);
+                        if (meter < 1000)
+                        {
+                            JObject item = new JObject();
+                            item["no"] = node.GetInt("no");
+                            item["title"] = node.GetString("title");
+                            if (node.IsNull("computed_waiting"))
+                                item["time"] = "정보 없음";
+                            else
+                                item["time"] = node.GetInt("computed_waiting") + "분";
+                            item["meter"] = (int)meter + "M";
+                            list.Add(item);
+                        }
+                    }
+                }
+            }
+            json["list"] = list;
+            return json;
         }
         public static void Likes(OnlineUser user, int restaurant_no, bool positive)
         {

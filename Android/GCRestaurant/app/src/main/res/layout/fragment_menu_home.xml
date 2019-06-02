@@ -1,12 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
+        android:id="@+id/rest_recommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="여기는 홈입니다~~~"
-        android:textSize="30dp"/>
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/restaurant2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rest_recommend_text"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/jua_ttf"
+        android:text="추천식당"
+        android:textColor="#44546A"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rest_recommend"
+        app:layout_constraintLeft_toRightOf="@id/rest_recommend"
+        app:layout_constraintTop_toTopOf="@+id/rest_recommend" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:background="#6F6F6F"
+        app:layout_constraintBottom_toBottomOf="@+id/rest_recommend"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintLeft_toRightOf="@+id/rest_recommend_text"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rest_recommend" />
+
+
+        <LinearLayout
+            android:id="@+id/parentR"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.488"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rest_recommend_text">
+
+            <ListView
+                android:id="@+id/menu_rest_list"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:scrollbarSize="0dp"
+                android:layout_height="230dp">
+            </ListView>
+
+        </LinearLayout>
+
+
+
+
+    <Button
+        android:id="@+id/inputbutton"
+        android:layout_width="344dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/image_border"
+        android:fontFamily="@font/hannah"
+        android:text="대기 정보 등록"
+        android:textColor="#F44336"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentR" />
+
+
+
+
+    <ImageView
+        android:id="@+id/new_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/newanswer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputbutton" />
+
+    <TextView
+        android:id="@+id/new_answertext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="35dp"
+        android:fontFamily="@font/jua_ttf"
+        android:text="최근 게시글"
+        android:textColor="#44546A"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/new_answer"
+        app:layout_constraintTop_toBottomOf="@id/inputbutton" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/new_answer_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/boundary2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_answer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text="로딩중 ... "
+                android:textSize="18dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D0CECE"
+                android:layout_marginVertical="5dp"
+                />
+            <TextView
+                android:id="@+id/answer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text=" "
+                android:textSize="18dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D0CECE"
+                android:layout_marginVertical="5dp"
+                />
+            <TextView
+                android:id="@+id/answer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:fontFamily="@font/hannah"
+                android:text=" "
+                android:textSize="18dp" />
+
+
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>

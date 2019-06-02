@@ -23,7 +23,7 @@ namespace GCRestaurantServer
             server.Exit += Server_Exit;
 
             LogSystem.AddLog(3, "Program", "서버가 실행되었습니다.");
-            new Thread(AutoCrawling.main).Start();
+            //new Thread(AutoCrawling.main).Start();
             new Thread(AutoWaitingComputing.main).Start();
             while (true)
             {
@@ -101,6 +101,30 @@ namespace GCRestaurantServer
                     break;
                 case PacketType.RestaurantRankingList:
                     user.Send(Module.Handler.Restaurant.RankingList((string)Message["category"]));
+                    break;
+                case PacketType.ReadBoard:
+                    user.Send(Module.Handler.Board.GetList());
+                    break;
+                case PacketType.WriteBoardItem:
+                    if (Message.ContainsKey("parent_no"))
+                        Module.Handler.Board.WriteArticle(user, (string)Message["content"], (int)Message["parent_no"]);
+                    else
+                        Module.Handler.Board.WriteArticle(user, (string)Message["content"]);
+                    break;
+                case PacketType.ReadComments:
+                    user.Send(Module.Handler.Board.GetCommentList((int)Message["no"]));
+                    break;
+                case PacketType.RequestWaitingToServer:
+                    Module.Handler.Restaurant.AddWaitingListener(user, (int)Message["no"]);
+                    break;
+                case PacketType.ContainsWaitingListener:
+                    user.Send(Module.Handler.Restaurant.GetContainsWaitingListener(user, (int)Message["no"]));
+                    break;
+                case PacketType.RequestWaitingToUser:
+                    Module.Handler.Restaurant.UpdateWaiting(user, (int)Message["no"], (int)Message["time"]);
+                    break;
+                case PacketType.RestaurantRecommendList:
+                    user.Send(Module.Handler.Restaurant.RecommendList(user.position));
                     break;
 
             }

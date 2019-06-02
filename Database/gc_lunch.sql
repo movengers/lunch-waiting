@@ -1,5 +1,19 @@
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
+-- Table structure for board
+-- ----------------------------
+CREATE TABLE `board` (
+  `no` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `content` text NOT NULL,
+  `parent_no` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`no`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `board_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for menu
 -- ----------------------------
 CREATE TABLE `menu` (
@@ -80,8 +94,3 @@ CREATE TABLE `waiting_data` (
 -- View structure for board_writer
 -- ----------------------------
 CREATE ALGORITHM=UNDEFINED DEFINER=`banksemi`@`%` SQL SECURITY DEFINER VIEW `board_writer` AS select `board`.`no` AS `no`,`board`.`user_id` AS `user_id`,`board`.`content` AS `content`,`board`.`parent_no` AS `parent_no`,`user`.`name` AS `name`,`board`.`time` AS `time` from (`board` join `user` on(`user`.`id` = `board`.`user_id`));
-
--- ----------------------------
--- View structure for rest_likes
--- ----------------------------
-CREATE ALGORITHM=UNDEFINED DEFINER=`gc_lunch`@`%` SQL SECURITY DEFINER VIEW `rest_likes` AS select `gc_lunch`.`restaurant`.`no` AS `no`,ifnull(`b`.`user_likes`,0) + `gc_lunch`.`restaurant`.`default_likes` AS `likes` from (`gc_lunch`.`restaurant` left join ((select count(0) AS `user_likes`,`gc_lunch`.`rest_likes_data`.`restaurant_no` AS `restaurant_no` from `gc_lunch`.`rest_likes_data` group by `gc_lunch`.`rest_likes_data`.`restaurant_no`)) `b` on(`gc_lunch`.`restaurant`.`no` = `b`.`restaurant_no`));

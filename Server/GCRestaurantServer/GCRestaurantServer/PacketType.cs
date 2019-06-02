@@ -16,12 +16,23 @@ namespace GCRestaurantServer
         public const int Message = 1002;
         public const int RestaurantWaitingList = 1003;
         public const int RestaurantRankingList = 1100;
+        public const int RestaurantRecommendList = 1200;
 
         public const int GetRestaurantID = 1004;
 
         public const int PositionUpdate = 2000;
 
+        public const int ReadBoard = 3000;
+        public const int WriteBoardItem = 3001;
+        public const int DeleteBoardItem = 3002;
+        public const int ReadComments = 3003;
+
         public const int GetLikes = 10000;
         public const int ClickLikes = 10001;
+
+        public const int RequestWaitingToServer = 14000;
+        public const int RequestWaitingToUser = 14001;
+        public const int ContainsWaitingListener = 14002;
+        public const int Notify = 14003;
     }
 }

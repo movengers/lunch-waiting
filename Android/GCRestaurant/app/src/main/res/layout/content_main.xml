@@ -9,13 +9,11 @@
     tools:showIn="@layout/app_bar_main">
 
     <ScrollView
-        android:descendantFocusability="blocksDescendants"
-        android:id="@+id/menu_scroll"
+        android:id="@+id/main_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_menu">
         <FrameLayout
-            android:descendantFocusability="blocksDescendants"
             android:id="@+id/menu_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

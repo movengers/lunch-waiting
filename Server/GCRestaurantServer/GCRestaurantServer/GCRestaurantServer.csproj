@@ -50,7 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module\CacheList.cs" />
     <Compile Include="Module\GoogleAPIModule.cs" />
+    <Compile Include="Module\Handler\Board.cs" />
     <Compile Include="Module\Handler\Restaurant.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Thread\AutoCrawling.cs" />
