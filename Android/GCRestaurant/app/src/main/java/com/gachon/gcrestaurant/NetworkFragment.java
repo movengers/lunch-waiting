@@ -24,6 +24,11 @@ public abstract class NetworkFragment extends Fragment implements NetworkReceive
             return textView.getText().toString();
     }
 
+    protected void ScrollTop()
+    {
+        MainActivity activity = (MainActivity)getActivity();
+        activity.ScrollTop();
+    }
     protected void SetImage(@IdRes int id, String URL)
     {
         if (!(URL.isEmpty() || URL.equals("null")))

@@ -1,6 +1,7 @@
 package com.gachon.gcrestaurant;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -137,6 +139,12 @@ public class Menu_RestaurantDetail extends NetworkFragment{
                     });
 
 
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ScrollTop();
+                        }
+                    }, 50);
                     break;
             }
         }

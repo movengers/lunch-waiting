@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -193,6 +194,11 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    public void ScrollTop()
+    {
+        ScrollView scrollView = findViewById(R.id.main_scroll);
+        scrollView.scrollTo(0,0);
+    }
     protected void redirectLoginActivity() {
         final Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
