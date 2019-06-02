@@ -12,17 +12,20 @@
             android:text="가게이름"
             android:textColor="#009688"
             android:fontFamily="@font/hannah"
-            android:textSize="30dp"
-            android:layout_margin="25dp"/>
+            android:textSize="22dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"/>
 
         <TextView
             android:id="@+id/list_home_rest_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4분"
+            android:text="대기시간"
             android:fontFamily="@font/hannah"
-            android:textSize="23dp"
+            android:textSize="18dp"
             android:layout_gravity="center"
+            android:gravity="center"
             />
 
         <TextView
@@ -31,9 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/hannah"
-            android:text="100m"
-            android:layout_marginRight="30dp"
-            android:textSize="23dp" />
+            android:text="거리"
+            android:layout_marginRight="80dp"
+            android:textSize="13dp" />
     </TableRow>
 
 </TableLayout>
