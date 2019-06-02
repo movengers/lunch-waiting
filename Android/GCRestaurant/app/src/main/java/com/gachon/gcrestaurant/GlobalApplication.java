@@ -96,7 +96,7 @@ public class GlobalApplication extends Application {
             @Override
             public void onSessionClosed(ErrorResult errorResult) {
                 //redirectLoginActivity(self);
-                Toast.makeText(GlobalApplication.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GlobalApplication.this, "로그인 실패", Toast.LENGTH_SHORT).show();
             }
 
             @Override

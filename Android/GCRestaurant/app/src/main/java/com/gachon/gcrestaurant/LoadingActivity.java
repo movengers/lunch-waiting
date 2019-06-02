@@ -137,6 +137,5 @@ public class LoadingActivity extends AppCompatActivity implements NetworkReceive
         {
 
         }
-        NetworkService.SendDebugMessage("액티비티가 패킷을 수신함");
     }
 }

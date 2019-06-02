@@ -149,20 +149,16 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_home:
-                    Toast.makeText(getApplicationContext(),"홈",Toast.LENGTH_LONG).show();
                     SwitchView(new Menu_HomeFragment(), true);
                     return true;
                 case R.id.menu_waiting:
                     SwitchView(new Menu_WaitingFragment(), true);
-                    Toast.makeText(getApplicationContext(),"대기",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_ranking:
                     SwitchView(new Menu_Ranking(), true);
-                    Toast.makeText(getApplicationContext(),"랭킹",Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.menu_boarding:
                     SwitchView(new Menu_Board(), true);
-                    Toast.makeText(getApplicationContext(),"게시판",Toast.LENGTH_LONG).show();
                     return true;
             }
             return false;

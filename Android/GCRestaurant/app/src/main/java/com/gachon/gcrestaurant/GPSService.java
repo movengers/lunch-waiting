@@ -16,13 +16,11 @@ public class GPSService implements LocationListener {
     {
         instance = this;
         this.c = cx;
-        NetworkService.SendDebugMessage("GPS 서비스 인스턴스 생성");
     }
     public void Start()
     {
         if (c != null)
         {
-            NetworkService.SendDebugMessage("GPS 서비스 실행");
             long minTime = 10000;
             float minDistance = 0;
             LocationManager manager = (LocationManager)c.getSystemService(Context.LOCATION_SERVICE);

@@ -24,7 +24,6 @@ public class ResponseWaitingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         int no = intent.getIntExtra("no",0);
         int time = intent.getIntExtra("time",-1);
-        NetworkService.SendDebugMessage("A" + time);
         NetworkService.SendMessage(PacketType.RequestWaitingToUser, "no",  String.valueOf(no), "time",  time);
 
         int noti_id = intent.getIntExtra("no", -1);

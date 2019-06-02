@@ -92,7 +92,6 @@ public class Menu_Board extends NetworkFragment {
                         JSONObject item = array.getJSONObject(i);
                         aa.add(new QuestionItem(item.getInt("no"),item.getString("name"), item.getString("content"), item.getString("time")));
                     }
-                    NetworkService.SendDebugMessage("받음" + aa.size());
                     adpater.AddComment(json.getInt("no"), aa);
                 }
                     break;

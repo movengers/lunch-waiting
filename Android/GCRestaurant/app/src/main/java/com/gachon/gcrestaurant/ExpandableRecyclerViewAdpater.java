@@ -77,7 +77,6 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
                 a.notifyDataSetChanged();
                 pitem.Opened = true;
                 pitem.comment_view.setVisibility(View.VISIBLE);
-                NetworkService.SendDebugMessage("설정 완료");
             }
 
 
@@ -114,7 +113,7 @@ public class ExpandableRecyclerViewAdpater extends RecyclerView.Adapter<Expandab
             public void onClick(View view) {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
 
-                ad.setTitle("댓글 달기" + item.No);
+                ad.setTitle(item.Name + "님의 게시글에 댓글 달기");
                 ad.setMessage(item.Content);
 
                 final EditText et = new EditText(context);
