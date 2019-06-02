@@ -32,6 +32,8 @@ public class Menu_WaitingFragment extends NetworkFragment implements OnMapReadyC
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_f);
         mapFragment.getMapAsync(this);
 
+        SetFullHeight(view.findViewById(R.id.map_f));
+
         return view;
     }
 

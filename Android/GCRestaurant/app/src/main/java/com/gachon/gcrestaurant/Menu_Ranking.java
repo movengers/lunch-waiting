@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class Menu_Ranking extends Fragment {
+import org.json.JSONObject;
+
+public class Menu_Ranking extends NetworkFragment {
     String[] category = new String[]{"한식", "분식", "돈까스,회,일식", "치킨", "피자", "중식"};
     private Context mContext;
     private TabLayout mTabLayout;
@@ -50,6 +52,9 @@ public class Menu_Ranking extends Fragment {
         }
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_content);
+
+        SetFullHeight(mViewPager, GetHeight() -200);
+
         mContentsPagerAdapter = new ContentsPagerAdapter(
                 getActivity().getSupportFragmentManager(), category);
 
@@ -71,5 +76,10 @@ public class Menu_Ranking extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void ReceivePacket(JSONObject json) {
+
     }
 }
