@@ -53,7 +53,7 @@ public class Menu_Ranking extends NetworkFragment {
 
         mViewPager = (ViewPager) view.findViewById(R.id.pager_content);
 
-        SetFullHeight(mViewPager, GetHeight() -200);
+        SetFullHeight(mViewPager, GetHeight() - 170);
 
         mContentsPagerAdapter = new ContentsPagerAdapter(
                 getActivity().getSupportFragmentManager(), category);
