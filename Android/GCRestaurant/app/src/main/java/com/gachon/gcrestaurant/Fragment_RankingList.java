@@ -73,6 +73,7 @@ public class Fragment_RankingList extends NetworkFragment {
         try {
             switch (json.getInt("type")) {
                 case PacketType.RestaurantRankingList:
+                    if (adapter.getCount() != 0) return;
                     if (json.getString("category").equals(category)) {
                         JSONArray array = json.getJSONArray("list");
 

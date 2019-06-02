@@ -17,6 +17,23 @@ public class Menu_Ranking extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ContentsPagerAdapter mContentsPagerAdapter;
+
+    private boolean new_ = true;
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        if (new_ == true)
+        {
+            new_ = false;
+        }
+        else
+        {
+            MainActivity a = (MainActivity)getActivity();
+            a.SwitchView(new Menu_Ranking(), true);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
