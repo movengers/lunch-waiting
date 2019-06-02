@@ -76,12 +76,7 @@ namespace GCRestaurantServer.Module.Handler
             int? result = AutoWaitingComputing.Update(no);
             foreach(int id in GetWaitingListener(no))
             {
-
-                foreach (OnlineUser vvvvv in Program.users.Values)
-                {
-                    if (vvvvv.id == id)
-                        vvvvv.Notify("waiting", no,GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
-                }
+                OnlineUser.Notify(id, "waiting", no, GetTitle(no) + " 대기 시간 수신", "예상 시간 : " + result.Value + "분");
             }
         }
         public static JObject GetID(string title)

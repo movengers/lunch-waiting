@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("switchkey", isChecked);
                 editor.commit();
+                NetworkService.NotifyOK = isChecked;
             }
         });
 
