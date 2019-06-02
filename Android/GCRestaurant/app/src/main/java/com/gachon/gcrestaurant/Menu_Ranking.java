@@ -37,7 +37,6 @@ public class Menu_Ranking extends Fragment {
                 getActivity().getSupportFragmentManager(), category);
 
         mViewPager.setAdapter(mContentsPagerAdapter);
-       // mViewPager.setCurrentItem(0);
 
         mViewPager.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -46,15 +45,12 @@ public class Menu_Ranking extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition(),true);
-                Toast.makeText(getContext(), "ㅠㅠ"+ tab.getPosition(),Toast.LENGTH_LONG).show();
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                Toast.makeText(getContext(), "ㅎㅎ",Toast.LENGTH_LONG).show();
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                Toast.makeText(getContext(), "ㅊㅊ",Toast.LENGTH_LONG).show();
             }
         });
         return view;

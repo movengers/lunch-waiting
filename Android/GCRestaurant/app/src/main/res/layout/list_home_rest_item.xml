@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="0">
+
+    <TableRow>
+        <TextView
+            android:id="@+id/list_home_rest_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가게이름"
+            android:textColor="#009688"
+            android:fontFamily="@font/hannah"
+            android:textSize="30dp"
+            android:layout_margin="25dp"/>
+
+        <TextView
+            android:id="@+id/list_home_rest_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4분"
+            android:fontFamily="@font/hannah"
+            android:textSize="23dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/list_home_rest_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/hannah"
+            android:text="100m"
+            android:layout_marginRight="30dp"
+            android:textSize="23dp" />
+    </TableRow>
+
+</TableLayout>
