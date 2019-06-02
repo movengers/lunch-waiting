@@ -51,12 +51,23 @@ public class Menu_HomeFragment extends NetworkFragment {
                 SetText(R.id.inputbutton, item.rest_name + " - 대기 시간 등록");
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ListViewHomeRestAdapter.Item item = ((ListViewHomeRestAdapter)listView.getAdapter()).getItem(position);
+                SwitchView(Menu_RestaurantDetail.newInstance(item.no));
+                return true;
+            }
+        });
 
         inputButton = view.findViewById(R.id.inputbutton);
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (SelectRest == 0) {
+                    Toast.makeText(getContext(), "음식점을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 final List<String> ListItems = new ArrayList<>();
                 ListItems.add("없음 [0팀]");
                 ListItems.add("조금 [1~3팀]");
@@ -68,7 +79,6 @@ public class Menu_HomeFragment extends NetworkFragment {
                 builder.setTitle("대기시간 정보 입력");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int pos) {
-
                         NetworkService.SendMessage(PacketType.RequestWaitingToUser, "no",  String.valueOf(SelectRest), "time",  pos);
                     }
                 });

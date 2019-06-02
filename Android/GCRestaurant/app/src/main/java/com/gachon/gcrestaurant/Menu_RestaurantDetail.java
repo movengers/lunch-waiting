@@ -144,7 +144,7 @@ public class Menu_RestaurantDetail extends NetworkFragment{
                         public void run() {
                             ScrollTop();
                         }
-                    }, 50);
+                    }, 10);
                     break;
             }
         }
