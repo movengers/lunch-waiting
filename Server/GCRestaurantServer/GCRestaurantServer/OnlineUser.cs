@@ -27,8 +27,11 @@ namespace GCRestaurantServer
         }
         public void Send(JObject json)
         {
-            Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
-            socket.Send(json);
+            if (json != null)
+            {
+                Program.LogSystem.AddLog(-1, "Program - Send", json.ToString());
+                socket.Send(json);
+            }
         }
         public static void Send(int id, JObject json)
         {
