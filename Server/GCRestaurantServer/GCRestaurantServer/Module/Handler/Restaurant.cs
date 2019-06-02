@@ -258,17 +258,18 @@ namespace GCRestaurantServer.Module.Handler
             json["list"] = list;
             return json;
         }
-        public static void Likes(OnlineUser user, int restaurant_no, bool positive)
+        public static void ClickLike(OnlineUser user, int restaurant_no)
         {
-            MysqlNode node = new MysqlNode(Program.mysqlOption, "SQL");
-
-            if (positive)
-                node.ChangeSql("INSERT INTO rest_likes_data (restaurant_no, user_id) VALUES (?restaurant_no, ?user_id)");
-            else
-                node.ChangeSql("DELETE FROM rest_likes_data where restaurant_no = ?restaurant_no AND user_id = ?user_id");
+            MysqlNode node = new MysqlNode(Program.mysqlOption, "DELETE FROM rest_likes_data where restaurant_no = ?restaurant_no AND user_id = ?user_id");
+            int result = 0;
             node["restaurant_no"] = restaurant_no;
             node["user_id"] = user.id;
-            int result = node.ExecuteNonQuery();
+            result += node.ExecuteNonQuery();
+            if (result == 0)
+            {
+                node.ChangeSql("INSERT INTO rest_likes_data (restaurant_no, user_id) VALUES (?restaurant_no, ?user_id)");
+                result += node.ExecuteNonQuery();
+            }
             if (result > 0)
             {
                 user.Send(StateLikes(user,restaurant_no));
