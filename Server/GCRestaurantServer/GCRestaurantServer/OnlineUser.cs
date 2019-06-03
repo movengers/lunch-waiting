@@ -19,7 +19,26 @@ namespace GCRestaurantServer
         }
         public string name { get; private set; }
         public string img { get; private set; }
-        public Position position = null;
+        public Position position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                _position = value;
+                if (IsLogin)
+                {
+                    MysqlNode node = new MysqlNode(Program.mysqlOption, "UPDATE user SET lat=?lat, lon=?lon WHERE id = ?id");
+                    node["id"] = id;
+                    node["lon"] = value.longitude;
+                    node["lat"] = value.latitude;
+                    node.ExecuteNonQuery();
+                }
+            }
+        }
+        private Position _position = null;
         private ESocket socket;
         public OnlineUser(ESocket socket)
         {
@@ -75,7 +94,13 @@ namespace GCRestaurantServer
                         MysqlNode update = new MysqlNode(Program.mysqlOption, "SQL");
 
                         if (node.Read())
+                        {
                             update.ChangeSql("UPDATE user SET name=?name WHERE id = ?id");
+                            if (!node.IsNull("lat") && !node.IsNull("lon"))
+                            {
+                                position = new Position(node.GetDouble("lat"), node.GetDouble("lon"));
+                            }
+                        }
                         else
                             update.ChangeSql("INSERT INTO user (id,name) VALUES (?id, ?name)");
 

@@ -73,6 +73,8 @@ CREATE TABLE `restaurant` (
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` char(30) NOT NULL,
+  `lat` double DEFAULT NULL,
+  `lon` double DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -82,7 +84,7 @@ CREATE TABLE `user` (
 CREATE TABLE `waiting_data` (
   `restaurant_no` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `date` datetime NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `waiting` int(11) NOT NULL,
   KEY `restaurant_no` (`restaurant_no`),
   KEY `user_id` (`user_id`),
