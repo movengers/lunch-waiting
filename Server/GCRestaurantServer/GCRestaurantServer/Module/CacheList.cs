@@ -10,6 +10,7 @@ namespace GCRestaurantServer
     {
         private int due_time = 5;
         private List<Item> items = new List<Item>();
+        private Object lock_object = new object();
         public class Item
         {
             public class_type item;
@@ -36,25 +37,31 @@ namespace GCRestaurantServer
         {
             if (Seconds == -1) Seconds = due_time;
             // 먼저 데이터가 있는지 검사
-            foreach (Item item in items)
+            lock (lock_object)
             {
-                if (item.item.Equals(data))
+                foreach (Item item in items)
                 {
-                    item.UpdateTime(Seconds);
-                    return false;
+                    if (item.item.Equals(data))
+                    {
+                        item.UpdateTime(Seconds);
+                        return false;
+                    }
                 }
+                items.Add(new Item(data, Seconds));
             }
-            items.Add(new Item(data, Seconds));
             return true;
         }
         public bool Contains(class_type data)
         {
             CleanArray();
-            foreach (Item item in items)
+            lock (lock_object)
             {
-                if (item.item.Equals(data))
+                foreach (Item item in items)
                 {
-                    return true;
+                    if (item.item.Equals(data))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -65,24 +72,43 @@ namespace GCRestaurantServer
             {
                 CleanArray();
                 List<class_type> result = new List<class_type>();
-                for(int i = 0; i < items.Count; i++)
+                lock (lock_object)
                 {
-                    result.Add(items[i].item);
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        result.Add(items[i].item);
+                    }
                 }
                 return result;
             }
         }
         public void CleanArray()
         {
-            List<Item> Result = new List<Item>();
-            foreach (Item item in items.ToArray())
+            lock (lock_object)
             {
-                if (item.end_time > DateTime.Now)
+                List<Item> Result = new List<Item>();
+                foreach (Item item in items.ToArray())
                 {
-                    Result.Add(item);
+                    if (item.end_time > DateTime.Now)
+                    {
+                        Result.Add(item);
+                    }
+                }
+                items = Result;
+            }
+        }
+        public override string ToString()
+        {
+            string A = "";
+            lock (lock_object)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (i != 0) A += ", ";
+                    A += items[i].item + ": " + items[i].end_time;
                 }
             }
-            items = Result;
+            return "{" + A + "}";
         }
     }
 }
